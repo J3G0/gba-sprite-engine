@@ -6,7 +6,7 @@
 #define GBA_SPRITE_ENGINE_PROJECT_UNFAIRSCENE_H
 #include <libgba-sprite-engine/scene.h>
 
-class unfairScene : public Scene
+class UnfairScene : public Scene
 {
 private:
     std::unique_ptr<Sprite> itsAMeMario;
@@ -16,7 +16,7 @@ private:
     int rotationDiff = 128;
 
 public:
-    unfairScene(std::shared_ptr<GBAEngine> engine) : Scene(engine), rotation(0), rotationDiff(128), scrollX(0), scrollY(0) {}
+    UnfairScene(std::shared_ptr<GBAEngine> engine) : Scene(engine), rotation(0), rotationDiff(128), scrollX(0), scrollY(0) {}
 
     std::vector<Sprite *> sprites() override;
     std::vector<Background *> backgrounds() override;

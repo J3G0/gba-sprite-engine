@@ -2,8 +2,8 @@ project(unfairGameName)
 
 add_executable(${PROJECT_NAME}.elf
         src/main.cpp
-        src/unfairScene.cpp
-        src/unfairScene.h
+        src/UnfairScene.cpp
+        src/UnfairScene.h
         src/Smiley.h
         src/mario-bg.h
         )

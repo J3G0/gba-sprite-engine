@@ -7,20 +7,20 @@
 #include <libgba-sprite-engine/gba_engine.h>
 #include <libgba-sprite-engine/effects/fade_out_scene.h>
 
-#include "unfairScene.h"
+#include "UnfairScene.h"
 #include "Smiley.h"
 #include "mario-bg.h"
 
-std::vector<Background *> unfairScene::backgrounds() {
+std::vector<Background *> UnfairScene::backgrounds() {
     return { mario_bg.get() };
 }
 
-std::vector<Sprite*> unfairScene::sprites()
+std::vector<Sprite*> UnfairScene::sprites()
 {
     return { itsAMeMario.get() };
 }
 
-void unfairScene::load()
+void UnfairScene::load()
 {
     engine.get()->disableText();
     foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(megamanPal, sizeof(megamanPal)));
@@ -41,7 +41,7 @@ void unfairScene::load()
     engine->getTimer()->start();
 }
 
-void unfairScene::tick(u16 keys)
+void UnfairScene::tick(u16 keys)
 {
     TextStream::instance().setText(itsAMeMario.get()->getLocationAsString(), 18, 1);
     u32 posX = itsAMeMario.get()->getX();

@@ -6,7 +6,7 @@
 #include <libgba-sprite-engine/palette/palette_manager.h>
 #include <libgba-sprite-engine/allocator.h>
 
-#include "unfairScene.h"
+#include "UnfairScene.h"
 
 
 
@@ -23,7 +23,7 @@
 int main() {
     std::shared_ptr<GBAEngine> engine(new GBAEngine());
 
-    unfairScene* startScene = new unfairScene(engine);
+    UnfairScene* startScene = new UnfairScene(engine);
     engine->setScene(startScene);
 
     while (true) {
