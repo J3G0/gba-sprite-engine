@@ -11,9 +11,9 @@ class UnfairScene : public Scene
 private:
     std::unique_ptr<Sprite> yellowSprite;
     std::unique_ptr<Sprite> redSprite;
+    std::unique_ptr<Sprite> redFlyingSprite;
     std::unique_ptr<Background> mario_bg;
     bool hasToDoJump = false;
-    bool hasToDie = false;
     int scrollX, scrollY;
     int rotation;
     int rotationDiff = 128;
@@ -29,7 +29,6 @@ public:
     void tick(u16 keys) override;
     void handleMovement(u16 keys);
     void handleKeys(u16 keys);
-    void gravity();
 
     //todo: make priv
     int atTime = 0;

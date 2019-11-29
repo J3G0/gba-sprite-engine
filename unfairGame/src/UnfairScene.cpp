@@ -18,7 +18,7 @@ std::vector<Background *> UnfairScene::backgrounds() {
 
 std::vector<Sprite*> UnfairScene::sprites()
 {
-    return { redSprite.get(), yellowSprite.get() };
+    return { redSprite.get(), yellowSprite.get(), redFlyingSprite.get() };
 }
 
 void UnfairScene::load()
@@ -38,7 +38,13 @@ void UnfairScene::load()
     redSprite = builder
             .withData(red_tempTiles, sizeof(red_tempTiles))
             .withSize(SIZE_32_32)
-            .withLocation(100, 50)
+            .withLocation(150, GBA_SCREEN_HEIGHT - 48)
+            .buildPtr();
+
+    redFlyingSprite = builder
+            .withData(red_tempTiles, sizeof(red_tempTiles))
+            .withSize(SIZE_32_32)
+            .withLocation(200, 95)
             .buildPtr();
 
 
@@ -50,6 +56,8 @@ void UnfairScene::load()
 
 void UnfairScene::tick(u16 keys)
 {
+    TextStream::instance().setText(yellowSprite.get()->getLocationAsString(), 1, 1);
+    TextStream::instance().setText("RX: " + std::to_string(scrollX + yellowSprite.get()->getX()) , 3, 1);
     handleMovement(keys);
     if (hasToDoJump)
     {
@@ -73,10 +81,14 @@ void UnfairScene::performJump()
     u32 posY = yellowSprite.get()->getY();
     int currentTime = engine->getTimer()->getTotalMsecs();
     int timePassed = currentTime - atTime;
-    TextStream::instance().setText(std::to_string(timePassed), 15, 1);
 
     //up movement
-    if(timePassed <= JUMP_TIME / 2)
+    if(yellowSprite.get()->collidesWith(*redFlyingSprite))
+    {
+        isFalling = true;
+        yellowSprite->setVelocity(0, 2);
+    }
+    if(timePassed <= JUMP_TIME / 2 && !isFalling)
     {
         yellowSprite->setVelocity(0, -2);
     }
@@ -89,7 +101,7 @@ void UnfairScene::performJump()
     }
 
     //If hit a sprite or hit bottom
-    if((posY >= GBA_SCREEN_HEIGHT - 48 || yellowSprite.get()->collidesWith(*redSprite)) && isFalling)
+    if((posY >= GBA_SCREEN_HEIGHT - 48 || yellowSprite.get()->collidesWith(*redSprite) || yellowSprite.get()->collidesWith(*redFlyingSprite)) && isFalling)
     {
         hasToDoJump = false;
         yellowSprite->setVelocity(0, 0);
@@ -109,8 +121,10 @@ void UnfairScene::handleKeys(u16 keys)
     u32 posX = yellowSprite.get()->getX();
     u32 posY = yellowSprite.get()->getY();
     u32 startLoc = 100;
+    u32 flyingStart = 200;
     u32 posTestY = redSprite.get()->getY();
-    if(!hasToDoJump && posY <= GBA_SCREEN_HEIGHT - 48 && !yellowSprite.get()->collidesWith(*redSprite))
+    u32 flyingPosY = redFlyingSprite.get()->getY();
+    if(!hasToDoJump && posY <= GBA_SCREEN_HEIGHT - 48 && !yellowSprite.get()->collidesWith(*redSprite) && !yellowSprite.get()->collidesWith(*redFlyingSprite))
     {
         yellowSprite.get()->moveTo(posX, posY + 1);
     }
@@ -121,12 +135,14 @@ void UnfairScene::handleKeys(u16 keys)
                 yellowSprite->flipHorizontally(true);
             scrollX--;
             redSprite.get()->moveTo(startLoc - scrollX, posTestY);
+            redFlyingSprite.get()->moveTo(flyingStart - scrollX, flyingPosY);
             break;
 
         case(KEY_LEFT | KEY_UP):
             if(posX > 0)
                 scrollX--;
             redSprite.get()->moveTo(startLoc - scrollX, posTestY);
+            redFlyingSprite.get()->moveTo(flyingStart - scrollX, flyingPosY);
             yellowSprite->flipHorizontally(true);
             jumpAction();
             break;
@@ -134,6 +150,7 @@ void UnfairScene::handleKeys(u16 keys)
         case(KEY_RIGHT | KEY_UP):
             scrollX++;
             redSprite.get()->moveTo(startLoc - scrollX, posTestY);
+            redFlyingSprite.get()->moveTo(flyingStart - scrollX, flyingPosY);
             yellowSprite->flipHorizontally(false);
             jumpAction();
             break;
@@ -141,6 +158,7 @@ void UnfairScene::handleKeys(u16 keys)
         case KEY_RIGHT:
             scrollX++;
             redSprite.get()->moveTo(startLoc - scrollX, posTestY);
+            redFlyingSprite.get()->moveTo(flyingStart - scrollX, flyingPosY);
             yellowSprite->flipHorizontally(false);
             break;
 
