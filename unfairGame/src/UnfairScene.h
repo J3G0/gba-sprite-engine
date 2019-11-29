@@ -9,8 +9,8 @@
 class UnfairScene : public Scene
 {
 private:
-    std::unique_ptr<Sprite> itsAMeMario;
-    std::unique_ptr<Sprite> testSprite;
+    std::unique_ptr<Sprite> yellowSprite;
+    std::unique_ptr<Sprite> redSprite;
     std::unique_ptr<Background> mario_bg;
     bool hasToDoJump = false;
     bool hasToDie = false;
@@ -27,6 +27,9 @@ public:
     void performJump();
     void load() override;
     void tick(u16 keys) override;
+    void handleMovement(u16 keys);
+    void handleKeys(u16 keys);
+    void gravity();
 
     //todo: make priv
     int atTime = 0;

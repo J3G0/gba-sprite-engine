@@ -4,8 +4,7 @@ add_executable(${PROJECT_NAME}.elf
         src/main.cpp
         src/UnfairScene.cpp
         src/UnfairScene.h
-        src/Smiley.h
-        src/mario-bg.h
+        src/sprite_data.h
         )
 
 target_link_libraries(${PROJECT_NAME}.elf gba-sprite-engine)
