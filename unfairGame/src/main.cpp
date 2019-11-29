@@ -14,7 +14,11 @@
 /***
  * pallette --> const unsigned short (0x0000)
  * data --> char
+ * voor sprites
+ * grit pic1.png pic2.png kul.png -ftc -pS -gB8 -O shared.c
  *
+ * voor backgrounds
+ * grit splashimage.png -gt -gB8 -mRtpf -mLs -ftc
  */
 int main() {
     std::shared_ptr<GBAEngine> engine(new GBAEngine());
@@ -26,8 +30,6 @@ int main() {
         engine->update();
         engine->delay(1000);
     }
-
-    return 0;
 
     return 0;
 }

@@ -9,11 +9,10 @@
 
 #include "unfairScene.h"
 #include "Smiley.h"
-
-unfairScene::unfairScene(const std::shared_ptr<GBAEngine> &engine) : Scene(engine) {}
+#include "mario-bg.h"
 
 std::vector<Background *> unfairScene::backgrounds() {
-    return {};
+    return { mario_bg.get() };
 }
 
 std::vector<Sprite*> unfairScene::sprites()
@@ -23,22 +22,51 @@ std::vector<Sprite*> unfairScene::sprites()
 
 void unfairScene::load()
 {
-
-    foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(smiley_pal, sizeof(smiley_pal)));
-    backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager());
+    engine.get()->disableText();
+    foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(megamanPal, sizeof(megamanPal)));
+    backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(bg_palette, sizeof(bg_palette)));
 
     SpriteBuilder<Sprite> builder;
 
     itsAMeMario = builder
-            .withData(smiley_data, sizeof(smiley_data))
+            .withData(megamanTiles, sizeof(megamanTiles))
             .withSize(SIZE_32_32)
             .withLocation(GBA_SCREEN_WIDTH / 2 - 32, GBA_SCREEN_HEIGHT / 2 - 32)
             .buildPtr();
+
+
+    mario_bg = std::unique_ptr<Background>(new Background(1, background_data, sizeof(background_data), map, sizeof(map)));
+    mario_bg.get()->useMapScreenBlock(16);
 
     engine->getTimer()->start();
 }
 
 void unfairScene::tick(u16 keys)
 {
-    
+    TextStream::instance().setText(itsAMeMario.get()->getLocationAsString(), 18, 1);
+    u32 posX = itsAMeMario.get()->getX();
+    u32 posY = itsAMeMario.get()->getY();
+
+    switch(keys)
+    {
+        case KEY_LEFT:
+            if(posX > 0)
+            scrollX--;
+        break;
+
+        case KEY_RIGHT:
+            scrollX++;
+            break;
+
+        case KEY_DOWN:
+            if(posY < GBA_SCREEN_HEIGHT - 32)
+            itsAMeMario.get()->moveTo(posX, posY + 1);
+            break;
+
+        case KEY_UP:
+            if(posY > 0)
+            itsAMeMario.get()->moveTo(posX, posY - 1);
+            break;
+    }
+    mario_bg.get()->scroll(scrollX, scrollY);
 }

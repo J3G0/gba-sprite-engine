@@ -109,6 +109,7 @@ public:
     VECTOR getVelocity() { return { dx, dy}; }
     u32 getX() { return x; }
     u32 getY() { return y; }
+    std::string getLocationAsString() { return "X:" + std::to_string(getX()) + " Y:" + std::to_string(getY()); }
     u32 getDx() { return dx; }
     u32 getDy() { return dy; }
     u32 getWidth() { return w; }

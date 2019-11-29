@@ -10,10 +10,13 @@ class unfairScene : public Scene
 {
 private:
     std::unique_ptr<Sprite> itsAMeMario;
+    std::unique_ptr<Background> mario_bg;
+    int scrollX, scrollY;
+    int rotation;
+    int rotationDiff = 128;
 
 public:
-    explicit unfairScene(const std::shared_ptr<GBAEngine> &engine);
-    unfairScene(unfairScene& other) = delete;
+    unfairScene(std::shared_ptr<GBAEngine> engine) : Scene(engine), rotation(0), rotationDiff(128), scrollX(0), scrollY(0) {}
 
     std::vector<Sprite *> sprites() override;
     std::vector<Background *> backgrounds() override;
