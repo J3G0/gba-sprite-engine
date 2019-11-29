@@ -10,7 +10,10 @@
 #include "UnfairScene.h"
 #include "Smiley.h"
 #include "mario-bg.h"
+#include<sstream>
 
+#define MAP_OFFSET_Y 8
+#define JUMP_TIME 1000
 std::vector<Background *> UnfairScene::backgrounds() {
     return { mario_bg.get() };
 }
@@ -31,7 +34,13 @@ void UnfairScene::load()
     itsAMeMario = builder
             .withData(megamanTiles, sizeof(megamanTiles))
             .withSize(SIZE_32_32)
-            .withLocation(GBA_SCREEN_WIDTH / 2 - 32, GBA_SCREEN_HEIGHT / 2 - 32)
+            .withLocation(50, 50)
+            .buildPtr();
+
+    testSprite = builder
+            .withData(megamanTiles, sizeof(megamanTiles))
+            .withSize(SIZE_32_32)
+            .withLocation(100, 120)
             .buildPtr();
 
 
@@ -43,30 +52,83 @@ void UnfairScene::load()
 
 void UnfairScene::tick(u16 keys)
 {
-    TextStream::instance().setText(itsAMeMario.get()->getLocationAsString(), 18, 1);
     u32 posX = itsAMeMario.get()->getX();
     u32 posY = itsAMeMario.get()->getY();
+    TextStream::instance().setText((itsAMeMario->getLocationAsString()), 5, 1);
+    int currentTime = engine->getTimer()->getTotalMsecs();
+
+    if (performJump)
+    {
+        int timePassed = currentTime - atTime;
+        TextStream::instance().setText(std::to_string(timePassed), 15, 1);
+
+        //up movement
+        if(timePassed <= JUMP_TIME / 2)
+        {
+            itsAMeMario->setVelocity(0, -1);
+        }
+
+        //down movement
+        else
+        {
+            isFalling = true;
+            itsAMeMario->setVelocity(0, 1);
+        }
+
+        //If hit a sprite or hit bottom
+        if(posY == 120 && isFalling)
+        {
+            performJump = false;
+            itsAMeMario->setVelocity(0, 0);
+            isFalling = false;
+        }
+    }
 
     switch(keys)
     {
-        case KEY_LEFT:
+        case (KEY_LEFT):
             if(posX > 0)
+                itsAMeMario->flipHorizontally(true);
             scrollX--;
         break;
 
+        case(KEY_LEFT | KEY_UP):
+            if(posX > 0)
+                scrollX--;
+                itsAMeMario->flipHorizontally(true);
+            jumpAction();
+            break;
+
+        case(KEY_RIGHT | KEY_UP):
+            scrollX++;
+            itsAMeMario->flipHorizontally(false);
+            jumpAction();
+            break;
+
         case KEY_RIGHT:
             scrollX++;
+            itsAMeMario->flipHorizontally(false);
             break;
 
         case KEY_DOWN:
-            if(posY < GBA_SCREEN_HEIGHT - 32)
+            if(posY < GBA_SCREEN_HEIGHT - 32 - MAP_OFFSET_Y)
             itsAMeMario.get()->moveTo(posX, posY + 1);
             break;
 
         case KEY_UP:
-            if(posY > 0)
-            itsAMeMario.get()->moveTo(posX, posY - 1);
+            //Trigger jump here
+            jumpAction();
             break;
     }
+
     mario_bg.get()->scroll(scrollX, scrollY);
+}
+
+void UnfairScene::jumpAction()
+{
+    if(!performJump)
+    {
+        performJump = true;
+        atTime = engine->getTimer()->getTotalMsecs();
+    }
 }

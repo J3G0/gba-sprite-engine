@@ -10,7 +10,9 @@ class UnfairScene : public Scene
 {
 private:
     std::unique_ptr<Sprite> itsAMeMario;
+    std::unique_ptr<Sprite> testSprite;
     std::unique_ptr<Background> mario_bg;
+    bool performJump = false;
     int scrollX, scrollY;
     int rotation;
     int rotationDiff = 128;
@@ -20,9 +22,13 @@ public:
 
     std::vector<Sprite *> sprites() override;
     std::vector<Background *> backgrounds() override;
-
+    void jumpAction();
     void load() override;
     void tick(u16 keys) override;
+
+    //todo: make priv
+    int atTime = 0;
+    bool isFalling = false;
 };
 
 
