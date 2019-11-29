@@ -12,7 +12,8 @@ private:
     std::unique_ptr<Sprite> itsAMeMario;
     std::unique_ptr<Sprite> testSprite;
     std::unique_ptr<Background> mario_bg;
-    bool performJump = false;
+    bool hasToDoJump = false;
+    bool hasToDie = false;
     int scrollX, scrollY;
     int rotation;
     int rotationDiff = 128;
@@ -23,6 +24,7 @@ public:
     std::vector<Sprite *> sprites() override;
     std::vector<Background *> backgrounds() override;
     void jumpAction();
+    void performJump();
     void load() override;
     void tick(u16 keys) override;
 

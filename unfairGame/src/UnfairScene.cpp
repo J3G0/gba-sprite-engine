@@ -20,7 +20,7 @@ std::vector<Background *> UnfairScene::backgrounds() {
 
 std::vector<Sprite*> UnfairScene::sprites()
 {
-    return { itsAMeMario.get() };
+    return { itsAMeMario.get(), testSprite.get() };
 }
 
 void UnfairScene::load()
@@ -34,13 +34,13 @@ void UnfairScene::load()
     itsAMeMario = builder
             .withData(megamanTiles, sizeof(megamanTiles))
             .withSize(SIZE_32_32)
-            .withLocation(50, 50)
+            .withLocation(50, 120)
             .buildPtr();
 
     testSprite = builder
             .withData(megamanTiles, sizeof(megamanTiles))
             .withSize(SIZE_32_32)
-            .withLocation(100, 120)
+            .withLocation(250, 120)
             .buildPtr();
 
 
@@ -54,34 +54,16 @@ void UnfairScene::tick(u16 keys)
 {
     u32 posX = itsAMeMario.get()->getX();
     u32 posY = itsAMeMario.get()->getY();
-    TextStream::instance().setText((itsAMeMario->getLocationAsString()), 5, 1);
-    int currentTime = engine->getTimer()->getTotalMsecs();
 
-    if (performJump)
+    u32 startLoc = 100;
+    u32 posTestY = testSprite.get()->getY();
+
+    TextStream::instance().setText((itsAMeMario->getLocationAsString()), 7, 1);
+    TextStream::instance().setText(std::to_string(scrollX), 9, 1);
+
+    if (hasToDoJump)
     {
-        int timePassed = currentTime - atTime;
-        TextStream::instance().setText(std::to_string(timePassed), 15, 1);
-
-        //up movement
-        if(timePassed <= JUMP_TIME / 2)
-        {
-            itsAMeMario->setVelocity(0, -1);
-        }
-
-        //down movement
-        else
-        {
-            isFalling = true;
-            itsAMeMario->setVelocity(0, 1);
-        }
-
-        //If hit a sprite or hit bottom
-        if(posY == 120 && isFalling)
-        {
-            performJump = false;
-            itsAMeMario->setVelocity(0, 0);
-            isFalling = false;
-        }
+        performJump();
     }
 
     switch(keys)
@@ -90,23 +72,27 @@ void UnfairScene::tick(u16 keys)
             if(posX > 0)
                 itsAMeMario->flipHorizontally(true);
             scrollX--;
+            testSprite.get()->moveTo(startLoc - scrollX, posTestY);
         break;
 
         case(KEY_LEFT | KEY_UP):
             if(posX > 0)
                 scrollX--;
+                testSprite.get()->moveTo(startLoc - scrollX, posTestY);
                 itsAMeMario->flipHorizontally(true);
             jumpAction();
             break;
 
         case(KEY_RIGHT | KEY_UP):
             scrollX++;
+            testSprite.get()->moveTo(startLoc - scrollX, posTestY);
             itsAMeMario->flipHorizontally(false);
             jumpAction();
             break;
 
         case KEY_RIGHT:
             scrollX++;
+            testSprite.get()->moveTo(startLoc - scrollX, posTestY);
             itsAMeMario->flipHorizontally(false);
             break;
 
@@ -126,9 +112,38 @@ void UnfairScene::tick(u16 keys)
 
 void UnfairScene::jumpAction()
 {
-    if(!performJump)
+    if(!hasToDoJump)
     {
-        performJump = true;
+        hasToDoJump = true;
         atTime = engine->getTimer()->getTotalMsecs();
+    }
+}
+
+void UnfairScene::performJump()
+{
+    u32 posY = itsAMeMario.get()->getY();
+    int currentTime = engine->getTimer()->getTotalMsecs();
+    int timePassed = currentTime - atTime;
+    TextStream::instance().setText(std::to_string(timePassed), 15, 1);
+
+    //up movement
+    if(timePassed <= JUMP_TIME / 2)
+    {
+        itsAMeMario->setVelocity(0, -2);
+    }
+
+        //down movement
+    else
+    {
+        isFalling = true;
+        itsAMeMario->setVelocity(0, 2);
+    }
+
+    //If hit a sprite or hit bottom
+    if( (posY == 120 || itsAMeMario.get()->collidesWith(*testSprite)) && isFalling)
+    {
+        hasToDoJump = false;
+        itsAMeMario->setVelocity(0, 0);
+        isFalling = false;
     }
 }
