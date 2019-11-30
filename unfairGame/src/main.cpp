@@ -5,7 +5,6 @@
 #include <libgba-sprite-engine/background/text_stream.h>
 #include <libgba-sprite-engine/palette/palette_manager.h>
 #include <libgba-sprite-engine/allocator.h>
-
 #include "UnfairScene.h"
 
 

@@ -113,6 +113,7 @@ public:
     u32 getDx() { return dx; }
     u32 getDy() { return dy; }
     u32 getStartX() { return startX; }
+    void setStartX(u32 startX) { this->startY = startX; }
     u32 getStartY() { return startY; }
     u32 getWidth() { return w; }
     u32 getHeight() { return h; }

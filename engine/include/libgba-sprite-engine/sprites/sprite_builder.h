@@ -47,6 +47,12 @@ public:
         this->y = y;
         return *this;
     }
+    SpriteBuilder& withNewStart(u32 sx, u32 sy) {
+        this->sx = sx;
+        this->sy = sy;
+        return *this;
+    }
+
     SpriteBuilder& withSize(const SpriteSize &size) {
         this->size = size;
         return *this;

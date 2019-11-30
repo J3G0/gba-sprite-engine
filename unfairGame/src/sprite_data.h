@@ -505,12 +505,12 @@ const unsigned short bg_palette [] = {
 };
 
 
-const unsigned short sharedPal[4] __attribute__((aligned(4)))=
+const unsigned short sharedPal[5] __attribute__((aligned(4)))=
 {
-        0x0000,0x03DF,0x001F,
+        0x0000,0x001F,0x03DF,0x067D,0x03FF,
 };
 
-const unsigned int red_tempTiles[256] __attribute__((aligned(4)))=
+const unsigned int yellow_tempTiles[256] __attribute__((aligned(4)))=
 {
         0x00000000,0x00000000,0x02020200,0x02020202,0x02020200,0x02020202,0x02020200,0x02020202,
         0x02020200,0x02020202,0x02020200,0x02020202,0x00000000,0x00000000,0x02020200,0x02020002,
@@ -549,7 +549,7 @@ const unsigned int red_tempTiles[256] __attribute__((aligned(4)))=
         0x02020202,0x00020202,0x02020202,0x00020202,0x02020202,0x00020202,0x00000000,0x00000000,
 };
 
-const unsigned int yellow_tempTiles[256] __attribute__((aligned(4)))=
+const unsigned int red_tempTiles[256] __attribute__((aligned(4)))=
 {
         0x00000000,0x00000000,0x01010100,0x01010101,0x01010100,0x01010101,0x01010100,0x01010101,
         0x01010100,0x01010101,0x01010100,0x01010101,0x00000000,0x00000000,0x01010100,0x01010001,
@@ -586,4 +586,10 @@ const unsigned int yellow_tempTiles[256] __attribute__((aligned(4)))=
         0x01000101,0x01010101,0x01010000,0x01010101,0x01010101,0x01010101,0x00000000,0x00000000,
         0x01010100,0x00010101,0x01010101,0x00010101,0x01010101,0x00010101,0x01010101,0x00010101,
         0x01010101,0x00010101,0x01010101,0x00010101,0x01010101,0x00010101,0x00000000,0x00000000,
+};
+
+const unsigned int fireballTiles[16] __attribute__((aligned(4)))=
+{
+        0x03040100,0x00000001,0x03040100,0x00000001,0x03040301,0x00000103,0x04030301,0x01030303,
+        0x04030301,0x01030304,0x04030301,0x01030304,0x03030100,0x00010303,0x01010000,0x00000101,
 };
