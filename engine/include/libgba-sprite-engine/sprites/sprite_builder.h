@@ -12,7 +12,7 @@ private:
     u32 imageSize;
     bool stayWithinBounds = false;
     const void *imageData;
-    u32 x, y, dx, dy;
+    u32 x, y, dx, dy, sx, sy;
     u32 beginFrame, numberOfFrames, animationDelay;
     SpriteSize size;
 
@@ -91,7 +91,7 @@ template<typename T> void SpriteBuilder<T>::setProperties(T* s) {
 }
 
 template<typename T> std::unique_ptr<T> SpriteBuilder<T>::buildPtr() {
-    auto s = new T(this->imageData, this->imageSize, this->x, this->y, this->size);
+    auto s = new T(this->imageData, this->imageSize, this->x, this->y, this->sx, this->sy, this->size);
     setProperties(s);
 
     reset();

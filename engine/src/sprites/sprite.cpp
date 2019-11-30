@@ -8,12 +8,12 @@
 #include <libgba-sprite-engine/sprites/sprite.h>
 #include <libgba-sprite-engine/gba_engine.h>
 
-Sprite::Sprite(const Sprite &other) : Sprite(nullptr, 0, other.x, other.y, other.spriteSize) {
+Sprite::Sprite(const Sprite &other) : Sprite(nullptr, 0, other.x, other.y, other.startX, other.startY, other.spriteSize) {
     tileIndex = other.tileIndex;
 }
 
-Sprite::Sprite(const void *imageData, int imageSize, int x, int y, SpriteSize size)
-        : x(x), y(y), data(imageData), imageSize(imageSize), spriteSize(size), priority(0),
+Sprite::Sprite(const void *imageData, int imageSize, int x, int y, int startX, int startY, SpriteSize size)
+        : x(x), y(y), startX(x), startY(y), data(imageData), imageSize(imageSize), spriteSize(size), priority(0),
           animationDelay(0), numberOfFrames(0), beginFrame(0), currentFrame(0), animationCounter(0) {
     setAttributesBasedOnSize(size);
 }

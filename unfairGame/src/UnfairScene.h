@@ -11,9 +11,8 @@ class UnfairScene : public Scene
 private:
     std::unique_ptr<Sprite> yellowSprite;
     std::unique_ptr<Sprite> redSprite;
-    std::unique_ptr<Sprite> redFlyingSprite;
     std::unique_ptr<Background> mario_bg;
-    bool hasToDoJump = false;
+    std::vector<Sprite*> spriteVector;
     int scrollX, scrollY;
     int rotation;
     int rotationDiff = 128;
@@ -23,17 +22,13 @@ public:
 
     std::vector<Sprite *> sprites() override;
     std::vector<Background *> backgrounds() override;
-    void jumpAction();
-    void performJump();
     void load() override;
     void tick(u16 keys) override;
-    void handleMovement(u16 keys);
-    void handleKeys(u16 keys);
+    void registerInput(u16 keys);
 
     //todo: make priv
     int atTime = 0;
     bool isFalling = false;
 };
-
 
 #endif //GBA_SPRITE_ENGINE_PROJECT_UNFAIRSCENE_H

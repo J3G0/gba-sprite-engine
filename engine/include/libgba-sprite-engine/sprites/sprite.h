@@ -52,7 +52,7 @@ private:
 
 protected:
     const void *data;
-    int x, y, dx, dy;
+    int x, y, dx, dy, startX, startY;
     u8 animation_offset;
     u32 priority, w, h, size_bits, shape_bits;
     bool stayWithinBounds;
@@ -70,7 +70,7 @@ protected:
 
 public:
     explicit Sprite(const Sprite& other);
-    explicit Sprite(const void *imageData, int imageSize, int x, int y, SpriteSize size);
+    explicit Sprite(const void *imageData, int imageSize, int x, int y, int startX, int startY, SpriteSize size);
     virtual ~Sprite() {}
 
     void makeAnimated(int numberOfFrames, int animationDelay) {
@@ -112,6 +112,8 @@ public:
     std::string getLocationAsString() { return "X:" + std::to_string(getX()) + " Y:" + std::to_string(getY()); }
     u32 getDx() { return dx; }
     u32 getDy() { return dy; }
+    u32 getStartX() { return startX; }
+    u32 getStartY() { return startY; }
     u32 getWidth() { return w; }
     u32 getHeight() { return h; }
     u32 getCurrentFrame() { return currentFrame; }
