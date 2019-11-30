@@ -10,6 +10,7 @@
 #include "UnfairScene.h"
 #include "sprite_data.h"
 #include "Fireball.h"
+#include <stdlib.h>
 
 #define JUMP_TIME 1000
 
@@ -61,7 +62,7 @@ void UnfairScene::load()
 
     fireBall = builder
             .withData(fireballTiles, sizeof(fireballTiles))
-            .withLocation(50, 50)
+            .withLocation(250, 50)
             .withSize(SIZE_8_8)
             .buildPtr();
 
@@ -74,33 +75,28 @@ void UnfairScene::load()
 void UnfairScene::tick(u16 keys)
 {
     int currentTime = engine->getTimer()->getTotalMsecs();
+    int howmanyballs = fireBalls.size();
+    removeFireBalls();
+
     if(currentTime - atTime >= 1000)
     {
         atTime = currentTime;
         fireBalls.push_back(createFireball());
     }
+
     registerInput(keys);
 
-    for(Sprite *s: spriteVector)
-    {
-        u32 startPosX = s->getStartX();
-        u32 posY = s->getY();
-        s->moveTo(startPosX - scrollX, posY);
+    if(howmanyballs != fireBalls.size()) {
+        engine.get()->updateSpritesInScene();
     }
-    if(fireBalls.size() > 0)
-    {
-        u32 posX = fireBalls.at(0).get()->getSprite()->getX();
-        u32 posY = fireBalls.at(0).get()->getSprite()->getY();
-        std::string text = "X: " + std::to_string(posX) + " Y:" + std::to_string(posY);
-        TextStream::instance().setText(text,1,1);
-    }
-    removeFireBalls();
+
     for(auto &b : fireBalls)
     {
         b->tick();
     }
     engine->updateSpritesInScene();
     mario_bg.get()->scroll(scrollX, scrollY);
+
 }
 
 void UnfairScene::registerInput(u16 keys)
@@ -108,36 +104,26 @@ void UnfairScene::registerInput(u16 keys)
     switch(keys)
     {
         case (KEY_LEFT):
-            scrollX--;
+            yellowSprite.get()->setVelocity(1, 0);
             break;
         case (KEY_RIGHT):
-            scrollX++;
+            yellowSprite.get()->setVelocity(-1, 0);
             break;
+
+        default:
+            yellowSprite.get()->setVelocity(0,0);
     }
 
-}
 
-bool UnfairScene::isCollidingOther()
-{
-    Sprite *mainCharacter = yellowSprite.get();
-
-    for(Sprite *s: spriteVector)
-    {
-        if(mainCharacter->collidesWith(*s))
-        {
-            return true;
-        }
-    }
-    return false;
 }
 
 std::unique_ptr<Fireball> UnfairScene::createFireball()
 {
     return std::unique_ptr<Fireball>(
             new Fireball(builder
-            .withNewStart(50,50)
-            .withLocation(50,50)
-            .withVelocity(0, 4)
+            .withNewStart(50 - scrollX,50)
+            .withLocation(rand() % 50 - scrollX,50)
+            .withVelocity(rand() % 7 - 3, rand() % 2 + 1)
             .buildWithDataOf(*fireBall.get())
             ));
 }
@@ -145,6 +131,10 @@ std::unique_ptr<Fireball> UnfairScene::createFireball()
 void UnfairScene::removeFireBalls()
 {
     fireBalls.erase(
-            std::remove_if(fireBalls.begin(), fireBalls.end(), [](std::unique_ptr<Fireball> &s) { return s->getSprite()->getY() > 140; }),
+            std::remove_if(fireBalls.begin(), fireBalls.end(), [](std::unique_ptr<Fireball> &s)
+            {
+                return (s->getSprite()->getY() > 160 || s->isOffScreen());
+            }
+            ),
             fireBalls.end());
 }
