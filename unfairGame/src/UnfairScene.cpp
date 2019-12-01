@@ -22,18 +22,24 @@ std::vector<Sprite*> UnfairScene::sprites()
 {
     std::vector<Sprite*> sprites;
     spriteVector.clear();
-    spriteVector.push_back(redSprite.get());
+    walkableSpriteVector.clear();
+    walkableSpriteVector.push_back(redSprite.get());
     spriteVector.push_back(fireBall.get());
 
     sprites.push_back(yellowSprite.get());
 
-    for(auto& b : fireBalls)
+    for (auto& b : fireBalls)
     {
         sprites.push_back(b->getSprite());
         spriteVector.push_back(b->getSprite());
     }
 
-    for(Sprite *s: spriteVector)
+    for (Sprite *s: spriteVector)
+    {
+        sprites.push_back(s);
+    }
+
+    for (Sprite *s: walkableSpriteVector)
     {
         sprites.push_back(s);
     }
@@ -69,75 +75,155 @@ void UnfairScene::load()
     mario_bg = std::unique_ptr<Background>(new Background(1, background_data, sizeof(background_data), map, sizeof(map)));
     mario_bg.get()->useMapScreenBlock(16);
     engine->getTimer()->start();
-    atTime = engine->getTimer()->getTotalMsecs();
 }
 
 void UnfairScene::tick(u16 keys)
 {
+    u32 mainX = yellowSprite.get()->getX() + yellowSprite.get()->getWidth();
+    u32 mainY = yellowSprite.get()->getY();
+
     int currentTime = engine->getTimer()->getTotalMsecs();
     int howmanyballs = fireBalls.size();
     removeFireBalls();
 
-    if(currentTime - atTime >= 1000)
+    if (currentTime - fireBallTimer >= 500)
     {
-        atTime = currentTime;
-        fireBalls.push_back(createFireball());
+        fireBallTimer = currentTime;
+        //fireBalls.push_back(createFireball(200, GBA_SCREEN_HEIGHT - 24, -2, 0));
+    }
+
+    if(mainX == 100 || mainX == 150)
+    {
+        fireBalls.push_back(createFireball(mainX, 0, 0, 2));
     }
 
     registerInput(keys);
 
-    if(howmanyballs != fireBalls.size()) {
+    if (howmanyballs != fireBalls.size())
+    {
         engine.get()->updateSpritesInScene();
     }
 
-    for(auto &b : fireBalls)
+    for (auto &b : fireBalls)
     {
-        if(yellowSprite.get()->collidesWith(*b.get()->getSprite()))
+        if (yellowSprite.get()->collidesWith(*b.get()->getSprite()))
         {
-            b.get()->getSprite()->setVelocity(-10,10);
+            VECTOR v = b->getSprite()->getVelocity();
+            b.get()->getSprite()->setVelocity(-v.x,-v.y);
         }
         b->tick();
     }
-    mario_bg.get()->scroll(scrollX, scrollY);
+    //mario_bg.get()->scroll(scrollX, scrollY);
 
 }
 
 void UnfairScene::registerInput(u16 keys)
 {
+    u32 dy = 0;
+    u32 dx = 0;
+    u32 currentTime = engine->getTimer()->getTotalMsecs();
+    u32 timePassed = currentTime - atTime;
+    if (isJumping)
+    {
+        if (isCollidingWithWalkable())
+        {
+            isJumping = false;
+        }
+
+        if (timePassed < 500)
+        {
+            dy = -2;
+        }
+        else
+        {
+            if (yellowSprite.get()->getY() >= GBA_SCREEN_HEIGHT - 48 || isCollidingWithWalkable())
+            {
+                isJumping = false;
+                dy = 0;
+            }
+            else
+            {
+                dy = 2;
+            }
+        }
+    }
+
+    if (!isJumping && !isCollidingWithWalkable())
+    {
+        dy = yellowSprite.get()->getY() < GBA_SCREEN_HEIGHT - 48 ? 2 : 0;
+    }
+
     switch(keys)
     {
         case (KEY_LEFT):
-            yellowSprite.get()->setVelocity(1, 0);
+            dx = -1;
+            yellowSprite.get()->setVelocity(dx, dy);
+            break;
+        case (KEY_LEFT | KEY_UP):
+            dx = -1;
+            if(!isJumping)
+            performJump();
+            yellowSprite.get()->setVelocity(dx, dy);
             break;
         case (KEY_RIGHT):
-            yellowSprite.get()->setVelocity(-1, 0);
+            dx = 1;
+            yellowSprite.get()->setVelocity(dx, dy);
             break;
-
+        case (KEY_RIGHT | KEY_UP):
+            dx = 1;
+            if(!isJumping)
+            performJump();
+            yellowSprite.get()->setVelocity(dx, dy);
+            break;
+        case (KEY_UP):
+            if(!isJumping)
+            performJump();
+            break;
         default:
-            yellowSprite.get()->setVelocity(0,0);
+            dx = 0;
+            yellowSprite.get()->setVelocity(dx,dy);
     }
 
 
 }
 
-std::unique_ptr<Fireball> UnfairScene::createFireball()
+std::unique_ptr<Fireball> UnfairScene::createFireball(u32 x , u32 y, u32 velX, u32 velY)
 {
     return std::unique_ptr<Fireball>(
             new Fireball(builder
-            .withNewStart(50 - scrollX,50)
-            .withLocation(rand() % 50 - scrollX,50)
-            .withVelocity(rand() % 7 - 3, rand() % 2 + 1)
-            .buildWithDataOf(*fireBall.get())
+             .withNewStart(x, y)
+             .withLocation(x, y)
+             .withVelocity(velX, velY)
+             .buildWithDataOf(*fireBall.get())
             ));
 }
 
 void UnfairScene::removeFireBalls()
 {
     fireBalls.erase(
-            std::remove_if(fireBalls.begin(), fireBalls.end(), [](std::unique_ptr<Fireball> &s)
+            std::remove_if(fireBalls.begin(), fireBalls.end(), [this](std::unique_ptr<Fireball> &s)
             {
                 return (s->getSprite()->getY() > 160 || s->isOffScreen());
             }
             ),
             fireBalls.end());
+}
+
+void UnfairScene::performJump()
+{
+    isJumping = true;
+    atTime = engine->getTimer()->getTotalMsecs();
+}
+
+bool UnfairScene::isCollidingWithWalkable() {
+    Sprite *mainChar = yellowSprite.get();
+
+    for(Sprite *walkable : walkableSpriteVector)
+    {
+        if(mainChar->collidesWith(*walkable))
+        {
+            return true;
+        }
+    }
+    return false;
 }

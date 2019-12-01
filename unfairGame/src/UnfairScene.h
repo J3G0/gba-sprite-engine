@@ -15,9 +15,10 @@ private:
     std::unique_ptr<Sprite> fireBall;
     std::unique_ptr<Background> mario_bg;
     std::vector<Sprite*> spriteVector;
+    std::vector<Sprite*> walkableSpriteVector;
     std::vector<std::unique_ptr<Fireball>> fireBalls;
     SpriteBuilder<Sprite> builder;
-    std::unique_ptr<Fireball> createFireball();
+    std::unique_ptr<Fireball> createFireball(u32 x, u32 y, u32 velX, u32 velY);
     void removeFireBalls();
 
     int scrollX, scrollY;
@@ -29,14 +30,16 @@ public:
 
     std::vector<Sprite *> sprites() override;
     std::vector<Background *> backgrounds() override;
-    bool getCollidingWith(std::unique_ptr<Sprite> s);
     void load() override;
     void tick(u16 keys) override;
-    bool isCollidingOther();
     void registerInput(u16 keys);
+    void performJump();
+    bool isCollidingWithWalkable();
 
     //todo: make priv
     int atTime = 0;
+    int fireBallTimer = 0;
+    bool isJumping = false;
     bool isFalling = false;
 };
 
