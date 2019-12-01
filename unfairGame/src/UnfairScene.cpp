@@ -92,9 +92,12 @@ void UnfairScene::tick(u16 keys)
 
     for(auto &b : fireBalls)
     {
+        if(yellowSprite.get()->collidesWith(*b.get()->getSprite()))
+        {
+            b.get()->getSprite()->setVelocity(-10,10);
+        }
         b->tick();
     }
-    engine->updateSpritesInScene();
     mario_bg.get()->scroll(scrollX, scrollY);
 
 }
