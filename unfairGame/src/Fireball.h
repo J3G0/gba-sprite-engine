@@ -26,7 +26,6 @@ public:
     Fireball(std::unique_ptr<Sprite> sprite) : sprite(std::move(sprite)), dest(VECTOR()) {}
 
     void tick();
-    void setDestination(VECTOR destination);
     bool isOffScreen() { return sprite->isOffScreen(); }
     Sprite* getSprite() { return sprite.get(); }
 };

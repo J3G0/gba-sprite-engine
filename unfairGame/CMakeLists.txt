@@ -6,6 +6,7 @@ add_executable(${PROJECT_NAME}.elf
         src/UnfairScene.h
         src/sprite_data.h
         src/Fireball.cpp
+        src/Walkable.cpp
         )
 
 target_link_libraries(${PROJECT_NAME}.elf gba-sprite-engine)

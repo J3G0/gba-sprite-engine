@@ -23,9 +23,19 @@ std::vector<Sprite*> UnfairScene::sprites()
     std::vector<Sprite*> sprites;
     spriteVector.clear();
     walkableSpriteVector.clear();
-    walkableSpriteVector.push_back(redSprite.get());
-    spriteVector.push_back(fireBall.get());
+    nonWalkableSpriteVector.clear();
 
+    sprites.push_back(redSprite.get());
+    sprites.push_back(redSprite_nonWalkable.get());
+
+    for (auto& b : walkableSpriteVector)
+    {
+        sprites.push_back(b);
+    }
+
+    spriteVector.push_back(fireBall.get());
+    walkableSpriteVector.push_back(redSprite.get());
+    walkableSpriteVector.push_back(redSprite_nonWalkable.get());
     sprites.push_back(yellowSprite.get());
 
     for (auto& b : fireBalls)
@@ -66,6 +76,12 @@ void UnfairScene::load()
             .withLocation(100, GBA_SCREEN_HEIGHT - 48)
             .buildPtr();
 
+    redSprite_nonWalkable = builder
+            .withData(red_tempTiles, sizeof(red_tempTiles))
+            .withSize(SIZE_32_32)
+            .withLocation(180, GBA_SCREEN_HEIGHT - 60)
+            .buildPtr();
+
     fireBall = builder
             .withData(fireballTiles, sizeof(fireballTiles))
             .withLocation(250, 50)
@@ -89,7 +105,7 @@ void UnfairScene::tick(u16 keys)
     if (currentTime - fireBallTimer >= 500)
     {
         fireBallTimer = currentTime;
-        //fireBalls.push_back(createFireball(200, GBA_SCREEN_HEIGHT - 24, -2, 0));
+        fireBalls.push_back(createFireball(200, GBA_SCREEN_HEIGHT - 24, -2, 0));
     }
 
     if(mainX == 100 || mainX == 150)
@@ -178,6 +194,7 @@ void UnfairScene::registerInput(u16 keys)
         case (KEY_UP):
             if(!isJumping)
             performJump();
+            yellowSprite.get()->setVelocity(dx, dy);
             break;
         default:
             dx = 0;

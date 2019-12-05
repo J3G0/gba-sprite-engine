@@ -11,11 +11,12 @@ class UnfairScene : public Scene
 {
 private:
     std::unique_ptr<Sprite> yellowSprite;
-    std::unique_ptr<Sprite> redSprite;
+    std::unique_ptr<Sprite> redSprite, redSprite_nonWalkable;
     std::unique_ptr<Sprite> fireBall;
     std::unique_ptr<Background> mario_bg;
     std::vector<Sprite*> spriteVector;
     std::vector<Sprite*> walkableSpriteVector;
+    std::vector<std::unique_ptr<Sprite>> nonWalkableSpriteVector;
     std::vector<std::unique_ptr<Fireball>> fireBalls;
     SpriteBuilder<Sprite> builder;
     std::unique_ptr<Fireball> createFireball(u32 x, u32 y, u32 velX, u32 velY);
@@ -35,6 +36,7 @@ public:
     void registerInput(u16 keys);
     void performJump();
     bool isCollidingWithWalkable();
+    std::unique_ptr<Sprite*> isCollidingWithNonWalkable();
 
     //todo: make priv
     int atTime = 0;

@@ -5,12 +5,6 @@
 #include "Fireball.h"
 
 // https://github.com/J3G0/gba-sprite-engine/blob/master/demos/demo3-foodthrowing/src/bullet.cpp
-void Fireball::setDestination(VECTOR destination) {
-    auto currentPos = sprite->getPosAsVector();
-    this->dest = destination;
-
-    this->coords = currentPos.bresenhamLineTo(destination);
-}
 
 void Fireball::tick()
 {

@@ -181,7 +181,7 @@ const u32 kul_data [] = {
 
 class SpriteWithStubOam : public Sprite {
 public:
-    SpriteWithStubOam(SpriteSize size) : Sprite(nullptr, imageSize, x, y, size) {
+    SpriteWithStubOam(SpriteSize size) : Sprite(nullptr, imageSize, x, y, startX, startY, size) {
         oam = std::unique_ptr<OBJ_ATTR>(new OBJ_ATTR());
     }
 
