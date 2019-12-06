@@ -28,4 +28,4 @@ add_subdirectory(engine)
 # this should be a part of the engine CMakeLists.txt file but cross-compiling and gtest doesn't work
 add_subdirectory(test)
 
-add_subdirectory(unfairGame/)
+add_subdirectory(unfairGame)

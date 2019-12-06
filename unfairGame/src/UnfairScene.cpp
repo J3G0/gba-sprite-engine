@@ -99,7 +99,7 @@ void UnfairScene::tick(u16 keys)
     u32 mainY = yellowSprite.get()->getY();
 
     int currentTime = engine->getTimer()->getTotalMsecs();
-    int howmanyballs = fireBalls.size();
+    int howManyBalls = fireBalls.size();
     removeFireBalls();
 
     if (currentTime - fireBallTimer >= 500)
@@ -115,7 +115,7 @@ void UnfairScene::tick(u16 keys)
 
     registerInput(keys);
 
-    if (howmanyballs != fireBalls.size())
+    if (howManyBalls != fireBalls.size())
     {
         engine.get()->updateSpritesInScene();
     }
@@ -165,6 +165,8 @@ void UnfairScene::registerInput(u16 keys)
     }
 
     if (!isJumping && !isCollidingWithWalkable())
+    //Gravity
+    // && !isCollidingWithWalkable() zorgt mss voor een sticky effect als je tegen de zijkant opspringt.
     {
         dy = yellowSprite.get()->getY() < GBA_SCREEN_HEIGHT - 48 ? 2 : 0;
     }
