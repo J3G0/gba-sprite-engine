@@ -14,7 +14,7 @@ class Killable : public Renderable
         int x;
         int y;
     public:
-        Killable(int x, int y);
+        Killable(int x, int y, int velX, int velY);
 };
 
 

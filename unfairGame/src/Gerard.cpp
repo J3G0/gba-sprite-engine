@@ -15,11 +15,27 @@ Gerard::Gerard(int xLocation, int yLocation, Direction direction) : Renderable(x
         .buildPtr()));
 }
 
+Gerard::~Gerard()
+{
+
+}
+
+
 void Gerard::setDirection(Direction newDirection)
 {
     direction = newDirection;
-    switch(direction)
-    {
-        case LEFT:
-    }
+}
+bool Gerard::isJumping() const
+{
+    return jumping;
+}
+
+void Gerard::setIsJumping(bool isJumping)
+{
+    Gerard::jumping = isJumping;
+}
+
+void Gerard::setVelocity(int velX, int velY)
+{
+    Renderable::getSprite()->setVelocity(velX, velY);
 }

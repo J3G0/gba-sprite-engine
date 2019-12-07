@@ -20,6 +20,7 @@ private:
     int scrollX, scrollY;
     int rotation;
     int rotationDiff = 128;
+    int atTime = 0;
 
 public:
     UnfairScene(std::shared_ptr<GBAEngine> engine) : Scene(engine), rotation(0), rotationDiff(128), scrollX(0), scrollY(0) {}
@@ -29,13 +30,12 @@ public:
     void load() override;
     void tick(u16 keys) override;
     void registerInput(u16 keys);
-    void performJump();
-    bool isCollidingWithWalkable();
+
+    int getAtTime() const;
+    void setAtTime(int atTime);
 
     //todo: make priv
-    int atTime = 0;
     int fireBallTimer = 0;
-    bool isJumping = false;
 };
 
 #endif //GBA_SPRITE_ENGINE_PROJECT_UNFAIRSCENE_H

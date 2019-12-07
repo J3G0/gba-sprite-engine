@@ -56,10 +56,10 @@ void UnfairScene::tick(u16 keys)
 
     int currentTime = engine->getTimer()->getTotalMsecs();
 
-    if (currentTime - fireBallTimer >= 10000)
+    if (currentTime - fireBallTimer >= 250)
     {
         fireBallTimer = currentTime;
-        killables.push_back(std::unique_ptr<Killable>(new Killable(rand() % 200,rand() % 200)));
+        //killables.push_back(std::unique_ptr<Killable>(new Killable(rand() % 200,rand() % 200, 1 + rand() %  2, 1 + rand() % 2)));
         engine.get()->updateSpritesInScene();
     }
 
@@ -69,25 +69,32 @@ void UnfairScene::tick(u16 keys)
 
     mario_bg.get()->scroll( scrollX, scrollY);
 
+    if(DEBUG)
+    {
+
+    }
+
 }
 
 void UnfairScene::registerInput(u16 keys)
 {
-    u32 dy = 0;
-    u32 dx = 0;
     u32 currentTime = engine->getTimer()->getTotalMsecs();
-    u32 timePassed = currentTime - atTime;
-    if (isJumping)
+    u32 timePassed = currentTime - getAtTime();
+    VECTOR v = gerard->getSprite()->getVelocity();
+    int dx = v.x;
+    int dy = v.y;
+    if (gerard->isJumping())
     {
         if (timePassed < 500)
         {
             dy = -2;
+            gerard->setVelocity(dx, dy);
         }
         else
         {
-            if (gerard.get()->getSprite()->getY() >= GBA_SCREEN_HEIGHT - 48)
+            if (gerard->getSprite()->getY() >= GBA_SCREEN_HEIGHT - 48)
             {
-                isJumping = false;
+                gerard->setIsJumping(false);
                 dy = 0;
             }
             else
@@ -97,52 +104,63 @@ void UnfairScene::registerInput(u16 keys)
         }
     }
 
-    if (!isJumping)
+    if (!gerard->isJumping())
     //Gravity
     // && !isCollidingWithWalkable() zorgt mss voor een sticky effect als je tegen de zijkant opspringt.
     {
         dy = gerard.get()->getSprite()->getY() < GBA_SCREEN_HEIGHT - 48 ? 2 : 0;
     }
-
     switch(keys)
     {
         case (KEY_LEFT):
             dx = -1;
+            gerard->setVelocity(dx, dy);
             scrollX -= SCROLL_SPEED;
-            gerard.get()->getSprite()->setVelocity(dx, dy);
             break;
         case (KEY_LEFT | KEY_UP):
             dx = -1;
             scrollX -= SCROLL_SPEED;
-            if(!isJumping)
-            performJump();
-            gerard.get()->getSprite()->setVelocity(dx, dy);
+            if(!gerard->isJumping())
+            {
+                gerard->setIsJumping(!gerard->isJumping());
+                setAtTime(currentTime);
+            }
+            gerard->setVelocity(dx, dy);
             break;
         case (KEY_RIGHT):
             dx = 1;
             scrollX += SCROLL_SPEED;
-            gerard.get()->getSprite()->setVelocity(dx, dy);
+            gerard->setVelocity(dx, dy);
             break;
         case (KEY_RIGHT | KEY_UP):
             dx = 1;
             scrollX += SCROLL_SPEED;
-            if(!isJumping)
-            performJump();
-            gerard.get()->getSprite()->setVelocity(dx, dy);
+            if(!gerard->isJumping())
+            {
+                gerard->setIsJumping(!gerard->isJumping());
+                setAtTime(currentTime);
+            }
+            gerard->setVelocity(dx, dy);
             break;
         case (KEY_UP):
-            if(!isJumping)
-            performJump();
-            gerard.get()->getSprite()->setVelocity(dx, dy);
+            if(!gerard->isJumping())
+            {
+                gerard->setIsJumping(!gerard->isJumping());
+            }
+            gerard->setVelocity(dx, dy);
             break;
         default:
             dx = 0;
-            gerard.get()->getSprite()->setVelocity(dx, dy);
+            gerard->setVelocity(dx, dy);
     }
 }
 
-void UnfairScene::performJump()
+int UnfairScene::getAtTime() const
 {
-    isJumping = true;
-    atTime = engine->getTimer()->getTotalMsecs();
+    return atTime;
+}
+
+void UnfairScene::setAtTime(int atTime)
+{
+    UnfairScene::atTime = atTime;
 }
