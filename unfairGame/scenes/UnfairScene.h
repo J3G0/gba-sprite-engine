@@ -7,18 +7,15 @@
 #include <libgba-sprite-engine/scene.h>
 #include <libgba-sprite-engine/sprites/sprite_builder.h>
 #include "../src/Killable.h"
+#include "../src/Gerard.h"
 
 class UnfairScene : public Scene
 {
 private:
+    std::unique_ptr<Gerard> gerard;
     std::unique_ptr<Background> mario_bg;
-    std::unique_ptr<Sprite> yellowSprite;
-    std::unique_ptr<Sprite> redSprite;
 
-    std::unique_ptr<Sprite> killable;
     std::vector<std::unique_ptr<Killable>> killables;
-
-    SpriteBuilder<Sprite> builder;
 
     int scrollX, scrollY;
     int rotation;
@@ -39,7 +36,6 @@ public:
     int atTime = 0;
     int fireBallTimer = 0;
     bool isJumping = false;
-    bool isFalling = false;
 };
 
 #endif //GBA_SPRITE_ENGINE_PROJECT_UNFAIRSCENE_H

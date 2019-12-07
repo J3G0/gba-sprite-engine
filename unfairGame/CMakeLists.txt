@@ -9,6 +9,8 @@ add_executable(${PROJECT_NAME}.elf
         src/Killable.cpp
         src/Renderable.cpp
         src/Renderable.h
+        src/Gerard.cpp
+        src/Gerard.h
         )
 
 target_link_libraries(${PROJECT_NAME}.elf gba-sprite-engine)

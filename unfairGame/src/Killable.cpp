@@ -3,7 +3,6 @@
 //
 
 #include "Killable.h"
-#include "../sprite/sprite_data.h"
 
 
 Killable::Killable(int x, int y) : Renderable(x, y)

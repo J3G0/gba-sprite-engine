@@ -23,10 +23,7 @@ std::vector<Background *> UnfairScene::backgrounds()
 std::vector<Sprite*> UnfairScene::sprites()
 {
     std::vector<Sprite*> sprites;
-
-    sprites.push_back(killable.get());
-    sprites.push_back(redSprite.get());
-    sprites.push_back(yellowSprite.get());
+    sprites.push_back(gerard.get()->getSprite());
 
     for(auto &b: killables)
     {
@@ -45,23 +42,7 @@ void UnfairScene::load()
     backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(bg_palette, sizeof(bg_palette)));
 
 
-    yellowSprite = builder
-            .withData(yellow_tempTiles, sizeof(yellow_tempTiles))
-            .withSize(SIZE_32_32)
-            .withLocation(50, GBA_SCREEN_HEIGHT - 48)
-            .buildPtr();
-
-    redSprite = builder
-            .withData(red_tempTiles, sizeof(red_tempTiles))
-            .withSize(SIZE_32_32)
-            .withLocation(100, GBA_SCREEN_HEIGHT - 48)
-            .buildPtr();
-
-    killable = builder
-            .withData(fireballTiles, sizeof(fireballTiles))
-            .withSize(SIZE_8_8)
-            .withLocation(50, 50)
-            .buildPtr();
+    gerard = std::unique_ptr<Gerard>(new Gerard(0,100, NOT_MOVING));
 
     mario_bg = std::unique_ptr<Background>(new Background(1, background_data, sizeof(background_data), map, sizeof(map)));
     mario_bg.get()->useMapScreenBlock(16);
@@ -70,29 +51,23 @@ void UnfairScene::load()
 
 void UnfairScene::tick(u16 keys)
 {
-    u32 mainX = yellowSprite.get()->getX() + yellowSprite.get()->getWidth();
-    u32 mainY = yellowSprite.get()->getY();
+    u32 mainX = gerard.get()->getSprite()->getX() + gerard.get()->getSprite()->getWidth();
+    u32 mainY = gerard.get()->getSprite()->getY();
 
     int currentTime = engine->getTimer()->getTotalMsecs();
 
-    if (currentTime - fireBallTimer >= 500)
+    if (currentTime - fireBallTimer >= 10000)
     {
         fireBallTimer = currentTime;
-        killables.push_back(std::unique_ptr<Killable>(new Killable(rand() % 50,rand() % 50)));
+        killables.push_back(std::unique_ptr<Killable>(new Killable(rand() % 200,rand() % 200)));
         engine.get()->updateSpritesInScene();
     }
 
     registerInput(keys);
 
-    scrollX = yellowSprite.get()->getX() - yellowSprite.get()->getStartX();
+    scrollX = gerard.get()->getSprite()->getX() - gerard.get()->getSprite()->getStartX();
 
     mario_bg.get()->scroll( scrollX, scrollY);
-
-    if(DEBUG)
-    {
-        if(killables.size() > 0)
-        TextStream::instance().setText(std::to_string(killables.size()), 5, 1);
-    }
 
 }
 
@@ -110,7 +85,7 @@ void UnfairScene::registerInput(u16 keys)
         }
         else
         {
-            if (yellowSprite.get()->getY() >= GBA_SCREEN_HEIGHT - 48)
+            if (gerard.get()->getSprite()->getY() >= GBA_SCREEN_HEIGHT - 48)
             {
                 isJumping = false;
                 dy = 0;
@@ -126,7 +101,7 @@ void UnfairScene::registerInput(u16 keys)
     //Gravity
     // && !isCollidingWithWalkable() zorgt mss voor een sticky effect als je tegen de zijkant opspringt.
     {
-        dy = yellowSprite.get()->getY() < GBA_SCREEN_HEIGHT - 48 ? 2 : 0;
+        dy = gerard.get()->getSprite()->getY() < GBA_SCREEN_HEIGHT - 48 ? 2 : 0;
     }
 
     switch(keys)
@@ -134,38 +109,36 @@ void UnfairScene::registerInput(u16 keys)
         case (KEY_LEFT):
             dx = -1;
             scrollX -= SCROLL_SPEED;
-            yellowSprite.get()->setVelocity(dx, dy);
+            gerard.get()->getSprite()->setVelocity(dx, dy);
             break;
         case (KEY_LEFT | KEY_UP):
             dx = -1;
             scrollX -= SCROLL_SPEED;
             if(!isJumping)
             performJump();
-            yellowSprite.get()->setVelocity(dx, dy);
+            gerard.get()->getSprite()->setVelocity(dx, dy);
             break;
         case (KEY_RIGHT):
             dx = 1;
             scrollX += SCROLL_SPEED;
-            yellowSprite.get()->setVelocity(dx, dy);
+            gerard.get()->getSprite()->setVelocity(dx, dy);
             break;
         case (KEY_RIGHT | KEY_UP):
             dx = 1;
             scrollX += SCROLL_SPEED;
             if(!isJumping)
             performJump();
-            yellowSprite.get()->setVelocity(dx, dy);
+            gerard.get()->getSprite()->setVelocity(dx, dy);
             break;
         case (KEY_UP):
             if(!isJumping)
             performJump();
-            yellowSprite.get()->setVelocity(dx, dy);
+            gerard.get()->getSprite()->setVelocity(dx, dy);
             break;
         default:
             dx = 0;
-            yellowSprite.get()->setVelocity(dx,dy);
+            gerard.get()->getSprite()->setVelocity(dx, dy);
     }
-
-
 }
 
 void UnfairScene::performJump()
