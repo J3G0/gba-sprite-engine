@@ -5,8 +5,10 @@ add_executable(${PROJECT_NAME}.elf
         scenes/UnfairScene.cpp
         scenes/UnfairScene.h
         sprite/sprite_data.h
-        src/Fireball.cpp
-        src/Walkable.cpp
+        src/Killable.h
+        src/Killable.cpp
+        src/Renderable.cpp
+        src/Renderable.h
         )
 
 target_link_libraries(${PROJECT_NAME}.elf gba-sprite-engine)
