@@ -5,7 +5,7 @@
 #include <libgba-sprite-engine/background/text_stream.h>
 #include <libgba-sprite-engine/palette/palette_manager.h>
 #include <libgba-sprite-engine/allocator.h>
-#include "UnfairScene.h"
+#include "../scenes/UnfairScene.h"
 
 
 
@@ -25,7 +25,8 @@ int main() {
     UnfairScene* startScene = new UnfairScene(engine);
     engine->setScene(startScene);
 
-    while (true) {
+    while (true)
+    {
         engine->update();
         engine->delay(1000);
     }

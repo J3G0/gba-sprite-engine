@@ -2,9 +2,9 @@ project(unfairGameName)
 
 add_executable(${PROJECT_NAME}.elf
         src/main.cpp
-        src/UnfairScene.cpp
-        src/UnfairScene.h
-        src/sprite_data.h
+        scenes/UnfairScene.cpp
+        scenes/UnfairScene.h
+        sprite/sprite_data.h
         src/Fireball.cpp
         src/Walkable.cpp
         )

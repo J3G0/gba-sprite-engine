@@ -8,11 +8,13 @@
 #include <libgba-sprite-engine/effects/fade_out_scene.h>
 #include <algorithm>
 #include "UnfairScene.h"
-#include "sprite_data.h"
-#include "Fireball.h"
+#include "../sprite/sprite_data.h"
+#include "../src/Fireball.h"
 #include <stdlib.h>
 
 #define JUMP_TIME 1000
+#define DEBUG 1
+#define SCROLL_SPEED 1
 
 std::vector<Background *> UnfairScene::backgrounds() {
     return { mario_bg.get() };
@@ -105,12 +107,12 @@ void UnfairScene::tick(u16 keys)
     if (currentTime - fireBallTimer >= 500)
     {
         fireBallTimer = currentTime;
-        fireBalls.push_back(createFireball(200, GBA_SCREEN_HEIGHT - 24, -2, 0));
+       // fireBalls.push_back(createFireball(200, GBA_SCREEN_HEIGHT - 24, -2, 0));
     }
 
     if(mainX == 100 || mainX == 150)
     {
-        fireBalls.push_back(createFireball(mainX, 0, 0, 2));
+       // fireBalls.push_back(createFireball(mainX, 0, 0, 2));
     }
 
     registerInput(keys);
@@ -129,7 +131,21 @@ void UnfairScene::tick(u16 keys)
         }
         b->tick();
     }
-    //mario_bg.get()->scroll(scrollX, scrollY);
+    scrollX = yellowSprite.get()->getX() - yellowSprite.get()->getStartX();
+
+
+    for(auto &b: walkableSpriteVector)
+    {
+        u32 startX = b->getStartX();
+        u32 startY = b->getStartY();
+        b->moveTo(startX - scrollX, startY);
+    }
+    mario_bg.get()->scroll( scrollX, scrollY);
+
+    if(DEBUG)
+    {
+        TextStream::instance().setText(yellowSprite->getLocationAsString(), 5, 1);
+    }
 
 }
 
@@ -175,20 +191,24 @@ void UnfairScene::registerInput(u16 keys)
     {
         case (KEY_LEFT):
             dx = -1;
+            scrollX -= SCROLL_SPEED;
             yellowSprite.get()->setVelocity(dx, dy);
             break;
         case (KEY_LEFT | KEY_UP):
             dx = -1;
+            scrollX -= SCROLL_SPEED;
             if(!isJumping)
             performJump();
             yellowSprite.get()->setVelocity(dx, dy);
             break;
         case (KEY_RIGHT):
             dx = 1;
+            scrollX += SCROLL_SPEED;
             yellowSprite.get()->setVelocity(dx, dy);
             break;
         case (KEY_RIGHT | KEY_UP):
             dx = 1;
+            scrollX += SCROLL_SPEED;
             if(!isJumping)
             performJump();
             yellowSprite.get()->setVelocity(dx, dy);
