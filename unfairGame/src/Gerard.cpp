@@ -9,9 +9,10 @@ Gerard::Gerard(int xLocation, int yLocation, Direction direction) : Renderable(x
     this->yLocation = yLocation;
     this->direction = direction;
     this->setSprite((spriteBuilder
-        .withData(yellow_tempTiles, sizeof(yellow_tempTiles))
-        .withSize(SIZE_32_32)
+        .withData(Walking_Gerard_RightTiles, sizeof(Walking_Gerard_RightTiles))
+        .withSize(SIZE_16_32)
         .withLocation(xLocation, yLocation)
+        .withAnimated(8, 10)
         .buildPtr()));
 }
 

@@ -35,7 +35,12 @@ public:
     Direction getDirection() { return direction; }
     void setDirection(Direction newDirection);
     Sprite* getSprite() { return Renderable::getSprite(); }
-    void performJump();
+
+    int getY() { return Renderable::getSprite()->getY(); }
+    int getX() { return Renderable::getSprite()->getX(); }
+
+    int getStartX() { return Renderable::getSprite()->getStartX(); }
+    int getStartY() { return Renderable::getSprite()->getStartY(); }
 };
 
 

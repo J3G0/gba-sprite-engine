@@ -8,7 +8,7 @@
 Killable::Killable(int x, int y, int velX, int velY) : Renderable(x, y)
 {
     this->setSprite((spriteBuilder
-          .withData(fireballTiles, sizeof(fireballTiles))
+          .withData(FireballTiles, sizeof(FireballTiles))
           .withSize(SIZE_8_8)
           .withLocation(x, y)
           .buildPtr()));

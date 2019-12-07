@@ -9,6 +9,7 @@
 #include <algorithm>
 #include "UnfairScene.h"
 #include "../sprite/sprite_data.h"
+#include "../sprite/background_data.h"
 #include <stdlib.h>
 
 #define JUMP_TIME 1000
@@ -65,7 +66,7 @@ void UnfairScene::tick(u16 keys)
 
     registerInput(keys);
 
-    scrollX = gerard.get()->getSprite()->getX() - gerard.get()->getSprite()->getStartX();
+    scrollX = gerard->getX() - gerard.get()->getSprite()->getStartX();
 
     mario_bg.get()->scroll( scrollX, scrollY);
 
@@ -92,7 +93,7 @@ void UnfairScene::registerInput(u16 keys)
         }
         else
         {
-            if (gerard->getSprite()->getY() >= GBA_SCREEN_HEIGHT - 48)
+            if (gerard->getY() >= GBA_SCREEN_HEIGHT - 48)
             {
                 gerard->setIsJumping(false);
                 dy = 0;
@@ -108,7 +109,7 @@ void UnfairScene::registerInput(u16 keys)
     //Gravity
     // && !isCollidingWithWalkable() zorgt mss voor een sticky effect als je tegen de zijkant opspringt.
     {
-        dy = gerard.get()->getSprite()->getY() < GBA_SCREEN_HEIGHT - 48 ? 2 : 0;
+        dy = gerard->getY() < GBA_SCREEN_HEIGHT - 48 ? 2 : 0;
     }
     switch(keys)
     {
