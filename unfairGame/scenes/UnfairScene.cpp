@@ -60,7 +60,8 @@ void UnfairScene::load()
     mario_bg.get()->useMapScreenBlock(16);
     engine->getTimer()->start();
 
-    walkables.push_back(std::unique_ptr<Renderable>(new Renderable(100, 130, true)));
+    walkables.push_back(std::unique_ptr<Renderable>(new Renderable(70, 130, true)));
+    walkables.push_back(std::unique_ptr<Renderable>(new Renderable(100, 60, true)));
 
 
     scrollX = 8;
@@ -80,7 +81,7 @@ void UnfairScene::tick(u16 keys)
     registerInput(keys);
     if(DEBUG)
     {
-        TextStream::instance().setText(std::to_string(getCollidingDirection()), 15 , 1);
+        TextStream::instance().setText(std::to_string(getCollidingDirection()), 5 , 1);
     }
 
     mario_bg.get()->scroll( scrollX, scrollY);
@@ -91,7 +92,7 @@ void UnfairScene::tick(u16 keys)
         gerard->getSprite()->moveTo(gerard->getX() - 1, gerard->getY());
         scrollX++;
     }
-     **/
+    **/
 }
 
 void UnfairScene::registerInput(u16 keys)
@@ -109,7 +110,6 @@ void UnfairScene::registerInput(u16 keys)
         }
         else
         {
-
             if (gerard->getY() >= GBA_SCREEN_HEIGHT - 48 || getCollidingDirection() == UP)
             {
                 gerard->setIsJumping(false);
@@ -152,9 +152,9 @@ void UnfairScene::registerInput(u16 keys)
             }
             break;
         case (KEY_UP):
-            dy = -2;
             if(!gerard->isJumping())
             {
+                dy = -2;
                 gerard->setIsJumping(!gerard->isJumping());
                 setAtTime(currentTime);
             }
@@ -162,6 +162,7 @@ void UnfairScene::registerInput(u16 keys)
         default:
             dx = 0;
     }
+
     if(getCollidingDirection() > 0)
     {
         switch(getCollidingDirection())
@@ -169,20 +170,29 @@ void UnfairScene::registerInput(u16 keys)
             case RIGHT:
                 dx = keys == KEY_RIGHT ? 1 : 0;
                 break;
+
             case LEFT:
                 dx = keys == KEY_LEFT ? -1 : 0;
                 break;
 
             case UP:
-                gerard->setIsJumping(false);
                 dy = 0;
+                gerard->setIsJumping(false);
+                if(!gerard->isJumping() && ( (keys == KEY_UP) || (keys == (KEY_RIGHT | KEY_UP)) || (keys == (KEY_LEFT | KEY_UP))))
+                {
+                    dy = -2;
+                    gerard->setIsJumping(!gerard->isJumping());
+                    setAtTime(currentTime);
+                }
                 break;
 
             case DOWN:
+                dy = 2;
                 gerard->setIsJumping(false);
                 break;
         }
     }
+
     gerard->setCharacterDirection(dx, dy);
     gerard->setVelocity(dx, dy);
 }
@@ -222,13 +232,26 @@ Direction UnfairScene::getCollidingDirection()
             u32 spriteX = b->getX();
             u32 spriteY = b->getY();
 
-            if (gerardX + gerardWidth > spriteX && gerardX + gerardWidth < spriteX + COLLISION_OFFSET && gerardY + gerardHeight > spriteY)
+            TextStream::instance().setText(std::to_string(gerardY), 10 , 1);
+            TextStream::instance().setText(std::to_string(spriteY), 15 , 1);
+
+            if (gerardX + gerardWidth > spriteX && gerardX + gerardWidth < spriteX + COLLISION_OFFSET && gerardY + gerardHeight >= spriteY)
             {
                 return LEFT;
             }
-            else if (gerardX <= spriteX + spriteWidth && gerardX  + COLLISION_OFFSET> spriteX + spriteWidth  && gerardY + gerardHeight > spriteY)
+            else if (gerardX <= spriteX + spriteWidth && gerardX  + COLLISION_OFFSET> spriteX + spriteWidth  && gerardY + gerardHeight >= spriteY)
             {
                 return  RIGHT;
+            }
+
+            else if ( gerardX  + 4 * COLLISION_OFFSET >= spriteX  && gerardY + gerardHeight >= spriteY && gerardY < spriteY)
+            {
+                return UP;
+            }
+
+            else if ( gerardX  + 4 * COLLISION_OFFSET >= spriteX  && gerardY <= spriteY + spriteHeight)
+            {
+                return DOWN;
             }
         }
     }
