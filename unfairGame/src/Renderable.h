@@ -21,7 +21,13 @@ class Renderable
         int x;
         int y;
         bool walkable;
-        bool offScreen;
+public:
+    bool isWalkable() const;
+
+    void setWalkable(bool walkable);
+
+private:
+    bool offScreen;
 
     //Protected because inheritance
     protected:
@@ -37,7 +43,7 @@ class Renderable
          int getStartX() { return sprite->getStartX(); }
          int getStartY() { return sprite->getStartY(); }
 
-         bool collidesWith(Sprite other) {return sprite->collidesWith(other); }
+         bool collidesWith(Sprite *other) {return sprite->collidesWith(*other); }
 
 
 

@@ -17,6 +17,7 @@ private:
 
     std::vector<std::unique_ptr<Killable>> killables;
     std::vector<std::unique_ptr<Renderable>> walkables;
+    std::vector<std::unique_ptr<Renderable>> nonWalkables;
 
 private:
     int scrollX, scrollY;
@@ -35,7 +36,7 @@ public:
 
     int getAtTime() const;
     void setAtTime(int atTime);
-    void removeKillables();
+    void update();
     void updateSprites();
     Direction getCollidingDirection();
 

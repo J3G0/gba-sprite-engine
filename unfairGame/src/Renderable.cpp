@@ -17,3 +17,13 @@ Renderable::Renderable(int x, int y, bool walkable)
             .buildPtr()));
     this->walkable = walkable;
 }
+
+bool Renderable::isWalkable() const
+{
+    return walkable;
+}
+
+void Renderable::setWalkable(bool walkable)
+{
+    Renderable::walkable = walkable;
+}

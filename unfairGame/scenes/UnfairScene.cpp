@@ -44,6 +44,14 @@ std::vector<Sprite*> UnfairScene::sprites()
         }
     }
 
+    for(auto &b: nonWalkables)
+    {
+        if(b->getSprite() != nullptr)
+        {
+            sprites.push_back(b->getSprite());
+        }
+    }
+
     return sprites;
 }
 
@@ -61,8 +69,8 @@ void UnfairScene::load()
     engine->getTimer()->start();
 
     walkables.push_back(std::unique_ptr<Renderable>(new Renderable(70, 130, true)));
-    walkables.push_back(std::unique_ptr<Renderable>(new Renderable(100, 60, true)));
 
+    nonWalkables.push_back(std::unique_ptr<Renderable>(new Renderable(110, 100, true)));
 
     scrollX = 8;
 }
@@ -70,19 +78,19 @@ void UnfairScene::load()
 void UnfairScene::tick(u16 keys)
 {
     int currentTime = engine->getTimer()->getTotalMsecs();
-    if (currentTime - fireBallTimer >= 100)
+    if (currentTime - fireBallTimer >= 1000)
     {
         getCollidingDirection();
         fireBallTimer = currentTime;
-        //killables.push_back(std::unique_ptr<Killable>(new Killable(50,112, 0, 0, 50)));
-        removeKillables();
+        killables.push_back(std::unique_ptr<Killable>(new Killable(50,112, -2, -2, 50)));
         engine.get()->updateSpritesInScene();
+        updateSprites();
     }
 
     registerInput(keys);
     if(DEBUG)
     {
-        TextStream::instance().setText(std::to_string(getCollidingDirection()), 5 , 1);
+        TextStream::instance().setText(std::to_string(nonWalkables.size()), 5 , 1);
     }
 
     mario_bg.get()->scroll( scrollX, scrollY);
@@ -210,7 +218,7 @@ void UnfairScene::setAtTime(int atTime)
     UnfairScene::atTime = atTime;
 }
 
-void UnfairScene::removeKillables()
+void UnfairScene::updateSprites()
 {
     killables.erase(
             std::remove_if(killables.begin(), killables.end(), [](std::unique_ptr<Killable> &s) { return (s->isOffScreen()); }),
@@ -235,9 +243,6 @@ Direction UnfairScene::getCollidingDirection()
             u32 spriteX = b->getX();
             u32 spriteY = b->getY();
 
-            TextStream::instance().setText(std::to_string(gerardY), 10 , 1);
-            TextStream::instance().setText(std::to_string(spriteY), 15 , 1);
-
             if (gerardX + gerardWidth > spriteX && gerardX + gerardWidth < spriteX + COLLISION_OFFSET && gerardY + gerardHeight >= spriteY)
             {
                 return LEFT;
@@ -247,12 +252,12 @@ Direction UnfairScene::getCollidingDirection()
                 return  RIGHT;
             }
 
-            else if ( gerardX  + 4 * COLLISION_OFFSET >= spriteX  && gerardY + gerardHeight >= spriteY && gerardY < spriteY)
+            else if ( gerardX  + 2 * COLLISION_OFFSET >= spriteX  && gerardY + gerardHeight >= spriteY && gerardY < spriteY)
             {
                 return UP;
             }
 
-            else if ( gerardX  + 4 * COLLISION_OFFSET >= spriteX  && gerardY <= spriteY + spriteHeight)
+            else if ( gerardX  + 2 * COLLISION_OFFSET >= spriteX  && gerardY <= spriteY + spriteHeight)
             {
                 return DOWN;
             }
