@@ -11,10 +11,17 @@
 class Killable : public Renderable
 {
     private:
-        int x;
-        int y;
-    public:
-        Killable(int x, int y, int velX, int velY);
+        int dmg;
+        //damaged means if the killable has hit gerard
+        bool damaged = false;
+public:
+    bool hasDamaged() const;
+    void setDamaged(bool damaged);
+    int getDmg() const;
+    void setDmg(int dmg);
+
+public:
+        Killable(int x, int y, int velX, int velY, int dmg);
 };
 
 

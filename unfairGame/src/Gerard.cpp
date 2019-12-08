@@ -3,7 +3,7 @@
 //
 
 #include "Gerard.h"
-Gerard::Gerard(int xLocation, int yLocation, Direction direction) : Renderable(xLocation, yLocation)
+Gerard::Gerard(int xLocation, int yLocation, Direction direction) : Renderable(xLocation, yLocation, false)
 {
     this->xLocation = xLocation;
     this->yLocation = yLocation;
@@ -39,4 +39,63 @@ void Gerard::setIsJumping(bool isJumping)
 void Gerard::setVelocity(int velX, int velY)
 {
     Renderable::getSprite()->setVelocity(velX, velY);
+}
+
+int Gerard::getHealth() const
+{
+    return health;
+}
+
+void Gerard::setHealth(int health)
+{
+    Gerard::health = health;
+}
+
+void Gerard::setCharacterDirection(int dx, int dy)
+{
+    if(dx > 0)
+    {
+        if(dy == 0)
+        {
+            setDirection(RIGHT);
+        }
+        else if(dy > 0)
+        {
+            setDirection(RIGHT_DOWN);
+        }
+        else
+        {
+            setDirection(RIGHT_UP);
+        }
+    }
+    else if (dx < 0)
+    {
+        if(dy == 0)
+        {
+            setDirection(LEFT);
+        }
+        else if(dy > 0)
+        {
+            setDirection(LEFT_DOWN);
+        }
+        else
+        {
+            setDirection(LEFT_UP);
+        }
+    }
+    else
+    {
+        if(dy > 0)
+        {
+            setDirection(DOWN);
+        }
+        else if(dy < 0)
+        {
+            setDirection(UP);
+        }
+        else
+        {
+            setDirection(NOT_MOVING);
+        }
+    }
 }
