@@ -3,11 +3,11 @@
 
 //======================================================================
 //
-//	Gerard_Dead, 200x416@8, 
-//	+ 1300 tiles not compressed
-//	Total size: 83200 = 83200
+//	Gerard_Dead, 16x32@8, 
+//	+ 8 tiles not compressed
+//	Total size: 512 = 512
 //
-//	Time-stamp: 2019-12-07, 22:43:36
+//	Time-stamp: 2019-12-08, 18:36:40
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.6
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -16,8 +16,8 @@
 #ifndef GRIT_GERARD_DEAD_H
 #define GRIT_GERARD_DEAD_H
 
-#define Gerard_DeadTilesLen 83200
-extern const unsigned int Gerard_DeadTiles[20800];
+#define Gerard_DeadTilesLen 512
+extern const unsigned int Gerard_DeadTiles[128];
 
 #endif // GRIT_GERARD_DEAD_H
 

@@ -18,6 +18,7 @@ private:
     std::vector<std::unique_ptr<Killable>> killables;
     std::vector<std::unique_ptr<Renderable>> walkables;
 
+private:
     int scrollX, scrollY;
     int rotation;
     int rotationDiff = 128;
@@ -41,6 +42,7 @@ public:
     //todo: make priv
     int fireBallTimer = 0;
     bool swap = false;
+    Direction d = NOT_MOVING;
 };
 
 #endif //GBA_SPRITE_ENGINE_PROJECT_UNFAIRSCENE_H

@@ -70,8 +70,9 @@ void UnfairScene::load()
 void UnfairScene::tick(u16 keys)
 {
     int currentTime = engine->getTimer()->getTotalMsecs();
-    if (currentTime - fireBallTimer >= 5000)
+    if (currentTime - fireBallTimer >= 100)
     {
+        getCollidingDirection();
         fireBallTimer = currentTime;
         //killables.push_back(std::unique_ptr<Killable>(new Killable(50,112, 0, 0, 50)));
         removeKillables();
@@ -97,6 +98,8 @@ void UnfairScene::tick(u16 keys)
 
 void UnfairScene::registerInput(u16 keys)
 {
+    Direction d = getCollidingDirection();
+
     u32 currentTime = engine->getTimer()->getTotalMsecs();
     u32 timePassed = currentTime - getAtTime();
     int dx = 0;
@@ -110,7 +113,7 @@ void UnfairScene::registerInput(u16 keys)
         }
         else
         {
-            if (gerard->getY() >= GBA_SCREEN_HEIGHT - 48 || getCollidingDirection() == UP)
+            if (gerard->getY() >= GBA_SCREEN_HEIGHT - 48 || d == UP)
             {
                 gerard->setIsJumping(false);
                 dy = 0;
@@ -122,7 +125,7 @@ void UnfairScene::registerInput(u16 keys)
         }
     }
 
-    if (!gerard->isJumping() || getCollidingDirection() == UP)
+    if (!gerard->isJumping() || d == UP)
     {
         dy = gerard->getY() < GBA_SCREEN_HEIGHT - 48 ? 2 : 0;
     }
@@ -163,9 +166,9 @@ void UnfairScene::registerInput(u16 keys)
             dx = 0;
     }
 
-    if(getCollidingDirection() > 0)
+    if(d > 0)
     {
-        switch(getCollidingDirection())
+        switch(d)
         {
             case RIGHT:
                 dx = keys == KEY_RIGHT ? 1 : 0;
