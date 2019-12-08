@@ -16,6 +16,7 @@ private:
     std::unique_ptr<Background> mario_bg;
 
     std::vector<std::unique_ptr<Killable>> killables;
+    std::vector<std::unique_ptr<Renderable>> walkables;
 
     int scrollX, scrollY;
     int rotation;
@@ -33,9 +34,13 @@ public:
 
     int getAtTime() const;
     void setAtTime(int atTime);
+    void removeKillables();
+    void updateSprites();
+    Direction getCollidingDirection();
 
     //todo: make priv
     int fireBallTimer = 0;
+    bool swap = false;
 };
 
 #endif //GBA_SPRITE_ENGINE_PROJECT_UNFAIRSCENE_H

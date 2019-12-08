@@ -25,7 +25,8 @@ int main() {
     UnfairScene* startScene = new UnfairScene(engine);
     engine->setScene(startScene);
 
-    while (true)
+    //Doe ne keer zot
+    for(;;)
     {
         engine->update();
         engine->delay(1000);

@@ -7,9 +7,7 @@
 
 #include "../src/Renderable.h"
 #include "libgba-sprite-engine/timer.h"
-enum Direction {NOT_MOVING, LEFT, RIGHT, UP, DOWN};
-
-
+enum Direction {NOT_MOVING, LEFT, LEFT_UP, UP, RIGHT_UP, RIGHT, RIGHT_DOWN, DOWN, LEFT_DOWN};
 
 class Gerard : public Renderable
 {
@@ -21,14 +19,8 @@ private:
     int dx = 0;
     int dy = 0;
     int health = 100;
-
     bool isAlive = true;
     bool jumping = false;
-public:
-    bool isJumping() const;
-    void setIsJumping(bool isJumping);
-    void setVelocity(int velX, int velY);
-
 public:
     Gerard(int xLocation, int yLocation, Direction direction);
     ~Gerard();
@@ -36,11 +28,14 @@ public:
     void setDirection(Direction newDirection);
     Sprite* getSprite() { return Renderable::getSprite(); }
 
-    int getY() { return Renderable::getSprite()->getY(); }
-    int getX() { return Renderable::getSprite()->getX(); }
+    int getHealth() const;
+    void setHealth(int health);
 
-    int getStartX() { return Renderable::getSprite()->getStartX(); }
-    int getStartY() { return Renderable::getSprite()->getStartY(); }
+    bool isJumping() const;
+    void setIsJumping(bool isJumping);
+
+    void setVelocity(int velX, int velY);
+    void setCharacterDirection(int dx, int dy);
 };
 
 

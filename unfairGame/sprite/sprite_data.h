@@ -1,10 +1,10 @@
 #ifndef GBA_SPRITE_ENGINE_PROJECT_SPRITE_DATA_H
 #define GBA_SPRITE_ENGINE_PROJECT_SPRITE_DATA_H
 
-const unsigned short sharedPal[12] __attribute__((aligned(4)))=
+const unsigned short sharedPal[12] =
 {
         0x0000,0x001F,0x0BDD,0x025F,0x5B9F,0x2108,0x4100,0x0013,
-        0x7FFF,0x0972,0x7FFF,
+        0x7FFF,0x0972,0x7FFF,0x7FFF,
 };
 
 const unsigned int FireballTiles[16] __attribute__((aligned(4)))=
