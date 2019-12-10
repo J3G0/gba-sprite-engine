@@ -78,13 +78,13 @@ void UnfairScene::load()
 void UnfairScene::tick(u16 keys)
 {
     int currentTime = engine->getTimer()->getTotalMsecs();
-    if (currentTime - fireBallTimer >= 1000)
+    if (currentTime - fireBallTimer >= 250)
     {
         getCollidingDirection();
         fireBallTimer = currentTime;
-        killables.push_back(std::unique_ptr<Killable>(new Killable(50,112, -2, -2, 50)));
-        engine.get()->updateSpritesInScene();
+        killables.push_back(std::unique_ptr<Killable>(new Killable(rand() % 100,10, rand() % 5 + 2, rand() % 5 + 2, 50)));
         updateSprites();
+        engine.get()->updateSpritesInScene();
     }
 
     registerInput(keys);
@@ -252,12 +252,12 @@ Direction UnfairScene::getCollidingDirection()
                 return  RIGHT;
             }
 
-            else if ( gerardX  + 2 * COLLISION_OFFSET >= spriteX  && gerardY + gerardHeight >= spriteY && gerardY < spriteY)
+            else if ( gerardX  + 4 * COLLISION_OFFSET >= spriteX  && gerardY + gerardHeight >= spriteY && gerardY < spriteY)
             {
                 return UP;
             }
 
-            else if ( gerardX  + 2 * COLLISION_OFFSET >= spriteX  && gerardY <= spriteY + spriteHeight)
+            else if ( gerardX  + 4 * COLLISION_OFFSET >= spriteX  && gerardY <= spriteY + spriteHeight)
             {
                 return DOWN;
             }
