@@ -13,7 +13,6 @@ class Gerard : public Renderable
 {
 private:
     Direction direction;
-    std::unique_ptr<Timer> t;
     int xLocation;
     int yLocation;
     int dx = 0;

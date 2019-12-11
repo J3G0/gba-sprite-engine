@@ -36,8 +36,8 @@ public:
 
     int getAtTime() const;
     void setAtTime(int atTime);
-    void update();
     void updateSprites();
+    void moveSprites();
     Direction getCollidingDirection();
 
     //todo: make priv

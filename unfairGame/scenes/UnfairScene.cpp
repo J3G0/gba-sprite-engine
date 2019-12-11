@@ -60,7 +60,6 @@ void UnfairScene::load()
     foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(sharedPal, sizeof(sharedPal)));
     backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(bg_palette, sizeof(bg_palette)));
 
-
     gerard = std::unique_ptr<Gerard>(new Gerard(0,100, NOT_MOVING));
     gerard->getSprite()->setStayWithinBounds(true);
 
@@ -70,7 +69,7 @@ void UnfairScene::load()
 
     walkables.push_back(std::unique_ptr<Renderable>(new Renderable(70, 130, true)));
 
-    nonWalkables.push_back(std::unique_ptr<Renderable>(new Renderable(110, 100, true)));
+    walkables.push_back(std::unique_ptr<Renderable>(new Renderable(110, 100, true)));
 
     scrollX = 8;
 }
@@ -80,13 +79,13 @@ void UnfairScene::tick(u16 keys)
     int currentTime = engine->getTimer()->getTotalMsecs();
     if (currentTime - fireBallTimer >= 250)
     {
-        getCollidingDirection();
         fireBallTimer = currentTime;
-        killables.push_back(std::unique_ptr<Killable>(new Killable(rand() % 100,10, rand() % 5 + 2, rand() % 5 + 2, 50)));
+        //killables.push_back(std::unique_ptr<Killable>(new Killable(rand() % 100,10, rand() % 5 + 2, rand() % 5 + 2, 50)));
         updateSprites();
         engine.get()->updateSpritesInScene();
     }
 
+    moveSprites();
     registerInput(keys);
     if(DEBUG)
     {
@@ -95,19 +94,17 @@ void UnfairScene::tick(u16 keys)
 
     mario_bg.get()->scroll( scrollX, scrollY);
 
-    /**
+
     if(gerard->getX() > 100)
     {
         gerard->getSprite()->moveTo(gerard->getX() - 1, gerard->getY());
         scrollX++;
     }
-    **/
 }
 
 void UnfairScene::registerInput(u16 keys)
 {
     Direction d = getCollidingDirection();
-
     u32 currentTime = engine->getTimer()->getTotalMsecs();
     u32 timePassed = currentTime - getAtTime();
     int dx = 0;
@@ -140,6 +137,7 @@ void UnfairScene::registerInput(u16 keys)
 
     switch(keys)
     {
+        case (KEY_LEFT | KEY_DOWN):
         case (KEY_LEFT):
             dx = -1;
             break;
@@ -151,6 +149,7 @@ void UnfairScene::registerInput(u16 keys)
                 setAtTime(currentTime);
             }
             break;
+        case (KEY_RIGHT | KEY_DOWN):
         case (KEY_RIGHT):
             dx = 1;
             break;
@@ -264,4 +263,19 @@ Direction UnfairScene::getCollidingDirection()
         }
     }
     return NOT_MOVING;
+}
+
+void UnfairScene::moveSprites()
+{
+
+    for (auto &b : walkables)
+    {
+        u32 startX = b->getStartX();
+        u32 startY = b->getStartY();
+
+        b->getSprite()->moveTo(startX - scrollX, startY);
+        // Source https://en.cppreference.com/w/cpp/algorithm/remove
+        // Waarom crashed dit?
+        // walkables.erase(std::remove_if(walkables.begin(),walkables.end(),[](std::unique_ptr<Renderable> &b){return b->isOffScreen();}),walkables.end());
+    }
 }
