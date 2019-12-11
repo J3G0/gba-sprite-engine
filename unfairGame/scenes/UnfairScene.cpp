@@ -95,13 +95,13 @@ void UnfairScene::tick(u16 keys)
 
     mario_bg.get()->scroll( scrollX, scrollY);
 
-    /**
+
     if(gerard->getX() > 100)
     {
         gerard->getSprite()->moveTo(gerard->getX() - 1, gerard->getY());
         scrollX++;
     }
-    **/
+
 }
 
 void UnfairScene::registerInput(u16 keys)
