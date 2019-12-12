@@ -19,7 +19,7 @@
 int main() {
     std::shared_ptr<GBAEngine> engine(new GBAEngine());
 
-    StartScene* startScene = new StartScene(engine);
+    StartScene* startScene = new StartScene(engine, 0);
     engine->setScene(startScene);
 
     //Doe ne keer zot

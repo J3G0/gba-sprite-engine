@@ -10,6 +10,7 @@
 #include "UnfairScene.h"
 #include "../sprite/sprite_data.h"
 #include "../sprite/background_data.h"
+#include "StartScene.h"
 
 #include <stdlib.h>
 
@@ -28,14 +29,6 @@ std::vector<Sprite*> UnfairScene::sprites()
     std::vector<Sprite*> sprites;
     sprites.push_back(gerard.get()->getSprite());
 
-    for(auto &b: killables)
-    {
-        if(b->getSprite() != nullptr)
-        {
-            sprites.push_back(b->getSprite());
-        }
-    }
-
     for(auto &b: walkables)
     {
         if(b->getSprite() != nullptr)
@@ -45,6 +38,14 @@ std::vector<Sprite*> UnfairScene::sprites()
     }
 
     for(auto &b: nonWalkables)
+    {
+        if(b->getSprite() != nullptr)
+        {
+            sprites.push_back(b->getSprite());
+        }
+    }
+
+    for(auto &b: killables)
     {
         if(b->getSprite() != nullptr)
         {
@@ -69,7 +70,7 @@ void UnfairScene::load()
 
     walkables.push_back(std::unique_ptr<Renderable>(new Renderable(70, 130, true)));
 
-    walkables.push_back(std::unique_ptr<Renderable>(new Renderable(110, 100, true)));
+    nonWalkables.push_back(std::unique_ptr<Renderable>(new Renderable(110, 100, true)));
 
     scrollX = 8;
 }
@@ -77,19 +78,27 @@ void UnfairScene::load()
 void UnfairScene::tick(u16 keys)
 {
     int currentTime = engine->getTimer()->getTotalMsecs();
-    if (currentTime - fireBallTimer >= 250)
+    int gerardX = gerard->getX();
+    UnfairSceneState state = getGameState();
+    switch(state)
     {
-        fireBallTimer = currentTime;
-        //killables.push_back(std::unique_ptr<Killable>(new Killable(rand() % 100,10, rand() % 5 + 2, rand() % 5 + 2, 50)));
-        updateSprites();
-        engine.get()->updateSpritesInScene();
+        case FIREBALL1:
+            if(gerardX > 50)
+            {
+                killables.push_back(std::unique_ptr<Killable>(new Killable(rand() % 100,10, rand() % 5 + 2, rand() % 5 + 2, 50)));
+                engine.get()->updateSpritesInScene();
+                // https://stackoverflow.com/questions/40979513/changing-enum-to-next-value-c11
+                setGameState(static_cast<UnfairSceneState>(state + 1));
+            }
+            break;
     }
-
+    updateSprites();
     moveSprites();
     registerInput(keys);
+    updateGerardAnimation();
     if(DEBUG)
     {
-        TextStream::instance().setText(std::to_string(nonWalkables.size()), 5 , 1);
+        TextStream::instance().setText(std::to_string(gerard->getHealth()), 5 , 1);
     }
 
     mario_bg.get()->scroll( scrollX, scrollY);
@@ -109,12 +118,15 @@ void UnfairScene::registerInput(u16 keys)
     u32 timePassed = currentTime - getAtTime();
     int dx = 0;
     int dy = 0;
-
     if (gerard->isJumping())
     {
-        if (timePassed < 500)
+        if( timePassed < 250)
         {
             dy = -2;
+        }
+        else if (timePassed < 500)
+        {
+            dy = -1;
         }
         else
         {
@@ -205,6 +217,11 @@ void UnfairScene::registerInput(u16 keys)
 
     gerard->setCharacterDirection(dx, dy);
     gerard->setVelocity(dx, dy);
+
+    if(gerard->getHealth() < 0)
+    {
+        gerard->setIsAlive(false);
+    }
 }
 
 int UnfairScene::getAtTime() const
@@ -267,7 +284,8 @@ Direction UnfairScene::getCollidingDirection()
 
 void UnfairScene::moveSprites()
 {
-
+    // V: Waarom crashed dit?
+    // A: Oplossing voor crashen : nieuwe lijst aanmaken aan daarin dingen verwijderen, die dan kopieren naar originele lijst.
     for (auto &b : walkables)
     {
         u32 startX = b->getStartX();
@@ -276,6 +294,56 @@ void UnfairScene::moveSprites()
         b->getSprite()->moveTo(startX - scrollX, startY);
         // Source https://en.cppreference.com/w/cpp/algorithm/remove
         // Waarom crashed dit?
-        // walkables.erase(std::remove_if(walkables.begin(),walkables.end(),[](std::unique_ptr<Renderable> &b){return b->isOffScreen();}),walkables.end());
+        //walkables.erase(std::remove_if(walkables.begin(),walkables.end(),[](std::unique_ptr<Renderable> &b){return b->isOffScreen();}),walkables.end());
+    }
+
+    for (auto &b : nonWalkables)
+    {
+        u32 startX = b->getStartX();
+        u32 startY = b->getStartY();
+
+        b->getSprite()->moveTo(startX - scrollX, startY);
+        // Source https://en.cppreference.com/w/cpp/algorithm/remove
+        //nonWalkables.erase(std::remove_if(nonWalkables.begin(),nonWalkables.end(),[this](std::unique_ptr<Renderable> &b){return b->getSprite()->collidesWith(*gerard->getSprite());}),nonWalkables.end());
+    }
+}
+
+UnfairSceneState UnfairScene::getGameState() const
+{
+    return gameState;
+}
+
+void UnfairScene::setGameState(UnfairSceneState gameState)
+{
+    UnfairScene::gameState = gameState;
+}
+
+void UnfairScene::updateGerardAnimation()
+{
+    //enum Direction {NOT_MOVING, LEFT, LEFT_UP, UP, RIGHT_UP, RIGHT, RIGHT_DOWN, DOWN, LEFT_DOWN};
+    Direction d = gerard->getDirection();
+    switch(d)
+    {
+        case DOWN:
+        case RIGHT_DOWN:
+        case LEFT_DOWN:
+        case NOT_MOVING:
+            gerard->getSprite()->animateToFrame(8);
+            gerard->getSprite()->stopAnimating();
+            break;
+        case UP:
+        case LEFT_UP:
+        case RIGHT_UP:
+            gerard->getSprite()->animateToFrame(9);
+            gerard->getSprite()->stopAnimating();
+            break;
+        case LEFT:
+            gerard->getSprite()->makeAnimated(8, 10);
+            gerard->getSprite()->flipHorizontally(true);
+            break;
+        case RIGHT:
+            gerard->getSprite()->makeAnimated(8, 10);
+            gerard->getSprite()->flipHorizontally(false);
+            break;
     }
 }

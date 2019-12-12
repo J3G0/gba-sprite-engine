@@ -4,6 +4,7 @@
   <component name="CidrRootsConfiguration">
     <sourceRoots>
       <file path="$PROJECT_DIR$/engine/include" />
+      <file path="$PROJECT_DIR$/unfairGame/scenes" />
     </sourceRoots>
   </component>
   <component name="JavaScriptSettings">
