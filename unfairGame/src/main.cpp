@@ -1,11 +1,8 @@
 
-#include <libgba-sprite-engine/scene.h>
 #include <libgba-sprite-engine/gba_engine.h>
-#include <libgba-sprite-engine/background/text.h>
 #include <libgba-sprite-engine/background/text_stream.h>
-#include <libgba-sprite-engine/palette/palette_manager.h>
 #include <libgba-sprite-engine/allocator.h>
-#include "../scenes/UnfairScene.h"
+#include "../scenes/StartScene.h"
 
 
 
@@ -22,7 +19,7 @@
 int main() {
     std::shared_ptr<GBAEngine> engine(new GBAEngine());
 
-    UnfairScene* startScene = new UnfairScene(engine);
+    StartScene* startScene = new StartScene(engine, 0);
     engine->setScene(startScene);
 
     //Doe ne keer zot

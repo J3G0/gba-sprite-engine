@@ -13,13 +13,14 @@ class Gerard : public Renderable
 {
 private:
     Direction direction;
-    std::unique_ptr<Timer> t;
     int xLocation;
     int yLocation;
     int dx = 0;
     int dy = 0;
     int health = 100;
-    bool isAlive = true;
+    bool alive = true;
+
+private:
     bool jumping = false;
 public:
     Gerard(int xLocation, int yLocation, Direction direction);
@@ -36,6 +37,9 @@ public:
 
     void setVelocity(int velX, int velY);
     void setCharacterDirection(int dx, int dy);
+
+    bool isAlive() const;
+    void setIsAlive(bool isAlive);
 };
 
 

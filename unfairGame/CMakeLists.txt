@@ -4,6 +4,8 @@ add_executable(${PROJECT_NAME}.elf
         src/main.cpp
         scenes/UnfairScene.cpp
         scenes/UnfairScene.h
+        scenes/StartScene.cpp
+        scenes/StartScene.h
         sprite/sprite_data.h
         src/Killable.h
         src/Killable.cpp

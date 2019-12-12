@@ -99,3 +99,13 @@ void Gerard::setCharacterDirection(int dx, int dy)
         }
     }
 }
+
+bool Gerard::isAlive() const
+{
+    return alive;
+}
+
+void Gerard::setIsAlive(bool isAlive)
+{
+    Gerard::alive = isAlive;
+}

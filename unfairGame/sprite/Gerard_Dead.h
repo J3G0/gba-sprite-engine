@@ -1,12 +1,12 @@
 
-//{{BLOCK(Fireball)
+//{{BLOCK(Gerard_Dead)
 
 //======================================================================
 //
-//	Fireball, 8x8@8, 
+//	Gerard_Dead, 16x32@8, 
 //	Transparent color : 00,00,00
-//	+ 1 tiles not compressed
-//	Total size: 64 = 64
+//	+ 8 tiles not compressed
+//	Total size: 512 = 512
 //
 //	Time-stamp: 2019-12-10, 15:52:57
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.6
@@ -14,12 +14,12 @@
 //
 //======================================================================
 
-#ifndef GRIT_FIREBALL_H
-#define GRIT_FIREBALL_H
+#ifndef GRIT_GERARD_DEAD_H
+#define GRIT_GERARD_DEAD_H
 
-#define FireballTilesLen 64
-extern const unsigned int FireballTiles[16];
+#define Gerard_DeadTilesLen 512
+extern const unsigned int Gerard_DeadTiles[128];
 
-#endif // GRIT_FIREBALL_H
+#endif // GRIT_GERARD_DEAD_H
 
-//}}BLOCK(Fireball)
+//}}BLOCK(Gerard_Dead)
