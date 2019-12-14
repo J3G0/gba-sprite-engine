@@ -14,6 +14,7 @@ Killable::Killable(int x, int y, int velX, int velY, int dmg) : Renderable(x, y,
           .buildPtr()));
     Renderable::getSprite()->setVelocity(velX, velY);
     this->dmg =  dmg;
+    this->damaged = false;
 
 }
 

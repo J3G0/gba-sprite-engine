@@ -86,8 +86,9 @@ void UnfairScene::tick(u16 keys)
         case FIREBALL1:
             if(gerardX > 50)
             {
-                killables.push_back(std::unique_ptr<Killable>(new Killable(rand() % 100,10, rand() % 5 + 2, rand() % 5 + 2, 50)));
+                killables.push_back(std::unique_ptr<Killable>(new Killable(50,0, 0, 2, 100)));
                 engine.get()->updateSpritesInScene();
+                // Set state to next state so no more first state fireballs will spawn
                 // https://stackoverflow.com/questions/40979513/changing-enum-to-next-value-c11
                 setGameState(static_cast<UnfairSceneState>(state + 1));
             }
@@ -95,17 +96,14 @@ void UnfairScene::tick(u16 keys)
     }
     updateSprites();
     moveSprites();
+    checkCollisionWithSprites();
     registerInput(keys);
     updateGerardAnimation();
 
     if(DEBUG)
     {
-        u32 gerardX = (gerard->getX() + scrollX + (gerard->getSprite()->getWidth() / 2));
-        u32 gerardY = gerard->getY() + gerard->getSprite()->getHeight();
-
-        TextStream::instance().setText(std::to_string(getBackgroundTileBlock()), 5 , 1);
-        TextStream::instance().setText(std::to_string(isOnWalkableTile()), 10 , 1);
-
+        TextStream::instance().setText(std::to_string(data.getAmountOfDeaths()), 5 , 1);
+        TextStream::instance().setText(std::to_string(gerard->getHealth()), 5 , 1);
     }
 
     mario_bg.get()->scroll( scrollX, scrollY);
@@ -124,111 +122,26 @@ void UnfairScene::registerInput(u16 keys)
     bool onWalkableTile = isOnWalkableTile();
     u32 currentTime = engine->getTimer()->getTotalMsecs();
     u32 timePassed = currentTime - getAtTime();
-    int dx = 0;
-    int dy = 0;
-    if (gerard->isJumping())
+    VECTOR vel = updateVelocity(d, onWalkableTile, currentTime, timePassed, keys);
+    gerard->setCharacterDirection(vel.x, vel.y);
+    gerard->setVelocity(vel.x, vel.y);
+
+    if(gerard->getHealth() <= 0 && gerard->isAlive())
     {
-        if( timePassed < 250)
-        {
-            dy = -2;
-        }
-        else if (timePassed < 500)
-        {
-            dy = -1;
-        }
-        else
-        {
-            if (onWalkableTile || d == UP)
-            {
-                gerard->setIsJumping(false);
-                dy = 0;
-            }
-            else
-            {
-                dy = 2;
-            }
-        }
-    }
-
-    if (!gerard->isJumping() || d == UP)
-    {
-        dy =  onWalkableTile ? 0 : 2;
-    }
-
-    switch(keys)
-    {
-        case (KEY_LEFT | KEY_DOWN):
-        case (KEY_LEFT):
-            dx = -1;
-            break;
-        case (KEY_LEFT | KEY_UP):
-            dx = -1;
-            if(!gerard->isJumping())
-            {
-                gerard->setIsJumping(!gerard->isJumping());
-                setAtTime(currentTime);
-            }
-            break;
-        case (KEY_RIGHT | KEY_DOWN):
-        case (KEY_RIGHT):
-            dx = 1;
-            break;
-        case (KEY_RIGHT | KEY_UP):
-            dx = 1;
-            if(!gerard->isJumping())
-            {
-                gerard->setIsJumping(!gerard->isJumping());
-                setAtTime(currentTime);
-            }
-            break;
-        case (KEY_UP):
-            if(!gerard->isJumping())
-            {
-                dy = -2;
-                gerard->setIsJumping(!gerard->isJumping());
-                setAtTime(currentTime);
-            }
-            break;
-        default:
-            dx = 0;
-    }
-
-    if(d > 0)
-    {
-        switch(d)
-        {
-            case RIGHT:
-                dx = keys == KEY_RIGHT ? 1 : 0;
-                break;
-
-            case LEFT:
-                dx = keys == KEY_LEFT ? -1 : 0;
-                break;
-
-            case UP:
-                dy = 0;
-                gerard->setIsJumping(false);
-                if(!gerard->isJumping() && ( (keys == KEY_UP) || (keys == (KEY_RIGHT | KEY_UP)) || (keys == (KEY_LEFT | KEY_UP))))
-                {
-                    dy = -2;
-                    gerard->setIsJumping(!gerard->isJumping());
-                    setAtTime(currentTime);
-                }
-                break;
-
-            case DOWN:
-                dy = 2;
-                gerard->setIsJumping(false);
-                break;
-        }
-    }
-
-    gerard->setCharacterDirection(dx, dy);
-    gerard->setVelocity(dx, dy);
-
-    if(gerard->getHealth() < 0)
-    {
+        //Need a way to display death before transitioning to scene, work with engine timer
+        gerard->getSprite()->animateToFrame(10);
         gerard->setIsAlive(false);
+        deathTime = currentTime;
+        gerard->setVelocity(0, -1);
+    }
+
+    if(!gerard->isAlive())
+    {
+        if(currentTime - deathTime > 1500)
+        {
+            data.increaseAmountOfDeaths();
+            engine->setScene(new StartScene(engine, data));
+        }
     }
 }
 
@@ -330,6 +243,12 @@ void UnfairScene::updateGerardAnimation()
 {
     //enum Direction {NOT_MOVING, LEFT, LEFT_UP, UP, RIGHT_UP, RIGHT, RIGHT_DOWN, DOWN, LEFT_DOWN};
     Direction d = gerard->getDirection();
+
+    if(!gerard->isAlive())
+    {
+        return;
+    }
+
     switch(d)
     {
         case DOWN:
@@ -382,4 +301,125 @@ bool UnfairScene::isOnWalkableTile()
     // https://stackoverflow.com/questions/3450860/check-if-a-stdvector-contains-a-certain-object
     return std::find(walkableBackgroundTiles.begin(), walkableBackgroundTiles.end(), tile) !=
            walkableBackgroundTiles.end();
+}
+void UnfairScene::checkCollisionWithSprites()
+{
+    for (auto &b : killables)
+    {
+        if(b->getSprite()->collidesWith(*gerard->getSprite()) && !b->hasDamaged())
+        {
+            u32 killableDamage = b->getDmg();
+            u32 currentHealth = gerard->getHealth();
+            gerard->setHealth(currentHealth - killableDamage);
+            b->setDamaged(true);
+        }
+    }
+}
+
+VECTOR UnfairScene::updateVelocity(Direction d, bool onWalkableTile, int currentTime, int timePassed, u16 keys)
+{
+    int dx = 0;
+    int dy = 0;
+    if (gerard->isJumping())
+    {
+        if( timePassed < 0.25 * JUMP_TIME)
+        {
+            dy = -2;
+        }
+        else if (timePassed < 0.5 * JUMP_TIME)
+        {
+            dy = -1;
+        }
+        else
+        {
+            if (onWalkableTile || d == UP)
+            {
+                gerard->setIsJumping(false);
+                dy = 0;
+            }
+            else
+            {
+                dy = 2;
+            }
+        }
+    }
+
+    if (!gerard->isJumping() || d == UP)
+    {
+        dy =  onWalkableTile ? 0 : 2;
+    }
+
+    switch(keys)
+    {
+        case (KEY_LEFT | KEY_DOWN):
+        case (KEY_LEFT):
+            dx = -1;
+            break;
+        case (KEY_LEFT | KEY_UP):
+            dx = -1;
+            if(!gerard->isJumping())
+            {
+                gerard->setIsJumping(!gerard->isJumping());
+                setAtTime(currentTime);
+            }
+            break;
+        case (KEY_RIGHT | KEY_DOWN):
+        case (KEY_RIGHT):
+            dx = 1;
+            break;
+        case (KEY_RIGHT | KEY_UP):
+            dx = 1;
+            if(!gerard->isJumping())
+            {
+                gerard->setIsJumping(!gerard->isJumping());
+                setAtTime(currentTime);
+            }
+            break;
+        case (KEY_UP):
+            if(!gerard->isJumping())
+            {
+                dy = -2;
+                gerard->setIsJumping(!gerard->isJumping());
+                setAtTime(currentTime);
+            }
+            break;
+        default:
+            dx = 0;
+    }
+
+    if(d > 0)
+    {
+        switch(d)
+        {
+            case RIGHT:
+                dx = keys == KEY_RIGHT ? 1 : 0;
+                break;
+
+            case LEFT:
+                dx = keys == KEY_LEFT ? -1 : 0;
+                break;
+
+            case UP:
+                dy = 0;
+                gerard->setIsJumping(false);
+                if(!gerard->isJumping() && ( (keys == KEY_UP) || (keys == (KEY_RIGHT | KEY_UP)) || (keys == (KEY_LEFT | KEY_UP))))
+                {
+                    dy = -2;
+                    gerard->setIsJumping(!gerard->isJumping());
+                    setAtTime(currentTime);
+                }
+                break;
+
+            case DOWN:
+                dy = 2;
+                gerard->setIsJumping(false);
+                break;
+        }
+    }
+
+    VECTOR vel;
+    vel.x = dx;
+    vel.y = dy;
+
+    return vel;
 }

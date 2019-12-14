@@ -43,10 +43,11 @@ std::vector<Sprite*> StartScene::sprites()
 
 void StartScene::tick(u16 keys)
 {
+    TextStream::instance().setText(std::to_string(data.getAmountOfDeaths()), 5 ,1);
     switch(keys)
     {
         case KEY_START:
-            engine->setScene(new UnfairScene(engine));
+            engine->transitionIntoScene(new UnfairScene(engine, data), new FadeOutScene(3));
             break;
     }
 }

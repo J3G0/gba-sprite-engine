@@ -3,6 +3,7 @@
 #include <libgba-sprite-engine/background/text_stream.h>
 #include <libgba-sprite-engine/allocator.h>
 #include "../scenes/StartScene.h"
+#include "../src/Data.h"
 
 
 
@@ -18,8 +19,8 @@
  */
 int main() {
     std::shared_ptr<GBAEngine> engine(new GBAEngine());
-
-    StartScene* startScene = new StartScene(engine, 0);
+    Data* data = new Data();
+    StartScene* startScene = new StartScene(engine, *data);
     engine->setScene(startScene);
 
     //Doe ne keer zot

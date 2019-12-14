@@ -9,16 +9,17 @@
 #include <libgba-sprite-engine/sprites/sprite_builder.h>
 #include <libgba-sprite-engine/gba_engine.h>
 #include "../src/Gerard.h"
+#include "../src/Data.h"
 
 class StartScene : public Scene
 {
 private:
     std::unique_ptr<Gerard> g;
     std::unique_ptr<Background> mario_bg;
-    int totalDeaths;
+    Data data;
 
 public:
-    StartScene(std::shared_ptr<GBAEngine> engine, int totalDeaths) : Scene(engine), totalDeaths(totalDeaths){}
+    StartScene(std::shared_ptr<GBAEngine> engine, Data data) : Scene(engine), data(data){}
     std::vector<Sprite *> sprites() override;
     std::vector<Background *> backgrounds() override;
     void load() override;
