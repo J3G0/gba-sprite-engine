@@ -30,6 +30,8 @@ private:
     std::vector<std::unique_ptr<Renderable>> walkables;
     std::vector<std::unique_ptr<Renderable>> nonWalkables;
 
+    std::vector<int> walkableBackgroundTiles = {0x005,0x006};
+
     int scrollX, scrollY;
     int rotation;
     int rotationDiff = 128;
@@ -37,7 +39,6 @@ private:
     UnfairSceneState gameState = FIREBALL1;
 public:
     UnfairSceneState getGameState() const;
-
     void setGameState(UnfairSceneState gameState);
 
 public:
@@ -55,7 +56,8 @@ public:
     void moveSprites();
     Direction getCollidingDirection();
     void updateGerardAnimation();
-
+    int getBackgroundTileBlock();
+    bool isOnWalkableTile();
     //todo: make priv
     int fireBallTimer = 0;
     bool swap = false;

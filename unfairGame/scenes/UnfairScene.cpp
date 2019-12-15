@@ -13,11 +13,14 @@
 #include "StartScene.h"
 
 #include <stdlib.h>
+#include <sstream>
 
 #define JUMP_TIME 1000
 #define DEBUG 1
 #define SCROLL_SPEED 1
 #define COLLISION_OFFSET 2
+#define BACKGROUND_TILE_SIZE 8
+#define BACKGROUND_TILES_IN_MAPWIDTH 32
 
 std::vector<Background *> UnfairScene::backgrounds()
 {
@@ -71,8 +74,6 @@ void UnfairScene::load()
     walkables.push_back(std::unique_ptr<Renderable>(new Renderable(70, 130, true)));
 
     nonWalkables.push_back(std::unique_ptr<Renderable>(new Renderable(110, 100, true)));
-
-    scrollX = 8;
 }
 
 void UnfairScene::tick(u16 keys)
@@ -96,9 +97,15 @@ void UnfairScene::tick(u16 keys)
     moveSprites();
     registerInput(keys);
     updateGerardAnimation();
+
     if(DEBUG)
     {
-        TextStream::instance().setText(std::to_string(gerard->getHealth()), 5 , 1);
+        u32 gerardX = (gerard->getX() + scrollX + (gerard->getSprite()->getWidth() / 2));
+        u32 gerardY = gerard->getY() + gerard->getSprite()->getHeight();
+
+        TextStream::instance().setText(std::to_string(getBackgroundTileBlock()), 5 , 1);
+        TextStream::instance().setText(std::to_string(isOnWalkableTile()), 10 , 1);
+
     }
 
     mario_bg.get()->scroll( scrollX, scrollY);
@@ -114,6 +121,7 @@ void UnfairScene::tick(u16 keys)
 void UnfairScene::registerInput(u16 keys)
 {
     Direction d = getCollidingDirection();
+    bool onWalkableTile = isOnWalkableTile();
     u32 currentTime = engine->getTimer()->getTotalMsecs();
     u32 timePassed = currentTime - getAtTime();
     int dx = 0;
@@ -130,7 +138,7 @@ void UnfairScene::registerInput(u16 keys)
         }
         else
         {
-            if (gerard->getY() >= GBA_SCREEN_HEIGHT - 48 || d == UP)
+            if (onWalkableTile || d == UP)
             {
                 gerard->setIsJumping(false);
                 dy = 0;
@@ -144,7 +152,7 @@ void UnfairScene::registerInput(u16 keys)
 
     if (!gerard->isJumping() || d == UP)
     {
-        dy = gerard->getY() < GBA_SCREEN_HEIGHT - 48 ? 2 : 0;
+        dy =  onWalkableTile ? 0 : 2;
     }
 
     switch(keys)
@@ -346,4 +354,32 @@ void UnfairScene::updateGerardAnimation()
             gerard->getSprite()->flipHorizontally(false);
             break;
     }
+}
+
+//Original idea by Jelle and Michiel
+//Instead of checking if on sprite for floor, check for background data!
+
+int UnfairScene::getBackgroundTileBlock()
+{
+
+    u32 gerardX = (gerard->getX() + scrollX + gerard->getSprite()->getWidth() - COLLISION_OFFSET);
+    u32 gerardY = gerard->getY() + gerard->getSprite()->getHeight();
+
+    // 8 because one tile is 8x8
+    u32 gridX = (gerardX / BACKGROUND_TILE_SIZE);
+    u32 gridY = gerardY / BACKGROUND_TILE_SIZE;
+
+    int tileLoc = gridX + (gridY * BACKGROUND_TILES_IN_MAPWIDTH);
+
+    return map[tileLoc];
+
+}
+
+bool UnfairScene::isOnWalkableTile()
+{
+    int tile = getBackgroundTileBlock();
+
+    // https://stackoverflow.com/questions/3450860/check-if-a-stdvector-contains-a-certain-object
+    return std::find(walkableBackgroundTiles.begin(), walkableBackgroundTiles.end(), tile) !=
+           walkableBackgroundTiles.end();
 }
