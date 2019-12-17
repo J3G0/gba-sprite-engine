@@ -31,6 +31,7 @@ std::vector<Sprite*> UnfairScene::sprites()
 {
     std::vector<Sprite*> sprites;
     sprites.push_back(gerard.get()->getSprite());
+    sprites.push_back(jef.get()->getSprite());
 
     for(auto &b: walkables)
     {
@@ -66,6 +67,9 @@ void UnfairScene::load()
 
     gerard = std::unique_ptr<Gerard>(new Gerard(0,100, NOT_MOVING));
     gerard->getSprite()->setStayWithinBounds(true);
+
+    jef = std::unique_ptr<Scientist>(new Scientist(GBA_SCREEN_WIDTH - 50, 100));
+    jef->getSprite()->animate();
 
     mario_bg = std::unique_ptr<Background>(new Background(1, background_data, sizeof(background_data), map, sizeof(map)));
     mario_bg.get()->useMapScreenBlock(16);
@@ -250,6 +254,7 @@ void UnfairScene::updateGerardAnimation()
     switch(d)
     {
         case DOWN:
+            //Zeker van dit?
             gerard->getSprite()->animateToFrame(10);
             gerard->getSprite()->stopAnimating();
             break;

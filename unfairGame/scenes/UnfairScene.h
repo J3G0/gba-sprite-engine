@@ -9,6 +9,7 @@
 #include "../src/Killable.h"
 #include "../src/Gerard.h"
 #include "../src/Data.h"
+#include "../src/Scientist.h"
 
 
 //Vragen
@@ -27,6 +28,7 @@ class UnfairScene : public Scene
 private:
     std::unique_ptr<Gerard> gerard;
     std::unique_ptr<Background> mario_bg;
+    std::unique_ptr<Scientist> jef;
     std::vector<std::unique_ptr<Killable>> killables;
     std::vector<std::unique_ptr<Renderable>> walkables;
     std::vector<std::unique_ptr<Renderable>> nonWalkables;

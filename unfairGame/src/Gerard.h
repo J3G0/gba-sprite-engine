@@ -13,8 +13,6 @@ class Gerard : public Renderable
 {
 private:
     Direction direction;
-    int xLocation;
-    int yLocation;
     int dx = 0;
     int dy = 0;
     int health = 100;
@@ -23,7 +21,7 @@ private:
 private:
     bool jumping = false;
 public:
-    Gerard(int xLocation, int yLocation, Direction direction);
+    Gerard(int x, int y, Direction direction);
     ~Gerard();
     Direction getDirection() { return direction; }
     void setDirection(Direction newDirection);

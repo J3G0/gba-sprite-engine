@@ -16,34 +16,31 @@
 // loosely based on https://github.com/J3G0/gba-sprite-engine/blob/master/demos/demo3-foodthrowing/src/bullet.h
 class Renderable
 {
-    private:
-        std::unique_ptr<Sprite> sprite;
-        int x;
-        int y;
-        bool walkable;
-public:
-    bool isWalkable() const;
-
-    void setWalkable(bool walkable);
-
 private:
+    std::unique_ptr<Sprite> sprite;
+    bool walkable;
     bool offScreen;
 
     //Protected because inheritance
-    protected:
+protected:
         SpriteBuilder<Sprite> spriteBuilder;
-    public:
-         Renderable(int x, int y, bool walkable);
-         Sprite* getSprite() { return sprite.get(); }
-         void setSprite(std::unique_ptr<Sprite> sprite);
-         bool isOffScreen() { return getSprite()->isOffScreen(); }
+        int x;
+        int y;
+public:
+     Renderable(int x, int y, bool walkable);
+     Sprite* getSprite() { return sprite.get(); }
+     void setSprite(std::unique_ptr<Sprite> sprite);
+     bool isOffScreen() { return getSprite()->isOffScreen(); }
 
-         int getX() { return sprite->getX(); }
-         int getY() { return sprite->getY(); }
-         int getStartX() { return sprite->getStartX(); }
-         int getStartY() { return sprite->getStartY(); }
+     int getX() { return sprite->getX(); }
+     int getY() { return sprite->getY(); }
+     int getStartX() { return sprite->getStartX(); }
+     int getStartY() { return sprite->getStartY(); }
 
-         bool collidesWith(Sprite *other) {return sprite->collidesWith(*other); }
+    bool collidesWith(Sprite *other) {return sprite->collidesWith(*other); }
+    bool isWalkable() const;
+
+    void setWalkable(bool walkable);
 
 
 

@@ -8,6 +8,7 @@
 Killable::Killable(int x, int y, int velX, int velY, int dmg) : Renderable(x, y, false)
 {
     this->setSprite((spriteBuilder
+           //This needs to be updated based on type of killable
           .withData(FireballTiles, sizeof(FireballTiles))
           .withSize(SIZE_8_8)
           .withLocation(x, y)

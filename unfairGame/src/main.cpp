@@ -22,6 +22,7 @@ int main() {
     std::shared_ptr<Data> data(new Data());
     StartScene* startScene = new StartScene(engine, data);
     engine->setScene(startScene);
+    data->setAmountOfDeaths(0);
 
     //Doe ne keer zot
     for(;;)

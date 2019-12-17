@@ -3,15 +3,13 @@
 //
 
 #include "Gerard.h"
-Gerard::Gerard(int xLocation, int yLocation, Direction direction) : Renderable(xLocation, yLocation, false)
+Gerard::Gerard(int x, int y, Direction direction) : Renderable(x, y, false)
 {
-    this->xLocation = xLocation;
-    this->yLocation = yLocation;
     this->direction = direction;
     this->setSprite((spriteBuilder
         .withData(Walking_Gerard_RightTiles, sizeof(Walking_Gerard_RightTiles))
         .withSize(SIZE_16_32)
-        .withLocation(xLocation, yLocation)
+        .withLocation(x, y)
         // Disabling this fixes bug (feature) where sprites are flashing with animations of Gerard
         //.withAnimated(8, 10)
         .buildPtr()));
