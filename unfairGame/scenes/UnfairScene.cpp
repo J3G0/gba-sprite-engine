@@ -147,9 +147,21 @@ void UnfairScene::registerInput(u16 keys)
                 gerard->setIsJumping(false);
                 dy = 0;
             }
-            else
+            else if (timePassed < 150)
+            {
+                dy = 1;
+            }
+            else if (timePassed < 250)
             {
                 dy = 2;
+            }
+            else if (timePassed < 350)
+            {
+                dy = 3;
+            }
+            else
+            {
+                dy = 3;
             }
         }
     }
