@@ -128,7 +128,11 @@ void UnfairScene::registerInput(u16 keys)
     int dy = 0;
     if (gerard->isJumping())
     {
-        if( timePassed < 250)
+        if( timePassed < 150)
+        {
+            dy = -3;
+        }
+        else if (timePassed < 300)
         {
             dy = -2;
         }
@@ -333,11 +337,14 @@ void UnfairScene::updateGerardAnimation()
     switch(d)
     {
         case DOWN:
+            gerard->getSprite()->animateToFrame(10);
+            gerard->getSprite()->stopAnimating();
         case RIGHT_DOWN:
         case LEFT_DOWN:
         case NOT_MOVING:
             gerard->getSprite()->animateToFrame(8);
             gerard->getSprite()->stopAnimating();
+            gerard->getSprite()->flipHorizontally(false);
             break;
         case UP:
         case LEFT_UP:
