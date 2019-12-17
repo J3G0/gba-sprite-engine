@@ -25,14 +25,8 @@ std::vector<Background *> GenericScene::backgrounds()
 
 void GenericScene::load()
 {
-    foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(sharedPal, sizeof(sharedPal)));
-    backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(bg_palette, sizeof(bg_palette)));
+    basicLoad();
 
-    gerard = std::unique_ptr<Gerard>(new Gerard(0,100, NOT_MOVING));
-    gerard->getSprite()->setStayWithinBounds(true);
-
-    mario_bg = std::unique_ptr<Background>(new Background(1, background_data, sizeof(background_data), map, sizeof(map)));
-    mario_bg->useMapScreenBlock(16);
     engine->getTimer()->start();
 
 }
@@ -51,6 +45,11 @@ std::vector<Sprite*> GenericScene::sprites()
         sprites.push_back(b->getSprite());
     }
 
+    for(auto &b: walkables)
+    {
+        sprites.push_back(b->getSprite());
+    }
+
     return sprites;
 }
 
@@ -65,14 +64,14 @@ void GenericScene::tick(u16 keys)
     VECTOR vel = updateVelocity(d, onWalkableTile, currentTime, timePassed, keys);
     gerard->setCharacterDirection(vel.x, vel.y);
     gerard->setVelocity(vel.x, vel.y);
-
     updateGerardAnimation();
+    updateSprites();
+    checkCollisionWithSprites();
+    registerInput(keys);
 }
 
 VECTOR GenericScene::updateVelocity(Direction d, bool onWalkableTile, int currentTime, int timePassed, u16 keys)
 {
-    TextStream::instance().setText(std::to_string(keys),5,1);
-    TextStream::instance().setText(std::to_string(gerard->isJumping()),10,1);
         int dx = 0;
         int dy = 0;
         if (gerard->isJumping())
@@ -270,10 +269,12 @@ void GenericScene::updateGerardAnimation()
     switch(d)
     {
         case DOWN:
-            //Zeker van dit?
-            gerard->getSprite()->animateToFrame(10);
-            gerard->getSprite()->stopAnimating();
-            break;
+            // Zeker van dit?
+            // Zorgt ervoor dat Gerard 'dood' is als hij aan het vallen is?
+
+            // gerard->getSprite()->animateToFrame(10);
+            // gerard->getSprite()->stopAnimating();
+            // break;
         case RIGHT_DOWN:
         case LEFT_DOWN:
         case NOT_MOVING:
@@ -298,12 +299,67 @@ void GenericScene::updateGerardAnimation()
     }
 }
 
-int GenericScene::getAtTime() const
+void GenericScene::registerInput(u16 keys)
 {
-    return atTime;
+
 }
 
-void GenericScene::setAtTime(int atTime)
+void GenericScene::updateSprites()
 {
-    GenericScene::atTime = atTime;
+    killables.erase(
+            std::remove_if(killables.begin(), killables.end(), [](std::unique_ptr<Killable> &s) { return (s->isOffScreen() || s->hasDamaged() ); }),
+            killables.end());
+}
+
+void GenericScene::moveSprites()
+{
+    // V: Waarom crashed dit?
+    // A: Oplossing voor crashen : nieuwe lijst aanmaken aan daarin dingen verwijderen, die dan kopieren naar originele lijst.
+    for (auto &b : walkables)
+    {
+        u32 startX = b->getStartX();
+        u32 startY = b->getStartY();
+
+        b->getSprite()->moveTo(startX - scrollX, startY);
+        // Source https://en.cppreference.com/w/cpp/algorithm/remove
+        // Waarom crashed dit?
+        //walkables.erase(std::remove_if(walkables.begin(),walkables.end(),[](std::unique_ptr<Renderable> &b){return b->isOffScreen();}),walkables.end());
+    }
+
+    for (auto &b : nonWalkables)
+    {
+        u32 startX = b->getStartX();
+        u32 startY = b->getStartY();
+
+        b->getSprite()->moveTo(startX - scrollX, startY);
+        // Source https://en.cppreference.com/w/cpp/algorithm/remove
+        //nonWalkables.erase(std::remove_if(nonWalkables.begin(),nonWalkables.end(),[this](std::unique_ptr<Renderable> &b){return b->getSprite()->collidesWith(*gerard->getSprite());}),nonWalkables.end());
+    }
+}
+
+void GenericScene::checkCollisionWithSprites()
+{
+    for (auto &b : killables)
+    {
+        if(b->getSprite()->collidesWith(*gerard->getSprite()) && !b->hasDamaged() && b->getDmg() > 0)
+        {
+            u32 killableDamage = b->getDmg();
+            u32 currentHealth = gerard->getHealth();
+            gerard->setHealth(currentHealth - killableDamage);
+            b->setDamaged(true);
+        }
+    }
+}
+
+void GenericScene::basicLoad()
+{
+    foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(sharedPal, sizeof(sharedPal)));
+    backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(bg_palette, sizeof(bg_palette)));
+
+    gerard = std::unique_ptr<Gerard>(new Gerard(0,100, NOT_MOVING));
+    gerard->getSprite()->setStayWithinBounds(true);
+
+    //Diff bg? remove this
+    mario_bg = std::unique_ptr<Background>(new Background(1, background_data, sizeof(background_data), map, sizeof(map)));
+    mario_bg->useMapScreenBlock(16);
 }

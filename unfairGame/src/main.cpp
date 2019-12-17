@@ -19,7 +19,16 @@
  *
  * voor backgrounds
  * grit splashimage.png -gt -gB8 -mRtpf -mLs -ftc
+ *
+ *
+ *
+ * Scene 1: Normale scene
+ * Scene 2: Flipped scene
+ * Scene 3: Maan?
+ * Scene 4: Bossfight
  */
+
+
 int main() {
     std::shared_ptr<GBAEngine> engine(new GBAEngine());
     std::shared_ptr<Data> data(new Data());

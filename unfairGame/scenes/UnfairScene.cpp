@@ -21,7 +21,14 @@
 #define BACKGROUND_TILE_SIZE 8
 #define BACKGROUND_TILES_IN_MAPWIDTH 32
 
-UnfairScene::UnfairScene(std::shared_ptr<GBAEngine> engine, std::shared_ptr<Data> data): GenericScene(std::move(engine), std::move(data))
+void UnfairScene::load()
+{
+    basicLoad();
+    walkables.push_back(std::unique_ptr<Renderable>(new Renderable(50, 112, true)));
+    engine->getTimer()->start();
+}
+
+void UnfairScene::registerInput(u16 keys)
 {
 
 }

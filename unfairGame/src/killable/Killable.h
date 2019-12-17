@@ -23,7 +23,7 @@ public:
     bool hasDamaged() const;
     void setDamaged(bool damaged);
     int getDmg() const;
-    virtual void setDmg(int dmg) = 0;
+    void setDmg(int dmg);
     Killable(int x, int y, int velX, int velY, int dmg);
 };
 

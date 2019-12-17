@@ -25,11 +25,12 @@
 class UnfairScene : public GenericScene
 {
 public:
-    UnfairScene(std::shared_ptr<GBAEngine> engine, std::shared_ptr<Data> data);
+    UnfairScene(std::shared_ptr<GBAEngine> engine, std::shared_ptr<Data> data) : GenericScene(std::move(engine), std::move(data)){}
+    void load() override;
+    void registerInput(u16 keys) override;
 protected:
 
 private:
-
 };
 
 #endif //GBA_SPRITE_ENGINE_PROJECT_UNFAIRSCENE_H

@@ -18,12 +18,14 @@ class GenericScene : public Scene
 {
 
 private:
+protected:
     std::unique_ptr<Background> mario_bg;
-    std::unique_ptr<Gerard> gerard;
-    std::vector<std::unique_ptr<Killable>> killables;
     int atTime = 0;
     int scrollX;
-protected:
+    std::unique_ptr<Gerard> gerard;
+    std::vector<std::unique_ptr<Killable>> killables;
+    std::vector<std::unique_ptr<Renderable>> walkables;
+    std::vector<std::unique_ptr<Renderable>> nonWalkables;
     std::shared_ptr<Data> data;
     std::vector<int> walkableBackgroundTiles = {0x005,0x006};
 
@@ -32,15 +34,21 @@ public:
     std::vector<Sprite *> sprites() override;
     std::vector<Background *> backgrounds() override;
     void load() override;
+    void basicLoad();
     void tick(u16 keys) override;
 
     VECTOR updateVelocity(Direction d, bool onWalkableTile, int currentTime, int timePassed, u16 keys);
     Direction getCollidingDirection();
+    virtual void registerInput(u16 keys);
     bool isOnWalkableTile();
     int getBackgroundTileBlock();
     void updateGerardAnimation();
-    int getAtTime() const;
-    void setAtTime(int atTime);
+    int getAtTime() const { return atTime; }
+    void setAtTime(int atTime) { this->atTime = atTime; }
+    void updateSprites();
+    void moveSprites();
+    void checkCollisionWithSprites();
+
 
 
 };
