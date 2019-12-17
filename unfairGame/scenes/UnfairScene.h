@@ -38,14 +38,15 @@ private:
     int rotationDiff = 128;
     int atTime = 0;
     int deathTime = 0;
-    Data data;
+    std::shared_ptr<Data> data;
     UnfairSceneState gameState = FIREBALL1;
+    Direction d = NOT_MOVING;
 public:
     UnfairSceneState getGameState() const;
     void setGameState(UnfairSceneState gameState);
 
 public:
-    UnfairScene(std::shared_ptr<GBAEngine> engine, Data data) : Scene(engine), data(data), rotation(0), rotationDiff(128), scrollX(0), scrollY(0) {}
+    UnfairScene(std::shared_ptr<GBAEngine> engine, std::shared_ptr<Data> data) : Scene(engine), data(data), rotation(0), rotationDiff(128), scrollX(0), scrollY(0) {}
 
     std::vector<Sprite *> sprites() override;
     std::vector<Background *> backgrounds() override;
@@ -66,7 +67,6 @@ public:
     //todo: make priv
     int fireBallTimer = 0;
     bool swap = false;
-    Direction d = NOT_MOVING;
 };
 
 #endif //GBA_SPRITE_ENGINE_PROJECT_UNFAIRSCENE_H

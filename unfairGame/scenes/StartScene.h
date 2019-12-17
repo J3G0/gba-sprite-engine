@@ -16,10 +16,10 @@ class StartScene : public Scene
 private:
     std::unique_ptr<Gerard> g;
     std::unique_ptr<Background> mario_bg;
-    Data data;
+    std::shared_ptr<Data> data;
 
 public:
-    StartScene(std::shared_ptr<GBAEngine> engine, Data data) : Scene(engine), data(data){}
+    StartScene(std::shared_ptr<GBAEngine> engine, std::shared_ptr<Data> data) : Scene(engine), data(data){}
     std::vector<Sprite *> sprites() override;
     std::vector<Background *> backgrounds() override;
     void load() override;

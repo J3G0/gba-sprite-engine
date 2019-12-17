@@ -12,7 +12,8 @@ Gerard::Gerard(int xLocation, int yLocation, Direction direction) : Renderable(x
         .withData(Walking_Gerard_RightTiles, sizeof(Walking_Gerard_RightTiles))
         .withSize(SIZE_16_32)
         .withLocation(xLocation, yLocation)
-        .withAnimated(8, 10)
+        // Disabling this fixes bug (feature) where sprites are flashing with animations of Gerard
+        //.withAnimated(8, 10)
         .buildPtr()));
 }
 

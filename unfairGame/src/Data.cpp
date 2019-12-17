@@ -6,5 +6,5 @@
 
 Data::Data()
 {
-    this->amountOfDeaths = 5;
+    this->amountOfDeaths = 0;
 }

@@ -86,7 +86,7 @@ void UnfairScene::tick(u16 keys)
         case FIREBALL1:
             if(gerardX > 50)
             {
-                killables.push_back(std::unique_ptr<Killable>(new Killable(50,0, 0, 2, 100)));
+                killables.push_back(std::unique_ptr<Killable>(new Killable(50,0, 0, 4, 100)));
                 engine.get()->updateSpritesInScene();
                 // Set state to next state so no more first state fireballs will spawn
                 // https://stackoverflow.com/questions/40979513/changing-enum-to-next-value-c11
@@ -95,14 +95,17 @@ void UnfairScene::tick(u16 keys)
             break;
     }
     updateSprites();
-    moveSprites();
+    //moveSprites();
     checkCollisionWithSprites();
     registerInput(keys);
-    updateGerardAnimation();
-
+    if(gerard->isAlive())
+    {
+        updateGerardAnimation();
+    }
     if(DEBUG)
     {
-        TextStream::instance().setText(std::to_string(data.getAmountOfDeaths()), 5 , 1);
+        TextStream::instance().setFontColor(PaletteManager::color(0,0,200));
+        TextStream::instance().setText(std::to_string(data->getAmountOfDeaths()), 5 , 1);
         TextStream::instance().setText(std::to_string(gerard->getHealth()), 5 , 1);
     }
 
@@ -139,7 +142,7 @@ void UnfairScene::registerInput(u16 keys)
     {
         if(currentTime - deathTime > 1500)
         {
-            data.increaseAmountOfDeaths();
+            data->increaseAmountOfDeaths();
             engine->setScene(new StartScene(engine, data));
         }
     }
@@ -158,7 +161,7 @@ void UnfairScene::setAtTime(int atTime)
 void UnfairScene::updateSprites()
 {
     killables.erase(
-            std::remove_if(killables.begin(), killables.end(), [](std::unique_ptr<Killable> &s) { return (s->isOffScreen()); }),
+            std::remove_if(killables.begin(), killables.end(), [](std::unique_ptr<Killable> &s) { return (s->isOffScreen() || s->hasDamaged() ); }),
             killables.end());
 }
 
@@ -244,19 +247,18 @@ void UnfairScene::updateGerardAnimation()
     //enum Direction {NOT_MOVING, LEFT, LEFT_UP, UP, RIGHT_UP, RIGHT, RIGHT_DOWN, DOWN, LEFT_DOWN};
     Direction d = gerard->getDirection();
 
-    if(!gerard->isAlive())
-    {
-        return;
-    }
-
     switch(d)
     {
         case DOWN:
+            gerard->getSprite()->animateToFrame(10);
+            gerard->getSprite()->stopAnimating();
+            break;
         case RIGHT_DOWN:
         case LEFT_DOWN:
         case NOT_MOVING:
             gerard->getSprite()->animateToFrame(8);
             gerard->getSprite()->stopAnimating();
+            gerard->getSprite()->flipHorizontally(false);
             break;
         case UP:
         case LEFT_UP:
@@ -322,10 +324,15 @@ VECTOR UnfairScene::updateVelocity(Direction d, bool onWalkableTile, int current
     int dy = 0;
     if (gerard->isJumping())
     {
-        if( timePassed < 0.25 * JUMP_TIME)
+        if( timePassed < 0.10 * JUMP_TIME)
+        {
+            dy = -3;
+        }
+        else if ( timePassed < 0.25 * JUMP_TIME)
         {
             dy = -2;
         }
+
         else if (timePassed < 0.5 * JUMP_TIME)
         {
             dy = -1;
@@ -337,9 +344,21 @@ VECTOR UnfairScene::updateVelocity(Direction d, bool onWalkableTile, int current
                 gerard->setIsJumping(false);
                 dy = 0;
             }
-            else
+            else if (timePassed < 0.15 * JUMP_TIME)
+            {
+                dy = 1;
+            }
+            else if (timePassed < 0.25 * JUMP_TIME)
             {
                 dy = 2;
+            }
+            else if (timePassed < 0.35 * JUMP_TIME)
+            {
+                dy = 3;
+            }
+            else
+            {
+                dy = 4;
             }
         }
     }
