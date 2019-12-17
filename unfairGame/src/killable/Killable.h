@@ -5,23 +5,26 @@
 #ifndef GBA_SPRITE_ENGINE_PROJECT_KILLABLE_H
 #define GBA_SPRITE_ENGINE_PROJECT_KILLABLE_H
 
-#include "../src/Renderable.h"
+#include "../Renderable.h"
 
 //Obstacle that will appear and (most likely) will kill you
 class Killable : public Renderable
 {
     private:
-        int dmg;
-        //damaged means if the killable has hit gerard
+        //damaged means if the killable has hit something
         bool damaged = false;
+
+protected:
+    int velX;
+    int velY;
+    int dmg;
+
 public:
     bool hasDamaged() const;
     void setDamaged(bool damaged);
     int getDmg() const;
     void setDmg(int dmg);
-
-public:
-        Killable(int x, int y, int velX, int velY, int dmg);
+    Killable(int x, int y, int velX, int velY, int dmg);
 };
 
 

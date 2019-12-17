@@ -12,7 +12,6 @@ class Scientist : public Renderable
 {
 public:
     Scientist(int x, int y);
-    std::unique_ptr<Killable> testTube;
 protected:
 
 private:

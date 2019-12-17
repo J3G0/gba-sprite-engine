@@ -6,9 +6,11 @@ add_executable(${PROJECT_NAME}.elf
         scenes/UnfairScene.h
         scenes/StartScene.cpp
         scenes/StartScene.h
-        sprite/sprite_data.h
-        src/Killable.h
-        src/Killable.cpp
+        scenes/BossScene.cpp
+        scenes/BossScene.h
+        sprite/sprite_data/sprite_data.h
+        src/killable/Killable.h
+        src/killable/Killable.cpp
         src/Renderable.cpp
         src/Renderable.h
         src/Gerard.cpp
@@ -17,6 +19,10 @@ add_executable(${PROJECT_NAME}.elf
         src/Data.h
         src/Scientist.cpp
         src/Scientist.h
+        src/killable/FireBall.cpp
+        src/killable/FireBall.h
+        src/killable/Testtube.cpp
+        src/killable/Testtube.h
         )
 
 target_link_libraries(${PROJECT_NAME}.elf gba-sprite-engine)

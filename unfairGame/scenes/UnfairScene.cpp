@@ -8,9 +8,11 @@
 #include <libgba-sprite-engine/effects/fade_out_scene.h>
 #include <algorithm>
 #include "UnfairScene.h"
-#include "../sprite/sprite_data.h"
-#include "../sprite/background_data.h"
+#include "../sprite/sprite_data/sprite_data.h"
+#include "../sprite/sprite_data/background_data.h"
 #include "StartScene.h"
+#include "../src/killable/FireBall.h"
+#include "../src/killable/Testtube.h"
 
 #include <stdlib.h>
 #include <sstream>
@@ -90,7 +92,7 @@ void UnfairScene::tick(u16 keys)
         case FIREBALL1:
             if(gerardX > 50)
             {
-                killables.push_back(std::unique_ptr<Killable>(new Killable(50,0, 0, 4, 100)));
+                killables.push_back(std::unique_ptr<Killable>(new Testtube(50,0, 0, 4, 100)));
                 engine.get()->updateSpritesInScene();
                 // Set state to next state so no more first state fireballs will spawn
                 // https://stackoverflow.com/questions/40979513/changing-enum-to-next-value-c11

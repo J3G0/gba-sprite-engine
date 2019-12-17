@@ -4,6 +4,7 @@
 #include <libgba-sprite-engine/allocator.h>
 #include "../scenes/StartScene.h"
 #include "../src/Data.h"
+#include "../scenes/BossScene.h"
 
 
 
@@ -20,7 +21,7 @@
 int main() {
     std::shared_ptr<GBAEngine> engine(new GBAEngine());
     std::shared_ptr<Data> data(new Data());
-    StartScene* startScene = new StartScene(engine, data);
+    BossScene* startScene = new BossScene(engine, data);
     engine->setScene(startScene);
     data->setAmountOfDeaths(0);
 

@@ -6,7 +6,7 @@
 #define GBA_SPRITE_ENGINE_PROJECT_UNFAIRSCENE_H
 #include <libgba-sprite-engine/scene.h>
 #include <libgba-sprite-engine/sprites/sprite_builder.h>
-#include "../src/Killable.h"
+#include "../src/killable/Killable.h"
 #include "../src/Gerard.h"
 #include "../src/Data.h"
 #include "../src/Scientist.h"

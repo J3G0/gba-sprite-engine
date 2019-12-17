@@ -3,8 +3,8 @@
 //
 
 #include "StartScene.h"
-#include "../sprite/sprite_data.h"
-#include "../sprite/background_data.h"
+#include "../sprite/sprite_data/sprite_data.h"
+#include "../sprite/sprite_data/background_data.h"
 #include "UnfairScene.h"
 #include <libgba-sprite-engine/sprites/sprite_builder.h>
 #include <libgba-sprite-engine/background/text_stream.h>
