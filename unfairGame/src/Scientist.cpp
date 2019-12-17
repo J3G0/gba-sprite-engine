@@ -10,7 +10,5 @@ Scientist::Scientist(int x, int y) : Renderable(x,y, false)
             .withSize(SIZE_32_32)
             .withLocation(x,y)
             .withAnimated(4, 5)
-                    // Disabling this fixes bug (feature) where sprites are flashing with animations of Gerard
-                    //.withAnimated(8, 10)
             .buildPtr()));
 }

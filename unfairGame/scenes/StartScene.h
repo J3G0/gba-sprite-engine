@@ -10,19 +10,16 @@
 #include <libgba-sprite-engine/gba_engine.h>
 #include "../src/Gerard.h"
 #include "../src/Data.h"
+#include "GenericScene.h"
 
-class StartScene : public Scene
+class StartScene : public GenericScene
 {
 private:
-    std::unique_ptr<Gerard> g;
-    std::unique_ptr<Background> mario_bg;
-    std::shared_ptr<Data> data;
+
+protected:
 
 public:
-    StartScene(std::shared_ptr<GBAEngine> engine, std::shared_ptr<Data> data) : Scene(engine), data(data){}
-    std::vector<Sprite *> sprites() override;
-    std::vector<Background *> backgrounds() override;
-    void load() override;
+    StartScene(std::shared_ptr<GBAEngine> engine, std::shared_ptr<Data> data) : GenericScene(std::move(engine), std::move(data)){}
     void tick(u16 keys) override;
 };
 
