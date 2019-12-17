@@ -6,6 +6,8 @@
 #include "../sprite/sprite_data/sprite_data.h"
 #include "../sprite/sprite_data/background_data.h"
 #include "UnfairScene.h"
+#include "StartScene.h"
+#include "../src/killable/FireBall.h"
 #include <libgba-sprite-engine/sprites/sprite_builder.h>
 #include <libgba-sprite-engine/background/text_stream.h>
 #include <libgba-sprite-engine/gba/tonc_memdef.h>
@@ -26,9 +28,7 @@ std::vector<Background *> GenericScene::backgrounds()
 void GenericScene::load()
 {
     basicLoad();
-
     engine->getTimer()->start();
-
 }
 
 std::vector<Sprite*> GenericScene::sprites()
@@ -60,14 +60,42 @@ void GenericScene::tick(u16 keys)
     bool onWalkableTile = isOnWalkableTile();
     u32 currentTime = engine->getTimer()->getTotalMsecs();
     u32 timePassed = currentTime - getAtTime();
-
     VECTOR vel = updateVelocity(d, onWalkableTile, currentTime, timePassed, keys);
     gerard->setCharacterDirection(vel.x, vel.y);
     gerard->setVelocity(vel.x, vel.y);
-    updateGerardAnimation();
     updateSprites();
     checkCollisionWithSprites();
     registerInput(keys);
+
+    if(gerard->isAlive())
+    {
+        updateGerardAnimation();
+    }
+
+    if(gerard->getX() > 100)
+    {
+        gerard->getSprite()->moveTo(gerard->getX() - 1, gerard->getY());
+        scrollX++;
+    }
+
+    if(gerard->getHealth() <= 0 && gerard->isAlive())
+    {
+        //Need a way to display death before transitioning to scene, work with engine timer
+        gerard->getSprite()->animateToFrame(10);
+        gerard->setIsAlive(false);
+        deathTime = currentTime;
+        gerard->setVelocity(0, -1);
+    }
+
+    if(!gerard->isAlive())
+    {
+        if(currentTime - deathTime > 1500)
+        {
+            data->increaseAmountOfDeaths();
+            engine->setScene(new StartScene(engine, data));
+        }
+    }
+
 }
 
 VECTOR GenericScene::updateVelocity(Direction d, bool onWalkableTile, int currentTime, int timePassed, u16 keys)
@@ -301,7 +329,7 @@ void GenericScene::updateGerardAnimation()
 
 void GenericScene::registerInput(u16 keys)
 {
-
+    TextStream::instance().setText(("test"), 5 , 1);
 }
 
 void GenericScene::updateSprites()
@@ -339,9 +367,10 @@ void GenericScene::moveSprites()
 
 void GenericScene::checkCollisionWithSprites()
 {
+
     for (auto &b : killables)
     {
-        if(b->getSprite()->collidesWith(*gerard->getSprite()) && !b->hasDamaged() && b->getDmg() > 0)
+        if(b->getSprite()->collidesWith(*gerard->getSprite()) && !b->hasDamaged())
         {
             u32 killableDamage = b->getDmg();
             u32 currentHealth = gerard->getHealth();

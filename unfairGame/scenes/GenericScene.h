@@ -18,9 +18,10 @@ class GenericScene : public Scene
 {
 
 private:
+    int atTime = 0;
+    int deathTime = 0;
 protected:
     std::unique_ptr<Background> mario_bg;
-    int atTime = 0;
     int scrollX;
     std::unique_ptr<Gerard> gerard;
     std::vector<std::unique_ptr<Killable>> killables;

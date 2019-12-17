@@ -24,11 +24,38 @@
 void UnfairScene::load()
 {
     basicLoad();
-    walkables.push_back(std::unique_ptr<Renderable>(new Renderable(50, 112, true)));
+    //walkables.push_back(std::unique_ptr<Renderable>(new Renderable(50, 112, true)));
     engine->getTimer()->start();
 }
 
 void UnfairScene::registerInput(u16 keys)
 {
+    int gerardX = gerard->getX();
+    TextStream::instance().setText(std::to_string(getProgressionState()), 5 , 1);
+    ProgressionState state = getProgressionState();
+    u32 currentTime = engine->getTimer()->getTotalMsecs();
+    switch(state)
+    {
+        case NONE:
+            if(gerardX > 50)
+            {
+                killables.push_back(std::unique_ptr<FireBall>(new FireBall(50,0, 0, 4, 100)));
+                engine.get()->updateSpritesInScene();
 
+                // Set state to next state so no more first state fireballs will spawn
+                // https://stackoverflow.com/questions/40979513/changing-enum-to-next-value-c11
+                setProgressionState(static_cast<ProgressionState>(state + 1));
+            }
+            break;
+    }
+}
+
+ProgressionState UnfairScene::getProgressionState() const
+{
+    return progressionState;
+}
+
+void UnfairScene::setProgressionState(ProgressionState progressionState)
+{
+    UnfairScene::progressionState = progressionState;
 }
