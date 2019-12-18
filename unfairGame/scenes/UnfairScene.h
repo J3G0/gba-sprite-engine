@@ -22,7 +22,7 @@
 // Gerard een shared ptr? aangezien deze over meerdere scenes hetzelfde zou (moeten) blijven?
 // --> niet nodig, wordt opgeruimd bij scene verandering
 
-enum ProgressionState {NONE = 0, STATE1, STATE2, STATE3, STATE4};
+enum ProgressionState {NONE = 0, STATE1, STATE2, STATE3, STATE4, FINAL_STATE};
 
 class UnfairScene : public GenericScene
 {
@@ -32,10 +32,11 @@ public:
     void registerInput(u16 keys) override;
     ProgressionState getProgressionState() const;
     void setProgressionState(ProgressionState progressionState);
+    void handleProgression();
 protected:
 
 private:
-    ProgressionState progressionState = NONE
+    ProgressionState progressionState = NONE;
 };
 
 #endif //GBA_SPRITE_ENGINE_PROJECT_UNFAIRSCENE_H

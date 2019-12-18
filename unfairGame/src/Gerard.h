@@ -17,9 +17,8 @@ private:
     int dy = 0;
     int health = 100;
     bool alive = true;
-
-private:
     bool jumping = false;
+
 public:
     Gerard(int x, int y, Direction direction);
     ~Gerard();

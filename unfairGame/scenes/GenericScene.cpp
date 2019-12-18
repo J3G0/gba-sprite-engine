@@ -33,28 +33,32 @@ void GenericScene::load()
 
 std::vector<Sprite*> GenericScene::sprites()
 {
-    std::vector<Sprite*> sprites;
+    spritesVector.clear();
 
     if( gerard->getSprite() != nullptr)
     {
-        sprites.push_back(gerard->getSprite());
-    }
-
-    for(auto &b: killables)
-    {
-        sprites.push_back(b->getSprite());
+        spritesVector.push_back(gerard->getSprite());
     }
 
     for(auto &b: walkables)
     {
-        sprites.push_back(b->getSprite());
+        spritesVector.push_back(b->getSprite());
     }
 
-    return sprites;
+    for(auto &b: killables)
+    {
+        spritesVector.push_back(b->getSprite());
+    }
+
+    return spritesVector;
 }
 
 void GenericScene::tick(u16 keys)
 {
+
+    killablesSize = killables.size();
+    walkablesSize = walkables.size();
+    nonWalkablesSize = nonWalkables.size();
 
     Direction d = getCollidingDirection();
     bool onWalkableTile = isOnWalkableTile();
@@ -67,15 +71,15 @@ void GenericScene::tick(u16 keys)
     checkCollisionWithSprites();
     registerInput(keys);
 
+    if(killablesSize != killables.size() || walkablesSize != walkables.size() || nonWalkablesSize != nonWalkables.size())
+    {
+        engine->updateSpritesInScene();
+    }
+
+
     if(gerard->isAlive())
     {
         updateGerardAnimation();
-    }
-
-    if(gerard->getX() > 100)
-    {
-        gerard->getSprite()->moveTo(gerard->getX() - 1, gerard->getY());
-        scrollX++;
     }
 
     if(gerard->getHealth() <= 0 && gerard->isAlive())
@@ -329,13 +333,13 @@ void GenericScene::updateGerardAnimation()
 
 void GenericScene::registerInput(u16 keys)
 {
-    TextStream::instance().setText(("test"), 5 , 1);
+    // override  in subclass
 }
 
 void GenericScene::updateSprites()
 {
     killables.erase(
-            std::remove_if(killables.begin(), killables.end(), [](std::unique_ptr<Killable> &s) { return (s->isOffScreen() || s->hasDamaged() ); }),
+            std::remove_if(killables.begin(), killables.end(), [](std::unique_ptr<Killable> &s) { return (s->isOffScreen() ); }),
             killables.end());
 }
 

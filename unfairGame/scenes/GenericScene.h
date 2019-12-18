@@ -7,7 +7,6 @@
 
 
 #include <libgba-sprite-engine/scene.h>
-#include <libgba-sprite-engine/scene.h>
 #include <libgba-sprite-engine/sprites/sprite_builder.h>
 #include <libgba-sprite-engine/gba_engine.h>
 #include "../src/Gerard.h"
@@ -21,12 +20,16 @@ private:
     int atTime = 0;
     int deathTime = 0;
 protected:
+    std::vector<Sprite*> spritesVector;
     std::unique_ptr<Background> mario_bg;
     int scrollX;
     std::unique_ptr<Gerard> gerard;
     std::vector<std::unique_ptr<Killable>> killables;
+    int killablesSize = 0;
     std::vector<std::unique_ptr<Renderable>> walkables;
+    int walkablesSize = 0;
     std::vector<std::unique_ptr<Renderable>> nonWalkables;
+    int nonWalkablesSize = 0;
     std::shared_ptr<Data> data;
     std::vector<int> walkableBackgroundTiles = {0x005,0x006};
 

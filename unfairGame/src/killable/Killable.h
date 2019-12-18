@@ -10,9 +10,9 @@
 //Obstacle that will appear and (most likely) will kill you
 class Killable : public Renderable
 {
-    private:
-        //damaged means if the killable has hit something
-        bool damaged = false;
+private:
+    //damaged means if the killable has hit something
+    bool damaged = false;
 
 protected:
     int velX;
@@ -20,11 +20,13 @@ protected:
     int dmg;
 
 public:
+    Killable(int x, int y, int velX, int velY, int dmg);
     bool hasDamaged() const;
     void setDamaged(bool damaged);
     int getDmg() const;
     void setDmg(int dmg);
-    Killable(int x, int y, int velX, int velY, int dmg);
+    int getVelX() { return velX; }
+    int getVelY() { return velY; }
 };
 
 

@@ -12,3 +12,8 @@ Scientist::Scientist(int x, int y) : Renderable(x,y, false)
             .withAnimated(4, 5)
             .buildPtr()));
 }
+
+std::vector<Testtube> Scientist::doSomething()
+{
+
+}

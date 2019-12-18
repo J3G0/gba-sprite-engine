@@ -20,9 +20,15 @@ class BossScene : public GenericScene
 {
 public:
     BossScene(std::shared_ptr<GBAEngine> engine, std::shared_ptr<Data> data) : GenericScene(std::move(engine), std::move(data)){}
+    void load() override;
+    void registerInput(u16 keys) override;
+    std::vector<Sprite*> sprites() override;
+    void updateTubes(u16 keys);
 protected:
 
 private:
+    std::unique_ptr<Scientist> scientist;
+    std::vector<Testtube> testTubes;
 };
 
 
