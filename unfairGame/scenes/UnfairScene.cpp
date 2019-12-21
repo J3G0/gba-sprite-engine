@@ -31,7 +31,6 @@ void UnfairScene::load()
 void UnfairScene::registerInput(u16 keys)
 {
     TextStream::instance().setText(std::to_string(killables.size()), 5 , 1);
-    u32 currentTime = engine->getTimer()->getTotalMsecs();
     handleProgression();
 
     if(gerard->getX() > 100)
@@ -39,6 +38,8 @@ void UnfairScene::registerInput(u16 keys)
         gerard->getSprite()->moveTo(gerard->getX() - 1, gerard->getY());
         scrollX++;
     }
+
+    mario_bg->scroll(scrollX, 0);
 }
 
 ProgressionState UnfairScene::getProgressionState() const

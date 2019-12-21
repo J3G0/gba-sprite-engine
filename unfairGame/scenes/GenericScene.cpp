@@ -59,7 +59,6 @@ void GenericScene::tick(u16 keys)
     killablesSize = killables.size();
     walkablesSize = walkables.size();
     nonWalkablesSize = nonWalkables.size();
-
     Direction d = getCollidingDirection();
     bool onWalkableTile = isOnWalkableTile();
     u32 currentTime = engine->getTimer()->getTotalMsecs();
@@ -339,7 +338,7 @@ void GenericScene::registerInput(u16 keys)
 void GenericScene::updateSprites()
 {
     killables.erase(
-            std::remove_if(killables.begin(), killables.end(), [](std::unique_ptr<Killable> &s) { return (s->isOffScreen() ); }),
+            std::remove_if(killables.begin(), killables.end(), [](std::unique_ptr<Killable> &s) { return (s->isOffScreen() || s->hasDamaged() ); }),
             killables.end());
 }
 

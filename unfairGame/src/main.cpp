@@ -32,7 +32,7 @@
 int main() {
     std::shared_ptr<GBAEngine> engine(new GBAEngine());
     std::shared_ptr<Data> data(new Data());
-    BossScene* startScene = new BossScene(engine, data);
+    StartScene* startScene = new StartScene(engine, data);
     engine->setScene(startScene);
     data->setAmountOfDeaths(0);
 

@@ -23,12 +23,15 @@ public:
     void load() override;
     void registerInput(u16 keys) override;
     std::vector<Sprite*> sprites() override;
-    void updateTubes(u16 keys);
+    void spawnTubeBomb();
+    void spawnFireBall();
+    void spawnFireBalls();
+    //todo : make priv
+    int scientistTime = 0;
 protected:
 
 private:
     std::unique_ptr<Scientist> scientist;
-    std::vector<Testtube> testTubes;
 };
 
 

@@ -41,6 +41,8 @@ public:
     bool isWalkable() const;
 
     void setWalkable(bool walkable);
+    int getIsLeftOfRightOf(Sprite &other);
+    VECTOR getVectorToHitOtherSprite(VECTOR otherSpriteCoord);
 
 
 
