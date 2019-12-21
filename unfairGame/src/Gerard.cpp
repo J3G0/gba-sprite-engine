@@ -7,7 +7,7 @@ Gerard::Gerard(int x, int y, Direction direction) : Renderable(x, y, false)
 {
     this->direction = direction;
     this->setSprite((spriteBuilder
-        .withData(Walking_Gerard_RightTiles, sizeof(Walking_Gerard_RightTiles))
+        .withData(Walking_Gerard_AllTiles, sizeof(Walking_Gerard_AllTiles))
         .withSize(SIZE_16_32)
         .withLocation(x, y)
         // Disabling this fixes bug (feature) where sprites are flashing with animations of Gerard

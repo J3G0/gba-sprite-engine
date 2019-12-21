@@ -8,7 +8,7 @@
 #include <libgba-sprite-engine/effects/fade_out_scene.h>
 #include <algorithm>
 #include "UnfairScene.h"
-#include "../sprite/sprite_data/sprite_data.h"
+#include "../sprite/sprite_data/combined_data.h"
 #include "../sprite/sprite_data/background_data.h"
 #include "StartScene.h"
 #include "../src/killable/FireBall.h"

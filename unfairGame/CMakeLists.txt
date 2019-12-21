@@ -10,7 +10,6 @@ add_executable(${PROJECT_NAME}.elf
         scenes/BossScene.h
         scenes/GenericScene.cpp
         scenes/GenericScene.h
-        sprite/sprite_data/sprite_data.h
         src/killable/Killable.h
         src/killable/Killable.cpp
         src/Renderable.cpp

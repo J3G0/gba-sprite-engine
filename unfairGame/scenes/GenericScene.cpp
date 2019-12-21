@@ -3,7 +3,6 @@
 //
 
 #include "GenericScene.h"
-#include "../sprite/sprite_data/sprite_data.h"
 #include "../sprite/sprite_data/background_data.h"
 #include "UnfairScene.h"
 #include "StartScene.h"

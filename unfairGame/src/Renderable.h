@@ -8,9 +8,7 @@
 #include <libgba-sprite-engine/sprites/sprite.h>
 #include "libgba-sprite-engine/sprites/sprite_builder.h"
 //Renderable needs to know all sprite data
-#include "../sprite/sprite_data/sprite_data.h"
-#include "../sprite/walkable.c"
-
+#include "../sprite/sprite_data/combined_data.h"
 
 // Base class of something in scene
 // loosely based on https://github.com/J3G0/gba-sprite-engine/blob/master/demos/demo3-foodthrowing/src/bullet.h

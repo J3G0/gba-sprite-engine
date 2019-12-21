@@ -4,7 +4,6 @@
 
 #include <libgba-sprite-engine/background/text_stream.h>
 #include "BossScene.h"
-#include "../sprite/sprite_data/background_data.h"
 #include "../src/killable/FireBall.h"
 
 #define SCIENTIST_MOVE_TICK_TIME 3000
