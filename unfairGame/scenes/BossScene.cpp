@@ -6,6 +6,7 @@
 #include <algorithm>
 #include "BossScene.h"
 #include "../src/killable/FireBall.h"
+#include "EndScene.h"
 
 #define SCIENTIST_MOVE_TICK_TIME 3000
 #define MINE_TICK_RATE 350
@@ -28,10 +29,15 @@ void BossScene::registerInput(u16 keys)
     u32 gerardX = gerard->getX();
     u32 gerardY = gerard->getY();
 
-    if(keys == KEY_START)
+    if(keys == KEY_START && !mine->getNeedsUpdate())
     {
         mine->getSprite()->moveTo(min(gerardX - 10,GBA_SCREEN_WIDTH), gerardY + 16);
         mine->setNeedsUpdate(true);
+    }
+
+    if(scientist->getHealth() < 100)
+    {
+        engine->setScene(new EndScene(std::move(engine), std::move(data)));
     }
 }
 
@@ -159,7 +165,6 @@ void BossScene::handleScientistActions(u32 currentTime)
 
 void BossScene::handleMine(u32 currentTime)
 {
-    TextStream::instance().setText(std::to_string(mine->getNeedsUpdate()), 5 , 1);
     if (currentTime - mine->getMineTickTime() > MINE_TICK_RATE )
     {
         if(mine->getNeedsUpdate())
@@ -167,6 +172,18 @@ void BossScene::handleMine(u32 currentTime)
             mine->setMineTickTime(currentTime);
             mine->tickMine();
             updateMine();
+        }
+    }
+
+    if(mine->getCurrentFrame() > 3)
+    {
+        bool hit = isMineHittingScientist();
+        if (hit && !mine->hasDamaged())
+        {
+            u32 currentScientistHealth = scientist->getHealth();
+            u32 mineDamage = mine->getDmg();
+            scientist->setHealth(currentScientistHealth - mineDamage);
+            mine->setDamaged(true);
         }
     }
 }
@@ -177,4 +194,15 @@ void BossScene::updateMine()
     {
         mine->resetMine();
     }
+}
+
+bool BossScene::isMineHittingScientist()
+{
+
+    u32 mineX = mine->getSprite()->getX();
+    u32 mineExplosionRadius = mine->getExplosionRadius();
+    u32 scientistX = scientist->getSprite()->getX();
+    bool inRange = scientistX > mineX - mineExplosionRadius && scientistX < mineX + mineExplosionRadius;
+
+    return inRange;
 }

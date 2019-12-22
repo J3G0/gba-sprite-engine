@@ -30,6 +30,7 @@ public:
     void handleScientistActions(u32 currentTime);
     void handleMine(u32 currentTime);
     void updateMine();
+    bool isMineHittingScientist();
 
 protected:
 

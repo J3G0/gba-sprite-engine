@@ -408,7 +408,7 @@ void GenericScene::updateHealthbar()
     // 100 - 75 --> frame 0
     // 75 - 50 --> frame 1
     int health = gerard->getHealth();
-    int healthTick =  4 - (health / 25);
+    int healthTick =  max(4 - (health / 25), 0);
     TextStream::instance().setText(std::to_string(healthTick), 10, 10);
 
     healthbar->getSprite()->animateToFrame(healthTick);

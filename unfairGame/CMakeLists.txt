@@ -10,6 +10,8 @@ add_executable(${PROJECT_NAME}.elf
         scenes/BossScene.h
         scenes/GenericScene.cpp
         scenes/GenericScene.h
+        scenes/EndScene.cpp
+        scenes/EndScene.h
         src/killable/Killable.h
         src/killable/Killable.cpp
         src/Renderable.cpp

@@ -19,12 +19,14 @@ public:
     void resetMine();
     bool getNeedsUpdate() { return needsUpdate; }
     void setNeedsUpdate(bool needsUpdate) {this->needsUpdate = needsUpdate; }
+    int getExplosionRadius() { return explosionRadius; }
 
 protected:
 
 private:
     int mineTickTime;
-    bool needsUpdate;
+    const int explosionRadius = 25;
+    bool needsUpdate = false;
     const int amountOfFrames = 5;
     int currentFrame = getSprite()->getCurrentFrame();
 };

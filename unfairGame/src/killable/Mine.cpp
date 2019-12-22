@@ -36,6 +36,7 @@ void Mine::tickMine()
 void Mine::resetMine()
 {
     needsUpdate = false;
+    setDamaged(false);
     getSprite()->animateToFrame(0);
     currentFrame = 0;
     getSprite()->moveTo(-50,-50);

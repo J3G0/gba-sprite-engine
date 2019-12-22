@@ -27,12 +27,16 @@ public:
     int getScientistTime() { return scientistTime; }
     void setScientistTime(int scientistTime) {  this->scientistTime = scientistTime; }
 
+    int getHealth() { return health; }
+    void setHealth(int health) { this->health = health; }
+
 protected:
 
 private:
     bool reachedXDestination = false;
     int xDestination = 0;
     int scientistTime = 0;
+    int health = 100;
 };
 
 

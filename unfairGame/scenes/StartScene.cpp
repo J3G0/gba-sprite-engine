@@ -21,7 +21,6 @@ void StartScene::load()
 {
     basicLoad();
     backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(startScreenPal, sizeof(startScreenPal)));
-    //Diff bg? remove this
     background = std::unique_ptr<Background>(new Background(1, startScreenTiles, sizeof(startScreenTiles), startScreenMap, sizeof(startScreenMap)));
     background->useMapScreenBlock(16);
     healthbar->getSprite()->moveTo(-50,-50);
