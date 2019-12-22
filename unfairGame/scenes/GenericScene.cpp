@@ -21,7 +21,7 @@
 
 std::vector<Background *> GenericScene::backgrounds()
 {
-    return { mario_bg.get() };
+    return { background.get() };
 }
 
 void GenericScene::load()
@@ -37,6 +37,11 @@ std::vector<Sprite*> GenericScene::sprites()
     if( gerard->getSprite() != nullptr)
     {
         spritesVector.push_back(gerard->getSprite());
+    }
+
+    if(healthbar->getSprite() != nullptr)
+    {
+        spritesVector.push_back(healthbar->getSprite());
     }
 
     for(auto &b: walkables)
@@ -390,7 +395,10 @@ void GenericScene::basicLoad()
     gerard = std::unique_ptr<Gerard>(new Gerard(0,100, NOT_MOVING));
     gerard->getSprite()->setStayWithinBounds(true);
 
+    healthbar = std::unique_ptr<Healthbar>(new Healthbar(0,0));
+    healthbar->getSprite()->animateToFrame(0);
+
     //Diff bg? remove this
-    mario_bg = std::unique_ptr<Background>(new Background(1, background_data, sizeof(background_data), map, sizeof(map)));
-    mario_bg->useMapScreenBlock(16);
+    background = std::unique_ptr<Background>(new Background(1, background_data, sizeof(background_data), map, sizeof(map)));
+    background->useMapScreenBlock(16);
 }

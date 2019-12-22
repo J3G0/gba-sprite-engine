@@ -12,6 +12,7 @@
 #include "../src/Gerard.h"
 #include "../src/Data.h"
 #include "../src/killable/Killable.h"
+#include "../src/Healthbar.h"
 
 class GenericScene : public Scene
 {
@@ -21,9 +22,12 @@ private:
     int deathTime = 0;
 protected:
     std::vector<Sprite*> spritesVector;
-    std::unique_ptr<Background> mario_bg;
+    std::unique_ptr<Background> background;
     int scrollX;
     std::unique_ptr<Gerard> gerard;
+    // No 64x16 possible
+    // (see https://www.coranac.com/tonc/text/regobj.htm#tbl-obj-size)
+    std::unique_ptr<Healthbar> healthbar;
     std::vector<std::unique_ptr<Killable>> killables;
     int killablesSize = 0;
     std::vector<std::unique_ptr<Renderable>> walkables;

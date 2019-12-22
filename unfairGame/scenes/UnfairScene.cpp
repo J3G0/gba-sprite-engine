@@ -39,7 +39,7 @@ void UnfairScene::registerInput(u16 keys)
         scrollX++;
     }
 
-    mario_bg->scroll(scrollX, 0);
+    background->scroll(scrollX, 0);
 }
 
 ProgressionState UnfairScene::getProgressionState() const

@@ -1,12 +1,13 @@
 //
-// Created by Sebastiaan on 17/12/2019.
+// Created by Sebastiaan on 22/12/2019.
 //
 
-#include "FireBall.h"
-FireBall::FireBall(int x, int y, int velX, int velY, int dmg) : Killable(x, y, velX, velY, dmg)
+#include "Mine.h"
+Mine::Mine(int x, int y, int dmg) : Killable(x, y, 0, 0, dmg)
 {
     this->setSprite((spriteBuilder
-            .withData(FireballTiles, sizeof(FireballTiles))
+            //This needs to be updated based on type of killable
+            .withData(mineTiles, sizeof(mineTiles))
             .withSize(SIZE_8_8)
             .withVelocity(velX, velY)
             .withLocation(x, y)
@@ -16,5 +17,4 @@ FireBall::FireBall(int x, int y, int velX, int velY, int dmg) : Killable(x, y, v
     this->velX = velX;
     this->velY = velY;
     this->dmg = dmg;
-
 }

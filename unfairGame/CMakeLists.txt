@@ -16,6 +16,8 @@ add_executable(${PROJECT_NAME}.elf
         src/Renderable.h
         src/Gerard.cpp
         src/Gerard.h
+        src/Healthbar.cpp
+        src/Healthbar.h
         src/Data.cpp
         src/Data.h
         src/Scientist.cpp
@@ -24,6 +26,8 @@ add_executable(${PROJECT_NAME}.elf
         src/killable/FireBall.h
         src/killable/Testtube.cpp
         src/killable/Testtube.h
+        src/killable/Mine.cpp
+        src/killable/Mine.h
         )
 
 target_link_libraries(${PROJECT_NAME}.elf gba-sprite-engine)

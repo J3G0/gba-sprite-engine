@@ -12,6 +12,7 @@ void BossScene::load()
 {
     basicLoad();
     scientist = (std::unique_ptr<Scientist>(new Scientist(100, 112)));
+
     engine->getTimer()->start();
 }
 
