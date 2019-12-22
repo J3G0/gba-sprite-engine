@@ -15,6 +15,7 @@
 #include "../src/Data.h"
 #include "../src/Scientist.h"
 #include "GenericScene.h"
+#include "../src/killable/Mine.h"
 
 class BossScene : public GenericScene
 {
@@ -26,12 +27,15 @@ public:
     void spawnTubeBomb();
     void spawnFireBall();
     void spawnFireBalls();
-    //todo : make priv
-    int scientistTime = 0;
+    void handleScientistActions(u32 currentTime);
+    void handleMine(u32 currentTime);
+    void updateMine();
+
 protected:
 
 private:
     std::unique_ptr<Scientist> scientist;
+    std::unique_ptr<Mine> mine;
 };
 
 

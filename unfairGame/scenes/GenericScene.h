@@ -56,6 +56,7 @@ public:
     void updateSprites();
     void moveSprites();
     void checkCollisionWithSprites();
+    void updateHealthbar();
 
 
 

@@ -73,6 +73,7 @@ void GenericScene::tick(u16 keys)
     updateSprites();
     checkCollisionWithSprites();
     registerInput(keys);
+    updateHealthbar();
 
     if(killablesSize != killables.size() || walkablesSize != walkables.size() || nonWalkablesSize != nonWalkables.size())
     {
@@ -398,7 +399,19 @@ void GenericScene::basicLoad()
     healthbar = std::unique_ptr<Healthbar>(new Healthbar(0,0));
     healthbar->getSprite()->animateToFrame(0);
 
-    //Diff bg? remove this
     background = std::unique_ptr<Background>(new Background(1, background_data, sizeof(background_data), map, sizeof(map)));
     background->useMapScreenBlock(16);
+}
+
+void GenericScene::updateHealthbar()
+{
+    // 100 - 75 --> frame 0
+    // 75 - 50 --> frame 1
+    int health = gerard->getHealth();
+    int healthTick =  4 - (health / 25);
+    TextStream::instance().setText(std::to_string(healthTick), 10, 10);
+
+    healthbar->getSprite()->animateToFrame(healthTick);
+
+
 }

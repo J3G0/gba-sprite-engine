@@ -12,8 +12,21 @@ class Mine : public Killable
 {
 public:
     Mine(int x, int y, int dmg);
+    int getMineTickTime() { return mineTickTime; }
+    void setMineTickTime(int mineTickTime) {this->mineTickTime = mineTickTime; }
+    int getCurrentFrame() { return currentFrame; }
+    void tickMine();
+    void resetMine();
+    bool getNeedsUpdate() { return needsUpdate; }
+    void setNeedsUpdate(bool needsUpdate) {this->needsUpdate = needsUpdate; }
+
 protected:
+
 private:
+    int mineTickTime;
+    bool needsUpdate;
+    const int amountOfFrames = 5;
+    int currentFrame = getSprite()->getCurrentFrame();
 };
 
 

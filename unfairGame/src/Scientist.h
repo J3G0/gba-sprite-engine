@@ -23,11 +23,16 @@ public:
     void setXDestination(int xDestination) {this->xDestination = xDestination; }
 
     bool hasReachedXDestination() { return xDestination == getX(); }
+
+    int getScientistTime() { return scientistTime; }
+    void setScientistTime(int scientistTime) {  this->scientistTime = scientistTime; }
+
 protected:
 
 private:
     bool reachedXDestination = false;
     int xDestination = 0;
+    int scientistTime = 0;
 };
 
 
