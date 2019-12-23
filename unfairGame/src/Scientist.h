@@ -30,13 +30,17 @@ public:
     int getHealth() { return health; }
     void setHealth(int health) { this->health = health; }
 
+    bool getCanBeDamaged() { return canBeDamaged; }
+    void setCanBeDamaged(bool canBeDamaged) { this->canBeDamaged = canBeDamaged; }
+
 protected:
 
 private:
     bool reachedXDestination = false;
     int xDestination = 0;
     int scientistTime = 0;
-    int health = 100;
+    int health = 6;
+    bool canBeDamaged = true;
 };
 
 

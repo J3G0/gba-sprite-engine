@@ -31,6 +31,7 @@ public:
     void handleMine(u32 currentTime);
     void updateMine();
     bool isMineHittingScientist();
+    void updateScientistHealthbar();
 
 protected:
 

@@ -15,17 +15,28 @@ void BossScene::load()
 {
     basicLoad();
     scientist = (std::unique_ptr<Scientist>(new Scientist(100, 112)));
-    healthbar->getSprite()->moveTo(0,0);
-    mine = std::unique_ptr<Mine>(new Mine(50,50,50));
+    healthbarGerard->getSprite()->moveTo(0,0);
+    u32 it = 0;
+    for(auto &h : healthBarScientist)
+    {
+        healthBarScientist.push_back(std::unique_ptr<Healthbar>(new Healthbar(-50, -50)));
+        u32 healthBarWidth = healthBarScientist.at(it)->getSprite()->getWidth();
+        u32 healthBarHeight = healthBarScientist.at(it)->getSprite()->getHeight();
+        healthBarScientist.at(it)->getSprite()->moveTo(GBA_SCREEN_WIDTH - healthBarWidth, it * healthBarHeight);
+        healthBarScientist.at(it)->getSprite()->animateToFrame(it);
+        it++;
+    }
+    mine = std::unique_ptr<Mine>(new Mine(50,50,2));
     engine->getTimer()->start();
 }
 
 void BossScene::registerInput(u16 keys)
 {
+    TextStream::instance().setText(std::to_string(healthBarScientist.size()), 5 , 1);
     u32 currentTime = engine->getTimer()->getTotalMsecs();
     handleScientistActions(currentTime);
     handleMine(currentTime);
-
+    updateScientistHealthbar();
     u32 gerardX = gerard->getX();
     u32 gerardY = gerard->getY();
 
@@ -35,8 +46,10 @@ void BossScene::registerInput(u16 keys)
         mine->setNeedsUpdate(true);
     }
 
-    if(scientist->getHealth() < 100)
+    if(scientist->getHealth() <= 0 && gerard->isAlive())
     {
+        scientist->setCanBeDamaged(false);
+        engine->updateSpritesInScene();
         engine->setScene(new EndScene(std::move(engine), std::move(data)));
     }
 }
@@ -46,18 +59,23 @@ std::vector<Sprite*> BossScene::sprites()
     spritesVector.clear();
 
     spritesVector.push_back(scientist->getSprite());
-    spritesVector.push_back(healthbar->getSprite());
+    spritesVector.push_back(healthbarGerard->getSprite());
     spritesVector.push_back(mine->getSprite());
     spritesVector.push_back(gerard->getSprite());
 
-    for(auto &b: walkables)
+    for(auto &h: healthBarScientist)
     {
-        spritesVector.push_back(b->getSprite());
+        spritesVector.push_back(h->getSprite());
     }
 
-    for(auto &b: killables)
+    for(auto &w: walkables)
     {
-        spritesVector.push_back(b->getSprite());
+        spritesVector.push_back(w->getSprite());
+    }
+
+    for(auto &k: killables)
+    {
+        spritesVector.push_back(k->getSprite());
     }
 
     return spritesVector;
@@ -88,7 +106,7 @@ void BossScene::spawnFireBall()
         fireballCoords.y = 0;
 
         VECTOR v = gerard->getVectorToHitOtherSprite(fireballCoords);
-        killables.push_back(std::unique_ptr<FireBall>(new FireBall(fireballCoords.x, fireballCoords.y, v.x, v.y, 50)));
+        killables.push_back(std::unique_ptr<FireBall>(new FireBall(fireballCoords.x, fireballCoords.y, v.x, v.y, 1)));
     }
     //Right side
     else
@@ -99,7 +117,7 @@ void BossScene::spawnFireBall()
         fireballCoords.y = 0;
 
         VECTOR v = gerard->getVectorToHitOtherSprite(fireballCoords);
-        killables.push_back(std::unique_ptr<FireBall>(new FireBall(fireballCoords.x, fireballCoords.y, v.x, v.y, 50)));
+        killables.push_back(std::unique_ptr<FireBall>(new FireBall(fireballCoords.x, fireballCoords.y, v.x, v.y, 1)));
     }
 }
 
@@ -108,7 +126,7 @@ void BossScene::spawnFireBalls()
     u32 gerardX = gerard->getX() - 10;
     for(int i = 0; i < 5 ; i++)
     {
-        killables.push_back(std::unique_ptr<FireBall>(new FireBall(gerardX + (5 * i) ,5 * i, 0, 4, 20)));
+        killables.push_back(std::unique_ptr<FireBall>(new FireBall(gerardX + (5 * i) ,5 * i, 0, 4, 1)));
     }
 }
 
@@ -182,8 +200,11 @@ void BossScene::handleMine(u32 currentTime)
         {
             u32 currentScientistHealth = scientist->getHealth();
             u32 mineDamage = mine->getDmg();
-            scientist->setHealth(currentScientistHealth - mineDamage);
-            mine->setDamaged(true);
+            if(scientist->getCanBeDamaged())
+            {
+                scientist->setHealth(currentScientistHealth - mineDamage);
+                mine->setDamaged(true);
+            }
         }
     }
 }
@@ -205,4 +226,48 @@ bool BossScene::isMineHittingScientist()
     bool inRange = scientistX > mineX - mineExplosionRadius && scientistX < mineX + mineExplosionRadius;
 
     return inRange;
+}
+
+void BossScene::updateScientistHealthbar()
+{
+    u32 scientistHealth = scientist->getHealth();
+
+    //Modulo for scientist health
+    // Returns 1 when health is 4 - 6
+    // Returns 0 when health is 0 - 3;
+    u32 scientistHealthMod = scientistHealth % 3;
+
+    if(scientistHealth < 4)
+    {
+        healthBarScientist.at(1)->getSprite()->animateToFrame(3);
+    }
+
+    switch(scientistHealth)
+    {
+        case 0:
+                 healthBarScientist.at(0)->getSprite()->animateToFrame(3);
+            break;
+        case 1:
+                 healthBarScientist.at(0)->getSprite()->animateToFrame(2);
+            break;
+
+        case 2:
+                 healthBarScientist.at(0)->getSprite()->animateToFrame(1);
+            break;
+        case 3:
+                 healthBarScientist.at(0)->getSprite()->animateToFrame(0);
+            break;
+
+        case 4:
+                healthBarScientist.at(1)->getSprite()->animateToFrame(2);
+            break;
+
+        case 5:
+                healthBarScientist.at(1)->getSprite()->animateToFrame(1);
+            break;
+
+        case 6:
+                healthBarScientist.at(1)->getSprite()->animateToFrame(0);
+            break;
+    }
 }

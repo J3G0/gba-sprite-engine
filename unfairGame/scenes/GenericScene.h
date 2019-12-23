@@ -27,7 +27,8 @@ protected:
     std::unique_ptr<Gerard> gerard;
     // No 64x16 possible
     // (see https://www.coranac.com/tonc/text/regobj.htm#tbl-obj-size)
-    std::unique_ptr<Healthbar> healthbar;
+    std::unique_ptr<Healthbar> healthbarGerard;
+    std::vector<std::unique_ptr<Healthbar>> healthBarScientist;
     std::vector<std::unique_ptr<Killable>> killables;
     int killablesSize = 0;
     std::vector<std::unique_ptr<Renderable>> walkables;

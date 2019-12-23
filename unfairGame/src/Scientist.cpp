@@ -24,7 +24,7 @@ std::vector<std::unique_ptr <Testtube>>  Scientist::tubeBomb(int dx)
     for(int i = 0; i < 5; i++)
     {
         short rDx = rand() % 3 + 1;
-        tubes.push_back(std::unique_ptr<Testtube>(new Testtube(scientistX,20 + scientistY,dx * rDx,-2 +  i,10)));
+        tubes.push_back(std::unique_ptr<Testtube>(new Testtube(scientistX,20 + scientistY,dx * rDx,-2 +  i,1)));
     }
     return tubes;
 }

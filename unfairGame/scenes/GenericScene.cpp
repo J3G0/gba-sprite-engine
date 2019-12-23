@@ -39,19 +39,24 @@ std::vector<Sprite*> GenericScene::sprites()
         spritesVector.push_back(gerard->getSprite());
     }
 
-    if(healthbar->getSprite() != nullptr)
+    if(healthbarGerard->getSprite() != nullptr)
     {
-        spritesVector.push_back(healthbar->getSprite());
+        spritesVector.push_back(healthbarGerard->getSprite());
     }
 
-    for(auto &b: walkables)
+    for(auto &h : healthBarScientist)
     {
-        spritesVector.push_back(b->getSprite());
+        spritesVector.push_back(h->getSprite());
     }
 
-    for(auto &b: killables)
+    for(auto &w: walkables)
     {
-        spritesVector.push_back(b->getSprite());
+        spritesVector.push_back(w->getSprite());
+    }
+
+    for(auto &k: killables)
+    {
+        spritesVector.push_back(k->getSprite());
     }
 
     return spritesVector;
@@ -396,8 +401,13 @@ void GenericScene::basicLoad()
     gerard = std::unique_ptr<Gerard>(new Gerard(0,100, NOT_MOVING));
     gerard->getSprite()->setStayWithinBounds(true);
 
-    healthbar = std::unique_ptr<Healthbar>(new Healthbar(0,0));
-    healthbar->getSprite()->animateToFrame(0);
+    healthbarGerard = std::unique_ptr<Healthbar>(new Healthbar(0,0));
+    healthbarGerard->getSprite()->animateToFrame(0);
+
+    for (int i = 0; i < 2; i++)
+    {
+        healthBarScientist.push_back(std::unique_ptr<Healthbar>(new Healthbar(-50, -50)));
+    }
 
     background = std::unique_ptr<Background>(new Background(1, background_data, sizeof(background_data), map, sizeof(map)));
     background->useMapScreenBlock(16);
@@ -405,13 +415,13 @@ void GenericScene::basicLoad()
 
 void GenericScene::updateHealthbar()
 {
-    // 100 - 75 --> frame 0
-    // 75 - 50 --> frame 1
-    int health = gerard->getHealth();
-    int healthTick =  max(4 - (health / 25), 0);
-    TextStream::instance().setText(std::to_string(healthTick), 10, 10);
+    // 4 Frames
+    // Frame 0: Full health
 
-    healthbar->getSprite()->animateToFrame(healthTick);
-
+    // Frame 3: Zero health
+    int healthGerard = gerard->getHealth();
+    int healthTickGerard =  min(4 - healthGerard, 3);
+    //TextStream::instance().setText(std::to_string(healthTick), 5 , 1);
+    healthbarGerard->getSprite()->animateToFrame(healthTickGerard);
 
 }

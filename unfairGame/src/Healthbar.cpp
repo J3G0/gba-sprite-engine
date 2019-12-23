@@ -7,9 +7,10 @@
 Healthbar::Healthbar(int x, int y) : Renderable(x,y,false)
 {
     this->setSprite((spriteBuilder
-            .withData(HealthBarTiles, sizeof(HealthBarTiles))
+            .withData(HealthBarHeartsTiles, sizeof(HealthBarHeartsTiles))
             .withSize(SIZE_32_16)
             .withLocation(x,y)
             .buildPtr()));
+    this->getSprite()->animateToFrame(0);
 }
 #include "Healthbar.h"

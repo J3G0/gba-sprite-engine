@@ -15,7 +15,7 @@ private:
     Direction direction;
     int dx = 0;
     int dy = 0;
-    int health = 100;
+    int health = 4;
     bool alive = true;
     bool jumping = false;
 
