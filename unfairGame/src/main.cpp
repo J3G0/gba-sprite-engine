@@ -24,7 +24,7 @@
  *
  * Scene 1: Normale scene
  * Scene 2: Flipped scene
- * Scene 3: Maan?
+ * Scene 3: Maan? -> low gravity
  * Scene 4: Bossfight
  */
 
