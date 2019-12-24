@@ -20,7 +20,6 @@ Gerard::~Gerard()
 
 }
 
-
 void Gerard::setDirection(Direction newDirection)
 {
     direction = newDirection;

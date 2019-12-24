@@ -43,3 +43,10 @@ TEST_F(GerardSuite, Verify_Direction)
     ASSERT_EQ(gerard->getDirection(),RIGHT_DOWN);
 }
 
+TEST_F(GerardSuite, Verify_Alive)
+{
+    ASSERT_TRUE(gerard->isAlive());
+    gerard->setIsAlive(false);
+    ASSERT_FALSE(gerard->isAlive());
+}
+

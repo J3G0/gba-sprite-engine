@@ -3,7 +3,6 @@
 //
 
 #include "Scientist.h"
-#include "libgba-sprite-engine/gba/tonc_math.h"
 
 Scientist::Scientist(int x, int y) : Renderable(x,y, false)
 {
