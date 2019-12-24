@@ -1,3 +1,2 @@
 
-## The Unfair Game
-#by Sebastiaan and Jeffrey
+## The Unfair Game (by Sebastiaan and Jeffrey)
