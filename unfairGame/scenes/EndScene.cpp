@@ -13,6 +13,6 @@ void EndScene::tick(u16 keys)
 
     if(keys == KEY_START)
     {
-        engine->setScene(new UnfairScene(engine, GenericScene::data));
+        engine->setScene(new UnfairScene(engine, data));
     }
 }

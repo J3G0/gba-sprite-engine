@@ -9,6 +9,8 @@
 #include <libgba-sprite-engine/scene.h>
 #include <libgba-sprite-engine/sprites/sprite_builder.h>
 #include <libgba-sprite-engine/gba_engine.h>
+
+#include <utility>
 #include "../src/Gerard.h"
 #include "../src/Data.h"
 #include "../src/killable/Killable.h"
@@ -37,9 +39,10 @@ protected:
     int nonWalkablesSize = 0;
     std::shared_ptr<Data> data;
     std::vector<int> walkableBackgroundTiles = {0x005,0x006};
+    bool canTransitionToBoss = false;
 
 public:
-    GenericScene(std::shared_ptr<GBAEngine> engine, std::shared_ptr<Data> data) : Scene(engine), data(data){}
+    GenericScene(std::shared_ptr<GBAEngine> engine, std::shared_ptr<Data> data) : Scene(std::move(engine)), data(std::move(data)){}
     std::vector<Sprite *> sprites() override;
     std::vector<Background *> backgrounds() override;
     void load() override;
@@ -58,9 +61,6 @@ public:
     void moveSprites();
     void checkCollisionWithSprites();
     void updateHealthbar();
-
-
-
 };
 
 

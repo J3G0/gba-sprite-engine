@@ -3,7 +3,6 @@
 //
 
 #include "Renderable.h"
-#include "libgba-sprite-engine/gba/tonc_math.h"
 void Renderable::setSprite(std::unique_ptr<Sprite> sprite)
 {
     Renderable::sprite = std::move(sprite);

@@ -7,6 +7,7 @@
 #include "UnfairScene.h"
 #include "StartScene.h"
 #include "../src/killable/FireBall.h"
+#include "BossScene.h"
 #include <libgba-sprite-engine/sprites/sprite_builder.h>
 #include <libgba-sprite-engine/background/text_stream.h>
 #include <libgba-sprite-engine/gba/tonc_memdef.h>
@@ -104,10 +105,19 @@ void GenericScene::tick(u16 keys)
     {
         if(currentTime - deathTime > 1500)
         {
+            load();
             data->increaseAmountOfDeaths();
-            engine->setScene(new StartScene(engine, data));
+            engine->setScene(new UnfairScene(engine, data));
         }
     }
+
+    else if(canTransitionToBoss && gerard->isAlive())
+    {
+        load();
+        engine->setScene(new BossScene(engine, data));
+    }
+
+
 
 }
 

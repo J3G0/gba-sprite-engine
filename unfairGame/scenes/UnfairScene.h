@@ -37,6 +37,7 @@ protected:
 
 private:
     ProgressionState progressionState = NONE;
+    bool hasChanged = false;
 };
 
 #endif //GBA_SPRITE_ENGINE_PROJECT_UNFAIRSCENE_H

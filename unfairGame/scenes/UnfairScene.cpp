@@ -13,6 +13,7 @@
 #include "StartScene.h"
 #include "../src/killable/FireBall.h"
 #include "../src/killable/Testtube.h"
+#include "BossScene.h"
 
 #include <utility>
 
@@ -24,7 +25,7 @@
 void UnfairScene::load()
 {
     basicLoad();
-    //walkables.push_back(std::unique_ptr<Renderable>(new Renderable(50, 112, true)));
+    walkables.push_back(std::unique_ptr<Renderable>(new Renderable(50, 112, true)));
     engine->getTimer()->start();
 }
 
@@ -32,8 +33,7 @@ void UnfairScene::registerInput(u16 keys)
 {
     TextStream::instance().setText(std::to_string(killables.size()), 5 , 1);
     handleProgression();
-
-    if(gerard->getX() > 100)
+    if(gerard->getX() > 50)
     {
         gerard->getSprite()->moveTo(gerard->getX() - 1, gerard->getY());
         scrollX++;
@@ -54,7 +54,7 @@ void UnfairScene::setProgressionState(ProgressionState progressionState)
 
 void UnfairScene::handleProgression()
 {
-    int gerardX = gerard->getX();
+    int gerardX = gerard->getX() + scrollX;
     ProgressionState state = getProgressionState();
     switch(state)
     {
@@ -66,6 +66,12 @@ void UnfairScene::handleProgression()
                 // Set state to next state so no more first state fireballs will spawn
                 // https://stackoverflow.com/questions/40979513/changing-enum-to-next-value-c11
                 setProgressionState(static_cast<ProgressionState>(state + 1));
+
+                if(gerard->isAlive())
+                {
+                    load();
+                    canTransitionToBoss = true;
+                }
             }
             break;
 
@@ -81,7 +87,6 @@ void UnfairScene::handleProgression()
             break;
 
         case FINAL_STATE:
-            //Transistion to boss scene
             break;
     }
 }

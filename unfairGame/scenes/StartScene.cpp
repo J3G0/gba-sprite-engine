@@ -11,6 +11,7 @@
 void StartScene::tick(u16 keys)
 {
     TextStream::instance().setText("Amount of deaths:" + std::to_string(data->getAmountOfDeaths()), 0, 6);
+
     if(keys == KEY_START)
     {
         engine->setScene(new UnfairScene(engine, GenericScene::data));
