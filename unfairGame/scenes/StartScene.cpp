@@ -21,6 +21,12 @@ void StartScene::tick(u16 keys)
     else if(data->getAmountOfDeaths() == 2){
         TextStream::instance().setText("Maybe like don't die.", 1, 6);
     }
+    else if(data->getAmountOfDeaths() == 3){
+        TextStream::instance().setText("Avoid being hit", 1, 6);
+    }
+    else if(data->getAmountOfDeaths() == 4){
+        TextStream::instance().setText("You can read, right?", 1, 6);
+    }
 
 
     if(keys == KEY_START)
