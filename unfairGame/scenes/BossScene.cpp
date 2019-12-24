@@ -126,7 +126,7 @@ void BossScene::spawnFireBalls()
     u32 gerardX = gerard->getX() - 10;
     for(int i = 0; i < 5 ; i++)
     {
-        killables.push_back(std::unique_ptr<FireBall>(new FireBall(gerardX + (5 * i) ,5 * i, 0, 4, 1)));
+        killables.push_back(std::unique_ptr<FireBall>(new FireBall(gerardX + (5 * i) ,9 * i, 0, 4, 1)));
     }
 }
 

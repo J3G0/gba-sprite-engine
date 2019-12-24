@@ -61,7 +61,7 @@ void UnfairScene::handleProgression()
         case NONE:
             if(gerardX > 50)
             {
-                killables.push_back(std::unique_ptr<FireBall>(new FireBall(50,0, 0, 4, 100)));
+                killables.push_back(std::unique_ptr<FireBall>(new FireBall(50,0, 0, 4, 1)));
 
                 // Set state to next state so no more first state fireballs will spawn
                 // https://stackoverflow.com/questions/40979513/changing-enum-to-next-value-c11
@@ -73,9 +73,9 @@ void UnfairScene::handleProgression()
         case STATE1:
             if(gerardX > 75)
             {
-                for(int i = 0; i < 5 ; i++)
+                for(int i = 0; i < 3 ; i++)
                 {
-                    killables.push_back(std::unique_ptr<FireBall>(new FireBall(50 + (5 * i) ,5 * i, 0, 4, 100)));
+                    killables.push_back(std::unique_ptr<FireBall>(new FireBall(50 + (15 * i) ,7 * i, 0, 4, 1)));
                 }
                 setProgressionState(static_cast<ProgressionState>(state + 1));
             }
