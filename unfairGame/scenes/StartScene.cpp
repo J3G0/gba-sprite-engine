@@ -43,7 +43,7 @@ void StartScene::tick(u16 keys)
         TextStream::instance().setText("Stop pressing my buttons", 1, 4);
     }
     else if(data->getAmountOfDeaths() == 10 || data->getAmountOfDeaths() == 22){
-        TextStream::instance().setText("Green is not a creative color", 1, 3);
+        TextStream::instance().setText("Green is not a creative color", 1, 2);
     }
     else if(data->getAmountOfDeaths() == 11){
         TextStream::instance().setText("Almost 12 deaths", 1, 6);
@@ -58,7 +58,7 @@ void StartScene::tick(u16 keys)
         TextStream::instance().setText("You like dying?", 1, 6);
     }
     else if(data->getAmountOfDeaths() == 17){
-        TextStream::instance().setText("I enjoyed thinking about your failure!", 1, 2);
+        TextStream::instance().setText("I enjoyed your failure!", 1, 2);
     }
     else if(data->getAmountOfDeaths() == 19){
         TextStream::instance().setText("This is so much fun!", 1, 6);
