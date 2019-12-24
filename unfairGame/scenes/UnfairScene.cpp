@@ -25,7 +25,7 @@
 void UnfairScene::load()
 {
     basicLoad();
-    walkables.push_back(std::unique_ptr<Renderable>(new Renderable(50, 112, true)));
+    //walkables.push_back(std::unique_ptr<Renderable>(new Renderable(50, 112, true)));
     engine->getTimer()->start();
 }
 
@@ -39,7 +39,7 @@ void UnfairScene::registerInput(u16 keys)
         scrollX++;
     }
 
-    background->scroll(scrollX, 0);
+    //background->scroll(scrollX, 0);
 }
 
 ProgressionState UnfairScene::getProgressionState() const
@@ -67,11 +67,6 @@ void UnfairScene::handleProgression()
                 // https://stackoverflow.com/questions/40979513/changing-enum-to-next-value-c11
                 setProgressionState(static_cast<ProgressionState>(state + 1));
 
-                if(gerard->isAlive())
-                {
-                    load();
-                    canTransitionToBoss = true;
-                }
             }
             break;
 
@@ -86,7 +81,14 @@ void UnfairScene::handleProgression()
             }
             break;
 
-        case FINAL_STATE:
+        case STATE2:
+
+                if(gerard->isAlive() && gerardX > 120)
+                {
+                    load();
+                    canTransitionToBoss = true;
+                }
             break;
     }
+
 }

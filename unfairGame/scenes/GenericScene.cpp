@@ -80,6 +80,7 @@ void GenericScene::tick(u16 keys)
     checkCollisionWithSprites();
     registerInput(keys);
     updateHealthbar();
+    //todo: update this moveSprites();
 
     if(killablesSize != killables.size() || walkablesSize != walkables.size() || nonWalkablesSize != nonWalkables.size())
     {
@@ -107,7 +108,8 @@ void GenericScene::tick(u16 keys)
         {
             load();
             data->increaseAmountOfDeaths();
-            engine->setScene(new UnfairScene(engine, data));
+            canTransitionToBoss = false;
+            engine->setScene(new StartScene(engine, data));
         }
     }
 
@@ -368,23 +370,25 @@ void GenericScene::moveSprites()
     // A: Oplossing voor crashen : nieuwe lijst aanmaken aan daarin dingen verwijderen, die dan kopieren naar originele lijst.
     for (auto &b : walkables)
     {
-        u32 startX = b->getStartX();
-        u32 startY = b->getStartY();
+        u32 x = b->getX();
+        u32 y = b->getY();
 
-        b->getSprite()->moveTo(startX - scrollX, startY);
+        b->getSprite()->moveTo(x - scrollX, y);
         // Source https://en.cppreference.com/w/cpp/algorithm/remove
         // Waarom crashed dit?
-        //walkables.erase(std::remove_if(walkables.begin(),walkables.end(),[](std::unique_ptr<Renderable> &b){return b->isOffScreen();}),walkables.end());
+        walkables.erase(std::remove_if(walkables.begin(),walkables.end(),[](std::unique_ptr<Renderable> &b){return b->isOffScreen();}),walkables.end());
+        continue;
     }
 
-    for (auto &b : nonWalkables)
+    for (auto &b : killables)
     {
-        u32 startX = b->getStartX();
-        u32 startY = b->getStartY();
+        u32 x = b->getX();
+        u32 y = b->getY();
 
-        b->getSprite()->moveTo(startX - scrollX, startY);
+        b->getSprite()->moveTo(x - scrollX, y);
         // Source https://en.cppreference.com/w/cpp/algorithm/remove
-        //nonWalkables.erase(std::remove_if(nonWalkables.begin(),nonWalkables.end(),[this](std::unique_ptr<Renderable> &b){return b->getSprite()->collidesWith(*gerard->getSprite());}),nonWalkables.end());
+        killables.erase(std::remove_if(killables.begin(),killables.end(),[this](std::unique_ptr<Killable> &b){return b->getSprite()->collidesWith(*gerard->getSprite());}),killables.end());
+        continue;
     }
 }
 
@@ -421,6 +425,7 @@ void GenericScene::basicLoad()
 
     background = std::unique_ptr<Background>(new Background(1, background_data, sizeof(background_data), map, sizeof(map)));
     background->useMapScreenBlock(16);
+    background->scroll(0,0);
 }
 
 void GenericScene::updateHealthbar()

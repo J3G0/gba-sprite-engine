@@ -25,7 +25,7 @@ private:
 protected:
     std::vector<Sprite*> spritesVector;
     std::unique_ptr<Background> background;
-    int scrollX;
+    int scrollX = 0;
     std::unique_ptr<Gerard> gerard;
     // No 64x16 possible
     // (see https://www.coranac.com/tonc/text/regobj.htm#tbl-obj-size)
