@@ -35,7 +35,7 @@ void UnfairScene::registerInput(u16 keys)
     handleProgression();
     if(gerard->getX() > 50)
     {
-        gerard->getSprite()->moveTo(gerard->getX() - 1, gerard->getY());
+        //gerard->getSprite()->moveTo(gerard->getX() - 1, gerard->getY());
         scrollX++;
     }
 
