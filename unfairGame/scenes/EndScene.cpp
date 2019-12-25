@@ -9,7 +9,7 @@
 void EndScene::tick(u16 keys)
 {
     TextStream::instance().clear();
-    TextStream::instance().setText("You won! Press Start to retry", 0 , 6);
+    TextStream::instance().setText("You won! Press Start replay", 0 , 2);
 
     if(keys == KEY_START)
     {
