@@ -40,7 +40,7 @@ void BossScene::registerInput(u16 keys)
     u32 gerardX = gerard->getX();
     u32 gerardY = gerard->getY();
 
-    if(keys == KEY_START && !mine->getNeedsUpdate())
+    if(keys == KEY_B && !mine->getNeedsUpdate())
     {
         mine->getSprite()->moveTo(min(gerardX - 10,GBA_SCREEN_WIDTH), gerardY + 16);
         mine->setNeedsUpdate(true);

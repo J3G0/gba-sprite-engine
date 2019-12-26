@@ -207,6 +207,32 @@ VECTOR GenericScene::updateVelocity(Direction d, bool onWalkableTile, int curren
                     setAtTime(currentTime);
                 }
                 break;
+            case (KEY_A):
+                if(!gerard->isJumping())
+                {
+                    dy = -2;
+                    gerard->setIsJumping(!gerard->isJumping());
+                    setAtTime(currentTime);
+                }
+                break;
+            case (KEY_RIGHT | KEY_A):
+                dx = 1;
+                if(!gerard->isJumping())
+                {
+                    gerard->setIsJumping(!gerard->isJumping());
+                    setAtTime(currentTime);
+                }
+                break;
+            case (KEY_LEFT | KEY_A):
+                dx = -1;
+                if(!gerard->isJumping())
+                {
+                    gerard->setIsJumping(!gerard->isJumping());
+                    setAtTime(currentTime);
+                }
+                break;
+
+
             default:
                 dx = 0;
         }
