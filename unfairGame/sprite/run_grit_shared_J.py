@@ -8,8 +8,8 @@ import os
 import subprocess
 
 # grit pic1.png pic2.png kul.png '-ftc -pS -gB8 -O shared.c'
-PATH_TO_USED_PNG = 'C:/Google_Drive/SchakelIIW/CPP/'
-GRIT_COMMAND = 'grit.exe'
+PATH_TO_USED_PNG = 'C:/Google_Drive/SchakelIIW/CPP/Project/gba-sprite-engine/unfairGame/sprite/'
+GRIT_COMMAND = 'grit'
 GRIT_PARAMETERS = ' -ftc -pS -gB8 -O shared.c'
 SUBFOLDER = 'Used/'
 

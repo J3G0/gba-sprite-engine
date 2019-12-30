@@ -89,7 +89,7 @@ void UnfairScene::handleProgression()
             break;
 
         case STATE3:
-            if(gerardX > 230 && gerard->isAlive())
+            if(gerardX > 460 & gerard->isAlive())
             {
                 load();
                 canTransitionToBoss = true;

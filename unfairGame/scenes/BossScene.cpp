@@ -7,6 +7,7 @@
 #include "BossScene.h"
 #include "../src/killable/FireBall.h"
 #include "EndScene.h"
+#include "../src/Explosion1.h"
 
 #define SCIENTIST_MOVE_TICK_TIME 3000
 #define MINE_TICK_RATE 350
@@ -44,6 +45,9 @@ void BossScene::registerInput(u16 keys)
     {
         mine->getSprite()->moveTo(min(gerardX - 10,GBA_SCREEN_WIDTH), gerardY + 16);
         mine->setNeedsUpdate(true);
+
+        //explosion sound
+        engine->enqueueSound(explosion1, explosion1_bytes);
     }
 
     if(scientist->getHealth() <= 0 && gerard->isAlive())
