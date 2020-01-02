@@ -10,6 +10,7 @@ is to make a GBA game in C++. To do so we start from the [gba-sprite-engine](htt
 ## Minimum requirements
 <details>
 <summary>Click to see the minimum requirements</summary>
+
 * Code on GitHub with an MIT licence
 
 * Start from gba-sprite-engine (previously mentioned)
@@ -31,8 +32,8 @@ The Unfair Game is a game based on Unfair Mario.
 The main character his name is Gerard and his evil counterpart is the Saaientist (Scientist).
 <details>
 <summary>Click to see Gerard and the Saaientist</summary>
-![Gerard](https://github.com/J3G0/gba-sprite-engine/blob/master/unfairGame/sprite/Gerard/Gerard-large.png)
-![Scientist](https://github.com/J3G0/gba-sprite-engine/blob/master/unfairGame/sprite/Saaientist/Mad%20Saaientist%20large.png)
+[Gerard](https://github.com/J3G0/gba-sprite-engine/blob/master/unfairGame/sprite/Gerard/Gerard-large.png)
+[Scientist](https://github.com/J3G0/gba-sprite-engine/blob/master/unfairGame/sprite/Saaientist/Mad%20Saaientist%20large.png)
 </details>
 
 When first loading the game, a start scene is previewed with the current amount of deaths
