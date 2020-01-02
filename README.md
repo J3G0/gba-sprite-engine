@@ -36,14 +36,12 @@ He is not what his name depicts of him. Will you defeat him?
 
 <details>
 <summary>Click to see Gerard</summary>
-<img src="https://github.com/J3G0/gba-sprite-engine/blob/master/unfairGame/sprite/Gerard/Gerard-large.png
-">
+<img src="https://github.com/J3G0/gba-sprite-engine/blob/master/unfairGame/sprite/Gerard/Gerard-large.png">
 </details>
 
 <details>
 <summary>Click to see the Saaientist</summary>
-<img src="https://github.com/J3G0/gba-sprite-engine/blob/master/unfairGame/sprite/Saaientist/Mad%20Saaientist%20large.png
-">
+<img src="https://github.com/J3G0/gba-sprite-engine/blob/master/unfairGame/sprite/Saaientist/Mad%20Saaientist%20large.png">
 </details>
 
 When first loading the game, a start scene is previewed with the current amount of deaths
@@ -66,7 +64,7 @@ While trying to dodge the massive amount of testtubes or fireballs he throws at 
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
 
