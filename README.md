@@ -11,12 +11,19 @@ is to make a GBA game in C++. To do so we start from the [gba-sprite-engine](htt
 <details>
 <summary>Click to see the minimum requirements</summary>
 * Code on GitHub with an MIT licence
+
 * Start from gba-sprite-engine (previously mentioned)
+
 * If used, mention sources.
+
 * It has to compile.
+
 * README.md with a short functional description of the game.
+
 * Sketch of the domain model with explanatory text.
+
 * Timespent.csv with separated registered time spent in hours.
+
 </details>
 
 ## T.U.G.
