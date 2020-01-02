@@ -11,15 +11,15 @@ is to make a GBA game in C++. To do so we start from the [gba-sprite-engine](htt
 <details>
 <summary>Click to see the minimum requirements</summary>
 
-* Code on GitHub with an MIT licence
+* Code on GitHub with an MIT [LICENSE](LICENSE)
 
-* Start from gba-sprite-engine (previously mentioned)
+* Start from [gba-sprite-engine](https://github.com/wgroeneveld/gba-sprite-engine/)
 
 * If used, mention sources.
 
 * It has to compile.
 
-* README.md with a short functional description of the game.
+* [README](README.md) with a short functional description of the game (What you are reading now).
 
 * Sketch of the domain model with explanatory text.
 
@@ -44,6 +44,9 @@ He is not what his name depicts of him. Will you defeat him?
 <img src="https://github.com/J3G0/gba-sprite-engine/blob/master/unfairGame/sprite/Saaientist/Mad%20Saaientist%20large.png">
 </details>
 
+
+<details>
+<summary>Click to see more about T.U.G.</summary>
 When first loading the game, a start scene shows the current amount of deaths
 (yes, it has a counter and you will find out why) and instruction on how to load the next scene.
 Furthermore, there are some encouraging messages after every death.<br/>
@@ -56,6 +59,7 @@ In this scene poor Gerard has to survive the evil things that spawn trying to ki
 If you somehow make it into the final boss fight, be prepared for a fight!
 While trying to dodge the massive amount of testtubes and/or fireballs he throws at you, pressing B will spawn a bomb. This bomb has to explode while the scientist is near it in order to damage him!  <br/>
 ![Bossfight](https://github.com/J3G0/gba-sprite-engine/blob/master/unfairGame/img/unfairgame_bossfight.gif)
+</details>
 
 ## Authors
 
