@@ -1,5 +1,6 @@
 //
 // Created by Jeffrey Gorissen on 30/12/19.
+// With source sound from https://www.freesoundeffects.com/free-sounds/
 //
 
 #ifndef GBA_SPRITE_ENGINE_PROJECT_EXPLOSION_H

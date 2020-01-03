@@ -9,6 +9,7 @@
 #include "EndScene.h"
 #include "../src/sound/Explosion1.h"
 #include "../src/sound/Laugh1.h"
+#include "../src/sound/flight_of_the_bumblebee.h"
 
 #define SCIENTIST_MOVE_TICK_TIME 3000
 #define MINE_TICK_RATE 350
@@ -30,6 +31,10 @@ void BossScene::load()
     }
     mine = std::unique_ptr<Mine>(new Mine(50,50,2));
     engine->getTimer()->start();
+
+    engine->enqueueSound(Laugh, Laugh_bytes);
+
+    engine->enqueueMusic(flight_of_the_bumblebee, flight_of_the_bumblebee_bytes);
 }
 
 void BossScene::registerInput(u16 keys)
@@ -41,6 +46,7 @@ void BossScene::registerInput(u16 keys)
     updateScientistHealthbar();
     u32 gerardX = gerard->getX();
     u32 gerardY = gerard->getY();
+
 
     if(keys == KEY_B && !mine->getNeedsUpdate())
     {

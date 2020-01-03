@@ -1,5 +1,6 @@
 //
-// Created by jeffrey on 3/01/2020.
+// Created by Jeffrey Gorissen on 3/01/2020.
+// With source sound from https://www.freesoundeffects.com/free-sounds/
 //
 
 #ifndef GBA_SPRITE_ENGINE_PROJECT_LAUGH1_H
