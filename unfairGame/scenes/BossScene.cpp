@@ -4,6 +4,7 @@
 
 #include <libgba-sprite-engine/background/text_stream.h>
 #include <algorithm>
+#include <libgba-sprite-engine/effects/fade_out_scene.h>
 #include "BossScene.h"
 #include "../src/killable/FireBall.h"
 #include "EndScene.h"
@@ -61,7 +62,8 @@ void BossScene::registerInput(u16 keys)
     {
         scientist->setCanBeDamaged(false);
         engine->updateSpritesInScene();
-        engine->setScene(new EndScene(std::move(engine), std::move(data)));
+        engine->transitionIntoScene(new EndScene(std::move(engine), std::move(data)), new FadeOutScene(2));
+        //engine->setScene(new EndScene(std::move(engine), std::move(data)));
     }
 }
 

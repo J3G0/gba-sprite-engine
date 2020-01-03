@@ -14,6 +14,8 @@
 #include <libgba-sprite-engine/gba_engine.h>
 #include <libgba-sprite-engine/effects/fade_out_scene.h>
 #include <algorithm>
+#include "../src/sound/boooo.h"
+#include "../src/sound/HAHA.h"
 
 #define JUMP_TIME 1000
 #define COLLISION_OFFSET 2
