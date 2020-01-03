@@ -17,6 +17,9 @@
 #include "../src/renderable/Flag.h"
 #include "../src/renderable/ImaginaryBlock.h"
 #include "../src/killable/Plant.h"
+#include "../background/Background/Background.h"
+#include "../background/Clouds/Cloudbackground.h"
+#include "../background/Shared/shared.h"
 
 #include <utility>
 
@@ -30,18 +33,25 @@ void UnfairScene::load()
     basicLoad();
     placeSprites();
     engine->getTimer()->start();
+    engine->disableText();
+    TextStream::instance().clear();
+    backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(shared_background_palette, sizeof(shared_background_palette)));
+
+    clouds = std::unique_ptr<Background>(new Background(0, clouds_tiles, sizeof(clouds_tiles), clouds_map, sizeof(clouds_map)));
+    clouds->useMapScreenBlock(3);
+
+    background = std::unique_ptr<Background>(new Background(1, background_tiles, sizeof(background_tiles), background_map, sizeof(background_map)));
+    background->useMapScreenBlock(21);
+
 }
 
 void UnfairScene::registerInput(u16 keys)
 {
     //TextStream::instance().setText(std::to_string(gerard.get()->getX()), 5 , 1);
     handleProgression();
-    if(gerard->getX() > 50)
-    {
-        //gerard->getSprite()->moveTo(gerard->getX() - 1, gerard->getY());
-        scrollX++;
-    }
+    scrollX++;
 
+    clouds->scroll(scrollX, 0);
     //background->scroll(scrollX, 0);
 }
 
@@ -118,4 +128,9 @@ void UnfairScene::placeSprites()
     walkables.push_back(std::unique_ptr<ImaginaryBlock>(new ImaginaryBlock(190, 60)));
     walkables.push_back(std::unique_ptr<ImaginaryBlock>(new ImaginaryBlock(200, 50)));
      **/
+}
+
+std::vector<Background *>  UnfairScene::backgrounds()
+{
+    return { background.get(), clouds.get() };
 }

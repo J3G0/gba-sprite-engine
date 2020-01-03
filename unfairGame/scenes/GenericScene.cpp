@@ -4,6 +4,9 @@
 
 #include "GenericScene.h"
 #include "../background/Background/Background.h"
+#include "../background/Clouds/Cloudbackground.h"
+#include "../background/Shared/shared.h"
+
 #include "UnfairScene.h"
 #include "StartScene.h"
 #include "../src/killable/FireBall.h"
@@ -19,6 +22,7 @@
 #define COLLISION_OFFSET 2
 #define BACKGROUND_TILE_SIZE 8
 #define BACKGROUND_TILES_IN_MAPWIDTH 32
+
 
 std::vector<Background *> GenericScene::backgrounds()
 {
@@ -445,8 +449,9 @@ void GenericScene::checkCollisionWithSprites()
 
 void GenericScene::basicLoad()
 {
+    engine->disableText();
     foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(sharedPal, sizeof(sharedPal)));
-    backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(background_palette, sizeof(background_palette)));
+    backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(shared_background_palette, sizeof(shared_background_palette)));
 
     gerard = std::unique_ptr<Gerard>(new Gerard(0,100, NOT_MOVING));
     gerard->getSprite()->setStayWithinBounds(true);
@@ -460,7 +465,7 @@ void GenericScene::basicLoad()
     }
 
     background = std::unique_ptr<Background>(new Background(1, background_tiles, sizeof(background_tiles), background_map, sizeof(background_map)));
-    background->useMapScreenBlock(16);
+    background->useMapScreenBlock(2);
     background->scroll(0,0);
 }
 

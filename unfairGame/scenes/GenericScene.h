@@ -25,6 +25,7 @@ private:
 protected:
     std::vector<Sprite*> spritesVector;
     std::unique_ptr<Background> background;
+    std::unique_ptr<Background> clouds;
     int scrollX = 0;
     std::unique_ptr<Gerard> gerard;
     // No 64x16 possible
@@ -38,7 +39,7 @@ protected:
     std::vector<std::unique_ptr<Renderable>> nonWalkables;
     int nonWalkablesSize = 0;
     std::shared_ptr<Data> data;
-    std::vector<int> walkableBackgroundTiles = {0x005,0x006};
+    std::vector<int> walkableBackgroundTiles = {0x001A, 0x001B, 0x001C, 0x001D};
     bool canTransitionToBoss = false;
 
 public:
