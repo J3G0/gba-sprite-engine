@@ -3,7 +3,7 @@
 //
 
 #include "GenericScene.h"
-#include "../sprite/sprite_data/background_data.h"
+#include "../background/Background/Background.h"
 #include "UnfairScene.h"
 #include "StartScene.h"
 #include "../src/killable/FireBall.h"
@@ -346,7 +346,7 @@ int GenericScene::getBackgroundTileBlock()
 
     int tileLoc = gridX + (gridY * BACKGROUND_TILES_IN_MAPWIDTH);
 
-    return map[tileLoc];
+    return background_map[tileLoc];
 
 }
 
@@ -446,7 +446,7 @@ void GenericScene::checkCollisionWithSprites()
 void GenericScene::basicLoad()
 {
     foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(sharedPal, sizeof(sharedPal)));
-    backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(bg_palette, sizeof(bg_palette)));
+    backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(background_palette, sizeof(background_palette)));
 
     gerard = std::unique_ptr<Gerard>(new Gerard(0,100, NOT_MOVING));
     gerard->getSprite()->setStayWithinBounds(true);
@@ -459,7 +459,7 @@ void GenericScene::basicLoad()
         healthBarScientist.push_back(std::unique_ptr<Healthbar>(new Healthbar(-50, -50)));
     }
 
-    background = std::unique_ptr<Background>(new Background(1, background_data, sizeof(background_data), map, sizeof(map)));
+    background = std::unique_ptr<Background>(new Background(1, background_tiles, sizeof(background_tiles), background_map, sizeof(background_map)));
     background->useMapScreenBlock(16);
     background->scroll(0,0);
 }
