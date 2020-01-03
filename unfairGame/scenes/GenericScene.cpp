@@ -55,6 +55,11 @@ std::vector<Sprite*> GenericScene::sprites()
         spritesVector.push_back(w->getSprite());
     }
 
+    for(auto &w: nonWalkables)
+    {
+        spritesVector.push_back(w->getSprite());
+    }
+
     for(auto &k: killables)
     {
         spritesVector.push_back(k->getSprite());
@@ -71,18 +76,23 @@ void GenericScene::tick(u16 keys)
     nonWalkablesSize = nonWalkables.size();
     Direction d = getCollidingDirection();
     bool onWalkableTile = isOnWalkableTile();
+    TextStream::instance().setText(std::to_string(onWalkableTile),1,5);
+
     u32 currentTime = engine->getTimer()->getTotalMsecs();
     u32 timePassed = currentTime - getAtTime();
     VECTOR vel = updateVelocity(d, onWalkableTile, currentTime, timePassed, keys);
     gerard->setCharacterDirection(vel.x, vel.y);
     gerard->setVelocity(vel.x, vel.y);
     updateSprites();
-    checkCollisionWithSprites();
+    if(killables.size() > 0)
+    {
+        checkCollisionWithSprites();
+    }
     registerInput(keys);
     updateHealthbar();
     //todo: update this moveSprites();
 
-    if(killablesSize != killables.size() || walkablesSize != walkables.size() || nonWalkablesSize != nonWalkables.size())
+    if(killablesSize != killables.size())
     {
         engine->updateSpritesInScene();
     }
@@ -327,7 +337,7 @@ bool GenericScene::isOnWalkableTile()
 int GenericScene::getBackgroundTileBlock()
 {
 
-    u32 gerardX = (gerard->getX() + scrollX + gerard->getSprite()->getWidth() - COLLISION_OFFSET);
+    u32 gerardX = (gerard->getX() + gerard->getSprite()->getWidth() - COLLISION_OFFSET);
     u32 gerardY = gerard->getY() + gerard->getSprite()->getHeight();
 
     // 8 because one tile is 8x8
