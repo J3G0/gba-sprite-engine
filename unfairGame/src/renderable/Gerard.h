@@ -5,7 +5,7 @@
 #ifndef GBA_SPRITE_ENGINE_PROJECT_GERARD_H
 #define GBA_SPRITE_ENGINE_PROJECT_GERARD_H
 
-#include "../src/Renderable.h"
+#include "Renderable.h"
 #include "libgba-sprite-engine/timer.h"
 enum Direction {NOT_MOVING, LEFT, LEFT_UP, UP, RIGHT_UP, RIGHT, RIGHT_DOWN, DOWN, LEFT_DOWN};
 

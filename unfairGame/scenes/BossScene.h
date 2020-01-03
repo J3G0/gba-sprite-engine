@@ -11,9 +11,9 @@
 #include <libgba-sprite-engine/sprites/sprite_builder.h>
 #include <libgba-sprite-engine/gba_engine.h>
 #include <utility>
-#include "../src/Gerard.h"
+#include "../src/renderable/Gerard.h"
 #include "../src/Data.h"
-#include "../src/Scientist.h"
+#include "../src/renderable/Scientist.h"
 #include "GenericScene.h"
 #include "../src/killable/Mine.h"
 

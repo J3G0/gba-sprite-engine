@@ -9,7 +9,7 @@
 #include <libgba-sprite-engine/sprites/sprite_builder.h>
 #include <libgba-sprite-engine/gba_engine.h>
 #include <libgba-sprite-engine/background/text_stream.h>
-#include "../src/Gerard.h"
+#include "../src/renderable/Gerard.h"
 #include "../src/Data.h"
 #include "GenericScene.h"
 

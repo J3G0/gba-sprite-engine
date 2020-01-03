@@ -8,7 +8,7 @@
 
 #include <vector>
 #include "Renderable.h"
-#include "killable/Testtube.h"
+#include "../killable/Testtube.h"
 #define GBA_SCREEN_WIDTH 240
 #define GBA_SCREEN_HEIGHT 160
 

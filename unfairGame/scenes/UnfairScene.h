@@ -7,10 +7,11 @@
 #include <libgba-sprite-engine/scene.h>
 #include <libgba-sprite-engine/sprites/sprite_builder.h>
 #include "../src/killable/Killable.h"
-#include "../src/Gerard.h"
+#include "../src/renderable/Gerard.h"
 #include "../src/Data.h"
-#include "../src/Scientist.h"
+#include "../src/renderable/Scientist.h"
 #include "GenericScene.h"
+#include "../src/renderable/Flag.h"
 
 
 //Vragen
@@ -33,10 +34,12 @@ public:
     ProgressionState getProgressionState() const;
     void setProgressionState(ProgressionState progressionState);
     void handleProgression();
+    void placeSprites();
 protected:
 
 private:
     ProgressionState progressionState = NONE;
+    std::unique_ptr<Flag> flag;
     bool hasChanged = false;
 };
 

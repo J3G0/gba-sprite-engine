@@ -11,10 +11,10 @@
 #include <libgba-sprite-engine/gba_engine.h>
 
 #include <utility>
-#include "../src/Gerard.h"
+#include "../src/renderable/Gerard.h"
 #include "../src/Data.h"
 #include "../src/killable/Killable.h"
-#include "../src/Healthbar.h"
+#include "../src/renderable/Healthbar.h"
 
 class GenericScene : public Scene
 {

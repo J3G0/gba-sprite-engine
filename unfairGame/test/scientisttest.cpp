@@ -3,7 +3,7 @@
 //
 
 #include "gtest/gtest.h"
-#include "../src/Scientist.h"
+#include "../src/renderable/Scientist.h"
 
 class ScientistSuite : public ::testing::Test {
 public:

@@ -5,7 +5,7 @@
 #ifndef GBA_SPRITE_ENGINE_PROJECT_KILLABLE_H
 #define GBA_SPRITE_ENGINE_PROJECT_KILLABLE_H
 
-#include "../Renderable.h"
+#include "../renderable/Renderable.h"
 
 //Obstacle that will appear and (most likely) will kill you
 class Killable : public Renderable

@@ -14,16 +14,20 @@ add_executable(${PROJECT_NAME}.elf
         scenes/EndScene.h
         src/killable/Killable.h
         src/killable/Killable.cpp
-        src/Renderable.cpp
-        src/Renderable.h
-        src/Gerard.cpp
-        src/Gerard.h
-        src/Healthbar.cpp
-        src/Healthbar.h
+        src/renderable/Renderable.cpp
+        src/renderable/Renderable.h
+        src/renderable/Gerard.cpp
+        src/renderable/Gerard.h
+        src/renderable/Healthbar.cpp
+        src/renderable/Healthbar.h
+        src/renderable/ImaginaryBlock.cpp
+        src/renderable/ImaginaryBlock.h
+        src/renderable/Flag.cpp
+        src/renderable/Flag.h
         src/Data.cpp
         src/Data.h
-        src/Scientist.cpp
-        src/Scientist.h
+        src/renderable/Scientist.cpp
+        src/renderable/Scientist.h
         src/killable/FireBall.cpp
         src/killable/FireBall.h
         src/killable/Testtube.cpp

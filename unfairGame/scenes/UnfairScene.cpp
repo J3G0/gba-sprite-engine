@@ -14,6 +14,8 @@
 #include "../src/killable/FireBall.h"
 #include "../src/killable/Testtube.h"
 #include "BossScene.h"
+#include "../src/renderable/Flag.h"
+#include "../src/renderable/ImaginaryBlock.h"
 
 #include <utility>
 
@@ -25,7 +27,7 @@
 void UnfairScene::load()
 {
     basicLoad();
-    //walkables.push_back(std::unique_ptr<Renderable>(new Renderable(50, 112, true)));
+    placeSprites();
     engine->getTimer()->start();
 }
 
@@ -72,10 +74,7 @@ void UnfairScene::handleProgression()
         case STATE1:
             if(gerard->isAlive() && gerardX > 75)
             {
-                for(int i = 0; i < 3 ; i++)
-                {
-                    killables.push_back(std::unique_ptr<FireBall>(new FireBall(50 + (15 * i) ,7 * i, 0, 4, 1)));
-                }
+                killables.push_back(std::unique_ptr<FireBall>(new FireBall(65 ,7, 0, 4, 1)));
                 setProgressionState(static_cast<ProgressionState>(state + 1));
             }
             break;
@@ -97,4 +96,11 @@ void UnfairScene::handleProgression()
             break;
     }
 
+}
+
+void UnfairScene::placeSprites()
+{
+    flag = std::unique_ptr<Flag>(new Flag(50,112));
+
+    walkables.push_back(std::unique_ptr<ImaginaryBlock>(new ImaginaryBlock(20, 112)));
 }

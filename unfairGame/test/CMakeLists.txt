@@ -26,16 +26,16 @@ add_executable(unittest
         datatest.cpp
         ../src/Data.h
         ../src/Data.cpp
-        ../src/Gerard.h
-        ../src/Gerard.cpp
-        ../src/Scientist.h
-        ../src/Scientist.cpp
+        renderable/Gerard.h
+        renderable/Gerard.cpp
+        renderable/Scientist.h
+        renderable/Scientist.cpp
         ../src/killable/Testtube.h
         ../src/killable/Testtube.cpp
         ../src/killable/Killable.cpp
         ../src/killable/Killable.h
-        ../src/Renderable.h
-        ../src/Renderable.cpp
+        renderable/Renderable.h
+        renderable/Renderable.cpp
         ../../engine/src/gba/sin_lut.s
         ../../engine/src/background/background.cpp
         ../../engine/src/background/text_stream.cpp

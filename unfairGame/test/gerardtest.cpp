@@ -3,7 +3,7 @@
 //
 
 #include "gtest/gtest.h"
-#include "../src/Gerard.h"
+#include "../src/renderable/Gerard.h"
 
 class GerardSuite : public ::testing::Test {
 public:
