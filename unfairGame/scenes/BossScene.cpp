@@ -8,6 +8,7 @@
 #include "../src/killable/FireBall.h"
 #include "EndScene.h"
 #include "../src/sound/Explosion1.h"
+#include "../src/sound/Laugh1.h"
 
 #define SCIENTIST_MOVE_TICK_TIME 3000
 #define MINE_TICK_RATE 350
@@ -29,6 +30,8 @@ void BossScene::load()
     }
     mine = std::unique_ptr<Mine>(new Mine(50,50,2));
     engine->getTimer()->start();
+
+    engine->enqueueSound(Laugh, Laugh_bytes);
 }
 
 void BossScene::registerInput(u16 keys)
