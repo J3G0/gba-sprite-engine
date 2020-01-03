@@ -30,8 +30,6 @@ void BossScene::load()
     }
     mine = std::unique_ptr<Mine>(new Mine(50,50,2));
     engine->getTimer()->start();
-
-    engine->enqueueSound(Laugh, Laugh_bytes);
 }
 
 void BossScene::registerInput(u16 keys)
@@ -148,6 +146,7 @@ void BossScene::handleScientistActions(u32 currentTime)
     {
         if(currentTime - scientist->getScientistTime() > SCIENTIST_MOVE_TICK_TIME)
         {
+            engine->enqueueSound(Laugh, Laugh_bytes);
             scientist->setScientistTime(currentTime);
             u32 dest = scientist->generateXDestination();
             scientist->setXDestination(dest);
