@@ -3,7 +3,7 @@
 //
 
 #include "GenericScene.h"
-#include "../sprite/sprite_data/background_data.h"
+#include "../background/Background/Background.h"
 #include "UnfairScene.h"
 #include "StartScene.h"
 #include "../src/killable/FireBall.h"
@@ -57,6 +57,11 @@ std::vector<Sprite*> GenericScene::sprites()
         spritesVector.push_back(w->getSprite());
     }
 
+    for(auto &w: nonWalkables)
+    {
+        spritesVector.push_back(w->getSprite());
+    }
+
     for(auto &k: killables)
     {
         spritesVector.push_back(k->getSprite());
@@ -73,18 +78,23 @@ void GenericScene::tick(u16 keys)
     nonWalkablesSize = nonWalkables.size();
     Direction d = getCollidingDirection();
     bool onWalkableTile = isOnWalkableTile();
+    TextStream::instance().setText(std::to_string(onWalkableTile),1,5);
+
     u32 currentTime = engine->getTimer()->getTotalMsecs();
     u32 timePassed = currentTime - getAtTime();
     VECTOR vel = updateVelocity(d, onWalkableTile, currentTime, timePassed, keys);
     gerard->setCharacterDirection(vel.x, vel.y);
     gerard->setVelocity(vel.x, vel.y);
     updateSprites();
-    checkCollisionWithSprites();
+    if(killables.size() > 0)
+    {
+        checkCollisionWithSprites();
+    }
     registerInput(keys);
     updateHealthbar();
     //todo: update this moveSprites();
 
-    if(killablesSize != killables.size() || walkablesSize != walkables.size() || nonWalkablesSize != nonWalkables.size())
+    if(killablesSize != killables.size())
     {
         engine->updateSpritesInScene();
     }
@@ -329,7 +339,7 @@ bool GenericScene::isOnWalkableTile()
 int GenericScene::getBackgroundTileBlock()
 {
 
-    u32 gerardX = (gerard->getX() + scrollX + gerard->getSprite()->getWidth() - COLLISION_OFFSET);
+    u32 gerardX = (gerard->getX() + gerard->getSprite()->getWidth() - COLLISION_OFFSET);
     u32 gerardY = gerard->getY() + gerard->getSprite()->getHeight();
 
     // 8 because one tile is 8x8
@@ -338,7 +348,7 @@ int GenericScene::getBackgroundTileBlock()
 
     int tileLoc = gridX + (gridY * BACKGROUND_TILES_IN_MAPWIDTH);
 
-    return map[tileLoc];
+    return background_map[tileLoc];
 
 }
 
@@ -438,7 +448,7 @@ void GenericScene::checkCollisionWithSprites()
 void GenericScene::basicLoad()
 {
     foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(sharedPal, sizeof(sharedPal)));
-    backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(bg_palette, sizeof(bg_palette)));
+    backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(background_palette, sizeof(background_palette)));
 
     gerard = std::unique_ptr<Gerard>(new Gerard(0,100, NOT_MOVING));
     gerard->getSprite()->setStayWithinBounds(true);
@@ -451,7 +461,7 @@ void GenericScene::basicLoad()
         healthBarScientist.push_back(std::unique_ptr<Healthbar>(new Healthbar(-50, -50)));
     }
 
-    background = std::unique_ptr<Background>(new Background(1, background_data, sizeof(background_data), map, sizeof(map)));
+    background = std::unique_ptr<Background>(new Background(1, background_tiles, sizeof(background_tiles), background_map, sizeof(background_map)));
     background->useMapScreenBlock(16);
     background->scroll(0,0);
 }

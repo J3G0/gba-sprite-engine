@@ -10,6 +10,7 @@
 #include <libgba-sprite-engine/effects/fade_out_scene.h>
 #include "../sprite/StartScreen/startScreen.c"
 
+#include "../background/StartScreen/startScreen.h"
 void StartScene::tick(u16 keys)
 {
     //interaction with player on startscreen

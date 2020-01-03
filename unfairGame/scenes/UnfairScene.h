@@ -39,7 +39,7 @@ protected:
 
 private:
     ProgressionState progressionState = NONE;
-    std::unique_ptr<Flag> flag;
+    std::unique_ptr<Renderable> flag;
     bool hasChanged = false;
 };
 

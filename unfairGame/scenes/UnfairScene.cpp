@@ -16,6 +16,7 @@
 #include "BossScene.h"
 #include "../src/renderable/Flag.h"
 #include "../src/renderable/ImaginaryBlock.h"
+#include "../src/killable/Plant.h"
 
 #include <utility>
 
@@ -33,7 +34,7 @@ void UnfairScene::load()
 
 void UnfairScene::registerInput(u16 keys)
 {
-    TextStream::instance().setText(std::to_string(killables.size()), 5 , 1);
+    //TextStream::instance().setText(std::to_string(gerard.get()->getX()), 5 , 1);
     handleProgression();
     if(gerard->getX() > 50)
     {
@@ -88,10 +89,11 @@ void UnfairScene::handleProgression()
             break;
 
         case STATE3:
+
             if(gerardX > 460 & gerard->isAlive())
             {
-                load();
-                canTransitionToBoss = true;
+                //load();
+                //canTransitionToBoss = true;
             }
             break;
     }
@@ -100,7 +102,20 @@ void UnfairScene::handleProgression()
 
 void UnfairScene::placeSprites()
 {
-    flag = std::unique_ptr<Flag>(new Flag(50,112));
+    flag = std::unique_ptr<Flag>(new Flag(200,20));
 
-    walkables.push_back(std::unique_ptr<ImaginaryBlock>(new ImaginaryBlock(20, 112)));
+    //move to stop compiler from crying
+
+    walkables.push_back(std::move(flag));
+    walkables.push_back(std::unique_ptr<ImaginaryBlock>(new ImaginaryBlock(30, 120)));
+    walkables.push_back(std::unique_ptr<ImaginaryBlock>(new ImaginaryBlock(70, 80)));
+
+    nonWalkables.push_back(std::unique_ptr<ImaginaryBlock>(new ImaginaryBlock(110, 70)));
+    killables.insert(killables.begin(),  std::unique_ptr<Plant>(new Plant(110, 112, 0,0,1)));
+
+    /**
+    walkables.push_back(std::unique_ptr<ImaginaryBlock>(new ImaginaryBlock(150, 70)));
+    walkables.push_back(std::unique_ptr<ImaginaryBlock>(new ImaginaryBlock(190, 60)));
+    walkables.push_back(std::unique_ptr<ImaginaryBlock>(new ImaginaryBlock(200, 50)));
+     **/
 }
