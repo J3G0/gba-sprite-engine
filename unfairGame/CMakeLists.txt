@@ -30,7 +30,7 @@ add_executable(${PROJECT_NAME}.elf
         src/killable/Testtube.h
         src/killable/Mine.cpp
         src/killable/Mine.h
-        )
+        src/sound/Explosion1.h)
 
 target_link_libraries(${PROJECT_NAME}.elf gba-sprite-engine)
 
