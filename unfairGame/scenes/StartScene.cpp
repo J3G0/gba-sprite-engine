@@ -7,11 +7,26 @@
 #include "BossScene.h"
 #include <libgba-sprite-engine/background/text_stream.h>
 #include <libgba-sprite-engine/gba/tonc_memdef.h>
+#include <libgba-sprite-engine/effects/fade_out_scene.h>
+#include "../sprite/StartScreen/startScreen.c"
+
 #include "../background/StartScreen/startScreen.h"
 void StartScene::tick(u16 keys)
 {
     //interaction with player on startscreen
     TextStream::instance().setText("Amount of deaths:" + std::to_string(data->getAmountOfDeaths()), 0, 6);
+
+    /*
+     * keeps playing
+    //is even
+    if(data->getAmountOfDeaths() % 2 == 0 && ) {
+        engine->enqueueSound(boooo, boooo_bytes);
+    }
+    //is odd
+    else
+        engine->enqueueSound(HAHA, HAHA_bytes);
+    */
+
     if(data->getAmountOfDeaths() == 0){
         TextStream::instance().setText("Good luck!!!", 1, 6);
     }
@@ -78,10 +93,13 @@ void StartScene::tick(u16 keys)
     else if(data->getAmountOfDeaths() == 30){
         TextStream::instance().setText("Did we even test this far?", 1, 4);
     }
+    else
+        TextStream::instance().setText("I have nothing more to say", 1, 4);
 
     if(keys == KEY_START)
     {
-        engine->setScene(new UnfairScene(engine, GenericScene::data));
+        //engine->setScene(new UnfairScene(engine, GenericScene::data));
+        engine->transitionIntoScene(new UnfairScene(engine, GenericScene::data), new FadeOutScene(2));
     }
 }
 
