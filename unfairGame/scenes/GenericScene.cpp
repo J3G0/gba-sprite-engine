@@ -6,19 +6,14 @@
 #include "../background/Background/Background.h"
 #include "../background/Clouds/Cloudbackground.h"
 #include "../background/Shared/shared.h"
-
-#include "UnfairScene.h"
 #include "StartScene.h"
 #include "../src/killable/FireBall.h"
 #include "BossScene.h"
 #include <libgba-sprite-engine/sprites/sprite_builder.h>
 #include <libgba-sprite-engine/background/text_stream.h>
 #include <libgba-sprite-engine/gba/tonc_memdef.h>
-#include <libgba-sprite-engine/gba_engine.h>
 #include <libgba-sprite-engine/effects/fade_out_scene.h>
 #include <algorithm>
-#include "../src/sound/boooo.h"
-#include "../src/sound/HAHA.h"
 
 #define JUMP_TIME 1000
 #define COLLISION_OFFSET 2

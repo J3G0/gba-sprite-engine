@@ -22,7 +22,7 @@ public:
     int getXDestination() { return xDestination; }
     void setXDestination(int xDestination) {this->xDestination = xDestination; }
 
-    bool hasReachedXDestination() { return xDestination == getX(); }
+    bool hasReachedXDestination(int margin) { return ( getX() > xDestination - (margin * 2))  && getX() < xDestination + (margin * 2); }
 
     int getScientistTime() { return scientistTime; }
     void setScientistTime(int scientistTime) {  this->scientistTime = scientistTime; }
@@ -33,6 +33,9 @@ public:
     bool getCanBeDamaged() { return canBeDamaged; }
     void setCanBeDamaged(bool canBeDamaged) { this->canBeDamaged = canBeDamaged; }
 
+    void setMoveSpeed(int moveSpeed) {this->moveSpeed = moveSpeed; }
+    int getMoveSpeed() { return moveSpeed; }
+
 protected:
 
 private:
@@ -41,6 +44,7 @@ private:
     int scientistTime = 0;
     int health = 6;
     bool canBeDamaged = true;
+    int moveSpeed = 1;
 };
 
 

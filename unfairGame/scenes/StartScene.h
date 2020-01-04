@@ -21,7 +21,6 @@ class StartScene : public Scene
 private:
     std::shared_ptr<Data> data;
     std::unique_ptr<Background> background;
-    std::unique_ptr<Plant> plant;
     int scrollTextX = 0;
 protected:
 

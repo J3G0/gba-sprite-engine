@@ -141,12 +141,13 @@ void BossScene::spawnFireBalls()
 
 void BossScene::handleScientistActions(u32 currentTime)
 {
+    scrollX += ( 6 - scientist->getHealth()) / 2;
     short flip = scientist->getIsLeftOfRightOf(*gerard->getSprite());
     flip < 0 ? scientist->getSprite()->flipHorizontally(true) : scientist->getSprite()->flipHorizontally(false);
 
+    int moveSpeed = scientist->getMoveSpeed();
 
-
-    if(scientist->hasReachedXDestination())
+    if(scientist->hasReachedXDestination(moveSpeed))
     {
         if(currentTime - scientist->getScientistTime() > SCIENTIST_MOVE_TICK_TIME)
         {
@@ -174,19 +175,18 @@ void BossScene::handleScientistActions(u32 currentTime)
         }
     }
 
-    if(!scientist->hasReachedXDestination())
+    if(!scientist->hasReachedXDestination(moveSpeed))
     {
         u32 scientistX = scientist->getX();
         u32 scientistY = scientist->getY();
-
         //Check where scientist has to move to
         if (scientist->getX() > scientist->getXDestination())
         {
-            scientist->getSprite()->moveTo(scientistX - 1, scientistY);
+            scientist->getSprite()->moveTo(scientistX - moveSpeed, scientistY);
         }
         else
         {
-            scientist->getSprite()->moveTo(scientistX + 1, scientistY);
+            scientist->getSprite()->moveTo(scientistX + moveSpeed, scientistY);
         }
     }
 }
@@ -215,6 +215,8 @@ void BossScene::handleMine(u32 currentTime)
             if(scientist->getCanBeDamaged())
             {
                 scientist->setHealth(currentScientistHealth - mineDamage);
+                u32 currentScientistHealth = scientist->getHealth();
+                scientist->setMoveSpeed( max(1, ( 6 - currentScientistHealth) / 2));
                 mine->setDamaged(true);
             }
         }

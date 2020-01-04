@@ -8,7 +8,6 @@
 #include <libgba-sprite-engine/gba/tonc_memdef.h>
 #include <libgba-sprite-engine/effects/fade_out_scene.h>
 #include "../background/StartScreen/startScreen.h"
-#include "BossScene.h"
 #include "../src/sound/boooo.h"
 #include "../src/sound/HAHA.h"
 
@@ -31,7 +30,6 @@ void StartScene::load()
     backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(startScreenPal, sizeof(startScreenPal)));
     background = std::unique_ptr<Background>(new Background(1, startScreenTiles, sizeof(startScreenTiles), startScreenMap, sizeof(startScreenMap)));
     background->useMapScreenBlock(6);
-    plant = std::unique_ptr<Plant>(new Plant(20,112,0,0,0));
     engine->getTimer()->start();
 }
 
@@ -39,7 +37,7 @@ std::vector<Sprite *> StartScene::sprites()
 {
     return
     {
-        plant.get()->getSprite()
+
     };
 }
 

@@ -40,6 +40,7 @@ protected:
 private:
     ProgressionState progressionState = NONE;
     std::unique_ptr<Renderable> flag;
+    std::unique_ptr<Killable> plant;
     bool hasChanged = false;
 };
 

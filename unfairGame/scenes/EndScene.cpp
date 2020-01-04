@@ -9,6 +9,7 @@
 void EndScene::tick(u16 keys)
 {
     TextStream::instance().setText("You won! Press Start replay", 0 , 2);
+    TextStream::instance().setText("(Unless you don't want to)", 1 , 2);
     if(keys == KEY_START)
     {
         //Create new data

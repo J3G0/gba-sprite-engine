@@ -5,11 +5,9 @@
 #ifndef GBA_SPRITE_ENGINE_PROJECT_GENERICSCENE_H
 #define GBA_SPRITE_ENGINE_PROJECT_GENERICSCENE_H
 
-
 #include <libgba-sprite-engine/scene.h>
 #include <libgba-sprite-engine/sprites/sprite_builder.h>
 #include <libgba-sprite-engine/gba_engine.h>
-
 #include <utility>
 #include "../src/renderable/Gerard.h"
 #include "../src/Data.h"
@@ -22,7 +20,6 @@ class GenericScene : public Scene
 private:
     int atTime = 0;
     int deathTime = 0;
-    int scrollX = 0;
 protected:
     std::vector<Sprite*> spritesVector;
     std::unique_ptr<Background> background;
@@ -41,6 +38,7 @@ protected:
     std::shared_ptr<Data> data;
     std::vector<int> walkableBackgroundTiles = {0x001A, 0x001B, 0x001C, 0x001D};
     bool canTransitionToBoss = false;
+    int scrollX = 0;
 
 public:
     GenericScene(std::shared_ptr<GBAEngine> engine, std::shared_ptr<Data> data) : Scene(std::move(engine)), data(std::move(data)){}
