@@ -8,24 +8,49 @@
 #include <libgba-sprite-engine/background/text_stream.h>
 #include <libgba-sprite-engine/gba/tonc_memdef.h>
 #include <libgba-sprite-engine/effects/fade_out_scene.h>
-#include "../sprite/StartScreen/startScreen.c"
 
 #include "../background/StartScreen/startScreen.h"
+#include "../src/sound/boooo.h"
+#include "../src/sound/HAHA.h"
+
 void StartScene::tick(u16 keys)
+{
+    if(keys == KEY_START)
+    {
+        //engine->setScene(new UnfairScene(engine, GenericScene::data));
+        engine->setScene(new UnfairScene(engine, GenericScene::data));
+    }
+}
+
+void StartScene::load()
+{
+    basicLoad();
+    background->clearData();
+    TextStream::instance().clearData();
+    backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(startScreenPal, sizeof(startScreenPal)));
+    background = std::unique_ptr<Background>(new Background(1, startScreenTiles, sizeof(startScreenTiles), startScreenMap, sizeof(startScreenMap)));
+    background->useMapScreenBlock(16);
+    healthbarGerard->getSprite()->moveTo(-50, -50);
+    gerard->getSprite()->moveTo(-50,-50);
+    engine->getTimer()->start();
+    setText();
+}
+
+void StartScene::setText()
 {
     //interaction with player on startscreen
     TextStream::instance().setText("Amount of deaths:" + std::to_string(data->getAmountOfDeaths()), 0, 6);
 
-    /*
-     * keeps playing
     //is even
-    if(data->getAmountOfDeaths() % 2 == 0 && ) {
+    if(data->getAmountOfDeaths() % 2 == 0 && data->getAmountOfDeaths() > 0)
+    {
         engine->enqueueSound(boooo, boooo_bytes);
     }
-    //is odd
-    else
+        //is odd
+    else if (data->getAmountOfDeaths() > 0)
+    {
         engine->enqueueSound(HAHA, HAHA_bytes);
-    */
+    }
 
     if(data->getAmountOfDeaths() == 0){
         TextStream::instance().setText("Good luck!!!", 1, 6);
@@ -95,21 +120,4 @@ void StartScene::tick(u16 keys)
     }
     else
         TextStream::instance().setText("I have nothing more to say", 1, 4);
-
-    if(keys == KEY_START)
-    {
-        //engine->setScene(new UnfairScene(engine, GenericScene::data));
-        engine->transitionIntoScene(new UnfairScene(engine, GenericScene::data), new FadeOutScene(2));
-    }
-}
-
-void StartScene::load()
-{
-    basicLoad();
-    backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(startScreenPal, sizeof(startScreenPal)));
-    background = std::unique_ptr<Background>(new Background(1, startScreenTiles, sizeof(startScreenTiles), startScreenMap, sizeof(startScreenMap)));
-    background->useMapScreenBlock(16);
-    healthbarGerard->getSprite()->moveTo(-50, -50);
-    gerard->getSprite()->moveTo(-50,-50);
-    engine->getTimer()->start();
 }

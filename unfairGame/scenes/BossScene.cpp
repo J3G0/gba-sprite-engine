@@ -11,6 +11,9 @@
 #include "../src/sound/Explosion1.h"
 #include "../src/sound/Laugh1.h"
 #include "../src/sound/flight_of_the_bumblebee.h"
+#include "../background/Background/Background.h"
+#include "../background/Clouds/Cloudbackground.h"
+#include "../background/Shared/shared.h"
 
 #define SCIENTIST_MOVE_TICK_TIME 3000
 #define MINE_TICK_RATE 350
@@ -31,16 +34,19 @@ void BossScene::load()
         it++;
     }
     mine = std::unique_ptr<Mine>(new Mine(50,50,2));
+    backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(shared_background_palette, sizeof(shared_background_palette)));
+
+    clouds = std::unique_ptr<Background>(new Background(0, clouds_tiles, sizeof(clouds_tiles), clouds_map, sizeof(clouds_map)));
+    clouds->useMapScreenBlock(3);
+    background = std::unique_ptr<Background>(new Background(1, background_tiles, sizeof(background_tiles), background_map, sizeof(background_map)));
+    background->useMapScreenBlock(21);
     engine->getTimer()->start();
-
     engine->enqueueSound(Laugh, Laugh_bytes);
-
     engine->enqueueMusic(flight_of_the_bumblebee, flight_of_the_bumblebee_bytes);
 }
 
 void BossScene::registerInput(u16 keys)
 {
-    TextStream::instance().setText(std::to_string(healthBarScientist.size()), 5 , 1);
     u32 currentTime = engine->getTimer()->getTotalMsecs();
     handleScientistActions(currentTime);
     handleMine(currentTime);
@@ -62,8 +68,7 @@ void BossScene::registerInput(u16 keys)
     {
         scientist->setCanBeDamaged(false);
         engine->updateSpritesInScene();
-        engine->transitionIntoScene(new EndScene(std::move(engine), std::move(data)), new FadeOutScene(2));
-        //engine->setScene(new EndScene(std::move(engine), std::move(data)));
+        engine->setScene(new EndScene(std::move(engine), std::move(data)));
     }
 }
 
@@ -284,4 +289,9 @@ void BossScene::updateScientistHealthbar()
                 healthBarScientist.at(1)->getSprite()->animateToFrame(0);
             break;
     }
+}
+
+std::vector<Background *>  BossScene::backgrounds()
+{
+    return { background.get(), clouds.get() };
 }

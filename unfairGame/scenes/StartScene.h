@@ -23,6 +23,7 @@ public:
     StartScene(std::shared_ptr<GBAEngine> engine, std::shared_ptr<Data> data) : GenericScene(std::move(engine), std::move(data)){}
     void tick(u16 keys) override;
     void load() override;
+    void setText();
 };
 
 

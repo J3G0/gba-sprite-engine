@@ -32,12 +32,14 @@ public:
     void updateMine();
     bool isMineHittingScientist();
     void updateScientistHealthbar();
+    std::vector<Background *> backgrounds() override;
 
 protected:
 
 private:
     std::unique_ptr<Scientist> scientist;
     std::unique_ptr<Mine> mine;
+    std::unique_ptr<Background> clouds;
 };
 
 

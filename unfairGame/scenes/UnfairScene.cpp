@@ -33,13 +33,10 @@ void UnfairScene::load()
     basicLoad();
     placeSprites();
     engine->getTimer()->start();
-    engine->disableText();
-    TextStream::instance().clear();
     backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(shared_background_palette, sizeof(shared_background_palette)));
 
     clouds = std::unique_ptr<Background>(new Background(0, clouds_tiles, sizeof(clouds_tiles), clouds_map, sizeof(clouds_map)));
     clouds->useMapScreenBlock(3);
-
     background = std::unique_ptr<Background>(new Background(1, background_tiles, sizeof(background_tiles), background_map, sizeof(background_map)));
     background->useMapScreenBlock(21);
 
@@ -49,10 +46,15 @@ void UnfairScene::registerInput(u16 keys)
 {
     //TextStream::instance().setText(std::to_string(gerard.get()->getX()), 5 , 1);
     handleProgression();
-    scrollX++;
 
-    clouds->scroll(scrollX, 0);
     //background->scroll(scrollX, 0);
+
+    if(keys == KEY_START)
+    {
+        gerard->setHealth(0);
+        TextStream::instance().clear();
+    }
+
 }
 
 ProgressionState UnfairScene::getProgressionState() const
@@ -67,14 +69,15 @@ void UnfairScene::setProgressionState(ProgressionState progressionState)
 
 void UnfairScene::handleProgression()
 {
-    int gerardX = gerard->getX() + scrollX;
+    int gerardX = gerard->getX();
     ProgressionState state = getProgressionState();
+    TextStream::instance().setText(std::to_string(state), 5 , 1);
     switch(state)
     {
         case NONE:
             if(gerard->isAlive() && gerardX > 50)
             {
-                killables.push_back(std::unique_ptr<FireBall>(new FireBall(50,0, 0, 4, 1)));
+                killables.push_back(std::unique_ptr<FireBall>(new FireBall(gerardX,0, 0, 4, 1)));
 
                 // Set state to next state so no more first state fireballs will spawn
                 // https://stackoverflow.com/questions/40979513/changing-enum-to-next-value-c11
@@ -85,25 +88,24 @@ void UnfairScene::handleProgression()
         case STATE1:
             if(gerard->isAlive() && gerardX > 75)
             {
-                killables.push_back(std::unique_ptr<FireBall>(new FireBall(65 ,7, 0, 4, 1)));
+                killables.push_back(std::unique_ptr<FireBall>(new FireBall(gerardX ,7, 0, 4, 1)));
                 setProgressionState(static_cast<ProgressionState>(state + 1));
             }
             break;
 
         case STATE2:
-                if(gerard->isAlive() && gerardX > 150)
-                {
-                    killables.push_back(std::unique_ptr<FireBall>(new FireBall(0,100, 4, 0, 1)));
-                }
-            setProgressionState(static_cast<ProgressionState>(state + 1));
+
+            if(gerard->isAlive() && gerardX > 120)
+            {
+                killables.push_back(std::unique_ptr<FireBall>(new FireBall(0,100, 6, 0, 2)));
+                setProgressionState(static_cast<ProgressionState>(state + 1));
+            }
             break;
 
         case STATE3:
-
-            if(gerardX > 460 & gerard->isAlive())
+            if(gerard->isAlive() && gerardX > flag->getX() && gerard->getY() > flag->getY())
             {
-                //load();
-                //canTransitionToBoss = true;
+                canTransitionToBoss = true;
             }
             break;
     }
@@ -112,22 +114,20 @@ void UnfairScene::handleProgression()
 
 void UnfairScene::placeSprites()
 {
-    flag = std::unique_ptr<Flag>(new Flag(200,20));
+    flag = std::unique_ptr<Flag>(new Flag(170,50));
+    plant = std::unique_ptr<Plant>(new Plant(110, 112, 0,0,1));
 
     //move to stop compiler from crying
-
-    walkables.push_back(std::move(flag));
+    nonWalkables.push_back(std::move(flag));
     walkables.push_back(std::unique_ptr<ImaginaryBlock>(new ImaginaryBlock(30, 120)));
+    walkables.push_back(std::unique_ptr<ImaginaryBlock>(new ImaginaryBlock(50, 100)));
     walkables.push_back(std::unique_ptr<ImaginaryBlock>(new ImaginaryBlock(70, 80)));
 
     nonWalkables.push_back(std::unique_ptr<ImaginaryBlock>(new ImaginaryBlock(110, 70)));
-    killables.insert(killables.begin(),  std::unique_ptr<Plant>(new Plant(110, 112, 0,0,1)));
-
-    /**
+    walkables.push_back(std::unique_ptr<ImaginaryBlock>(new ImaginaryBlock(130, 70)));
     walkables.push_back(std::unique_ptr<ImaginaryBlock>(new ImaginaryBlock(150, 70)));
-    walkables.push_back(std::unique_ptr<ImaginaryBlock>(new ImaginaryBlock(190, 60)));
-    walkables.push_back(std::unique_ptr<ImaginaryBlock>(new ImaginaryBlock(200, 50)));
-     **/
+    killables.push_back(std::move(plant));
+
 }
 
 std::vector<Background *>  UnfairScene::backgrounds()

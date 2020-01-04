@@ -76,14 +76,11 @@ std::vector<Sprite*> GenericScene::sprites()
 
 void GenericScene::tick(u16 keys)
 {
-
     killablesSize = killables.size();
     walkablesSize = walkables.size();
     nonWalkablesSize = nonWalkables.size();
     Direction d = getCollidingDirection();
     bool onWalkableTile = isOnWalkableTile();
-    TextStream::instance().setText(std::to_string(onWalkableTile),1,5);
-
     u32 currentTime = engine->getTimer()->getTotalMsecs();
     u32 timePassed = currentTime - getAtTime();
     VECTOR vel = updateVelocity(d, onWalkableTile, currentTime, timePassed, keys);
@@ -117,7 +114,6 @@ void GenericScene::tick(u16 keys)
         deathTime = currentTime;
         gerard->setVelocity(0, -1);
     }
-
     if(!gerard->isAlive())
     {
         if(currentTime - deathTime > 1500)
@@ -125,6 +121,7 @@ void GenericScene::tick(u16 keys)
             load();
             data->increaseAmountOfDeaths();
             canTransitionToBoss = false;
+            scrollX = 0;
             engine->setScene(new StartScene(engine, data));
         }
     }
@@ -443,7 +440,7 @@ void GenericScene::checkCollisionWithSprites()
         {
             u32 killableDamage = b->getDmg();
             u32 currentHealth = gerard->getHealth();
-            gerard->setHealth(currentHealth - killableDamage);
+           // gerard->setHealth(currentHealth - killableDamage);
             b->setDamaged(true);
         }
     }
@@ -451,7 +448,6 @@ void GenericScene::checkCollisionWithSprites()
 
 void GenericScene::basicLoad()
 {
-    engine->disableText();
     foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(sharedPal, sizeof(sharedPal)));
     backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(shared_background_palette, sizeof(shared_background_palette)));
 
@@ -468,7 +464,7 @@ void GenericScene::basicLoad()
 
     background = std::unique_ptr<Background>(new Background(1, background_tiles, sizeof(background_tiles), background_map, sizeof(background_map)));
     background->useMapScreenBlock(2);
-    background->scroll(0,0);
+    TextStream::instance().clearData();
 }
 
 void GenericScene::updateHealthbar()

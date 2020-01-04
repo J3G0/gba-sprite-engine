@@ -19,7 +19,6 @@ void TextStream::clear() {
 TextStream::TextStream() : Background(0, text_data, sizeof(text_data), nullptr, TILE_WIDTH * TILE_WIDTH), currCol(0), currRow(0) {
     useMapScreenBlock(24);
     this->palette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager());
-
     persist();
     clear();
 }

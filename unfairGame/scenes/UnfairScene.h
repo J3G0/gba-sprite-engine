@@ -41,6 +41,7 @@ protected:
 private:
     ProgressionState progressionState = NONE;
     std::unique_ptr<Renderable> flag;
+    std::unique_ptr<Killable> plant;
     std::unique_ptr<Background> clouds;
     bool hasChanged = false;
 };
