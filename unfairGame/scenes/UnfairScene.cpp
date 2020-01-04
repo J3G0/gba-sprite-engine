@@ -35,24 +35,14 @@ void UnfairScene::load()
     engine->getTimer()->start();
     backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(shared_background_palette, sizeof(shared_background_palette)));
 
-    clouds = std::unique_ptr<Background>(new Background(0, clouds_tiles, sizeof(clouds_tiles), clouds_map, sizeof(clouds_map)));
-    clouds->useMapScreenBlock(3);
-    background = std::unique_ptr<Background>(new Background(1, background_tiles, sizeof(background_tiles), background_map, sizeof(background_map)));
-    background->useMapScreenBlock(21);
-
 }
 
 void UnfairScene::registerInput(u16 keys)
 {
-    //TextStream::instance().setText(std::to_string(gerard.get()->getX()), 5 , 1);
     handleProgression();
-
-    //background->scroll(scrollX, 0);
-
     if(keys == KEY_START)
     {
         gerard->setHealth(0);
-        TextStream::instance().clear();
     }
 
 }
@@ -71,7 +61,6 @@ void UnfairScene::handleProgression()
 {
     int gerardX = gerard->getX();
     ProgressionState state = getProgressionState();
-    TextStream::instance().setText(std::to_string(state), 5 , 1);
     switch(state)
     {
         case NONE:
@@ -115,7 +104,7 @@ void UnfairScene::handleProgression()
 void UnfairScene::placeSprites()
 {
     flag = std::unique_ptr<Flag>(new Flag(170,50));
-    plant = std::unique_ptr<Plant>(new Plant(110, 112, 0,0,1));
+    //plant = std::unique_ptr<Plant>(new Plant(110, 112, 0,0,1));
 
     //move to stop compiler from crying
     nonWalkables.push_back(std::move(flag));
@@ -126,11 +115,6 @@ void UnfairScene::placeSprites()
     nonWalkables.push_back(std::unique_ptr<ImaginaryBlock>(new ImaginaryBlock(110, 70)));
     walkables.push_back(std::unique_ptr<ImaginaryBlock>(new ImaginaryBlock(130, 70)));
     walkables.push_back(std::unique_ptr<ImaginaryBlock>(new ImaginaryBlock(150, 70)));
-    killables.push_back(std::move(plant));
+    //killables.push_back(std::move(plant));
 
-}
-
-std::vector<Background *>  UnfairScene::backgrounds()
-{
-    return { background.get(), clouds.get() };
 }

@@ -6,6 +6,8 @@
 #define GBA_SPRITE_ENGINE_PROJECT_DATA_H
 
 
+#include <string>
+
 class Data
 {
 private:
@@ -15,6 +17,7 @@ public:
     Data();
     void setAmountOfDeaths (int amountOfDeaths) { this->amountOfDeaths = amountOfDeaths; }
     int getAmountOfDeaths () { return amountOfDeaths; }
+    std::string getAmountOfDeathsString() { return "Amount of deaths: " + std::to_string(amountOfDeaths); }
     void increaseAmountOfDeaths() { amountOfDeaths++; }
 
 };

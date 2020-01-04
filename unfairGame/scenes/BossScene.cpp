@@ -33,13 +33,7 @@ void BossScene::load()
         healthBarScientist.at(it)->getSprite()->animateToFrame(it);
         it++;
     }
-    mine = std::unique_ptr<Mine>(new Mine(50,50,2));
-    backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(shared_background_palette, sizeof(shared_background_palette)));
-
-    clouds = std::unique_ptr<Background>(new Background(0, clouds_tiles, sizeof(clouds_tiles), clouds_map, sizeof(clouds_map)));
-    clouds->useMapScreenBlock(3);
-    background = std::unique_ptr<Background>(new Background(1, background_tiles, sizeof(background_tiles), background_map, sizeof(background_map)));
-    background->useMapScreenBlock(21);
+    mine = std::unique_ptr<Mine>(new Mine(-50,-50,2));
     engine->getTimer()->start();
     engine->enqueueSound(Laugh, Laugh_bytes);
     engine->enqueueMusic(flight_of_the_bumblebee, flight_of_the_bumblebee_bytes);
@@ -54,14 +48,11 @@ void BossScene::registerInput(u16 keys)
     u32 gerardX = gerard->getX();
     u32 gerardY = gerard->getY();
 
-
     if(keys == KEY_B && !mine->getNeedsUpdate())
     {
         mine->getSprite()->moveTo(min(gerardX - 10,GBA_SCREEN_WIDTH), gerardY + 16);
         mine->setNeedsUpdate(true);
 
-        //explosion sound!
-        engine->enqueueSound(Explosion1, Explosion1_bytes);
     }
 
     if(scientist->getHealth() <= 0 && gerard->isAlive())
@@ -142,7 +133,7 @@ void BossScene::spawnFireBall()
 void BossScene::spawnFireBalls()
 {
     u32 gerardX = gerard->getX() - 10;
-    for(int i = 0; i < 5 ; i++)
+    for(int i = 0; i < 3 ; i++)
     {
         killables.push_back(std::unique_ptr<FireBall>(new FireBall(gerardX + (5 * i) ,9 * i, 0, 4, 1)));
     }
@@ -214,6 +205,8 @@ void BossScene::handleMine(u32 currentTime)
 
     if(mine->getCurrentFrame() > 3)
     {
+        //explosion sound!
+        engine->enqueueSound(Explosion1, Explosion1_bytes);
         bool hit = isMineHittingScientist();
         if (hit && !mine->hasDamaged())
         {
@@ -289,9 +282,4 @@ void BossScene::updateScientistHealthbar()
                 healthBarScientist.at(1)->getSprite()->animateToFrame(0);
             break;
     }
-}
-
-std::vector<Background *>  BossScene::backgrounds()
-{
-    return { background.get(), clouds.get() };
 }

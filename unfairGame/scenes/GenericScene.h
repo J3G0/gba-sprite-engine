@@ -22,11 +22,11 @@ class GenericScene : public Scene
 private:
     int atTime = 0;
     int deathTime = 0;
+    int scrollX = 0;
 protected:
     std::vector<Sprite*> spritesVector;
     std::unique_ptr<Background> background;
     std::unique_ptr<Background> clouds;
-    int scrollX = 0;
     std::unique_ptr<Gerard> gerard;
     // No 64x16 possible
     // (see https://www.coranac.com/tonc/text/regobj.htm#tbl-obj-size)
@@ -59,7 +59,6 @@ public:
     int getAtTime() const { return atTime; }
     void setAtTime(int atTime) { this->atTime = atTime; }
     void updateSprites();
-    void moveSprites();
     void checkCollisionWithSprites();
     void updateHealthbar();
 };

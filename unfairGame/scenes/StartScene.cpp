@@ -4,120 +4,109 @@
 
 #include "StartScene.h"
 #include "UnfairScene.h"
-#include "BossScene.h"
 #include <libgba-sprite-engine/background/text_stream.h>
 #include <libgba-sprite-engine/gba/tonc_memdef.h>
 #include <libgba-sprite-engine/effects/fade_out_scene.h>
-
 #include "../background/StartScreen/startScreen.h"
+#include "BossScene.h"
 #include "../src/sound/boooo.h"
 #include "../src/sound/HAHA.h"
 
 void StartScene::tick(u16 keys)
 {
+    scrollTextX = 0;
     if(keys == KEY_START)
     {
-        //engine->setScene(new UnfairScene(engine, GenericScene::data));
-        engine->setScene(new UnfairScene(engine, GenericScene::data));
+        engine->setScene(new UnfairScene(engine, data));
     }
 }
 
 void StartScene::load()
 {
-    basicLoad();
-    background->clearData();
-    TextStream::instance().clearData();
+    engine->enableText();
+    TextStream::instance().scroll(scrollTextX, 0);
+    updateText();
+    playSounds();
+    foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(sharedPal, sizeof(sharedPal)));
     backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(startScreenPal, sizeof(startScreenPal)));
     background = std::unique_ptr<Background>(new Background(1, startScreenTiles, sizeof(startScreenTiles), startScreenMap, sizeof(startScreenMap)));
-    background->useMapScreenBlock(16);
-    healthbarGerard->getSprite()->moveTo(-50, -50);
-    gerard->getSprite()->moveTo(-50,-50);
+    background->useMapScreenBlock(6);
+    plant = std::unique_ptr<Plant>(new Plant(20,112,0,0,0));
     engine->getTimer()->start();
-    setText();
 }
 
-void StartScene::setText()
+std::vector<Sprite *> StartScene::sprites()
 {
-    //interaction with player on startscreen
-    TextStream::instance().setText("Amount of deaths:" + std::to_string(data->getAmountOfDeaths()), 0, 6);
+    return
+    {
+        plant.get()->getSprite()
+    };
+}
 
-    //is even
+std::vector<Background *> StartScene::backgrounds()
+{
+    return
+    {
+        background.get()
+    };
+}
+
+void StartScene::updateText()
+{
+    TextStream::instance().setText(data->getAmountOfDeathsString(), 0, 6);
+
+    std::string displayText = "";
+    switch(data->getAmountOfDeaths())
+    {
+        case 0:
+            displayText = "Good luck!!!";
+            break;
+        case 1:
+            displayText = "Mhh, Better next time.";
+            break;
+        case 2:
+            displayText = "Maybe like don't die.";
+            break;
+        case 3:
+            displayText = "Avoid being hit";
+            break;
+        case 4:
+            displayText = "You can read, right?";
+            break;
+        case 5:
+            displayText = "Stopping is an option";
+            break;
+        case 6:
+            displayText = "Perfect, 1*2*3=6";
+            break;
+        case 7:
+            displayText = "You're stubborn.";
+            break;
+        case 8:
+            displayText = "I like trains";
+            break;
+        case 9:
+            displayText = "Stop pressing my buttons";
+            break;
+        case 10:
+            displayText = "Hate the creators yet?";
+            break;
+        default:
+            displayText = "How did you get here?";
+            break;
+    }
+
+    TextStream::instance().setText(displayText, 1,6);
+}
+
+void StartScene::playSounds()
+{
     if(data->getAmountOfDeaths() % 2 == 0 && data->getAmountOfDeaths() > 0)
     {
         engine->enqueueSound(boooo, boooo_bytes);
     }
-        //is odd
-    else if (data->getAmountOfDeaths() > 0)
+    else if(data->getAmountOfDeaths() > 0)
     {
         engine->enqueueSound(HAHA, HAHA_bytes);
     }
-
-    if(data->getAmountOfDeaths() == 0){
-        TextStream::instance().setText("Good luck!!!", 1, 6);
-    }
-    else if(data->getAmountOfDeaths() == 1 || data->getAmountOfDeaths() == 14){
-        TextStream::instance().setText("Mhh, Better next time.", 1, 6);
-    }
-    else if(data->getAmountOfDeaths() == 2 || data->getAmountOfDeaths() == 27){
-        TextStream::instance().setText("Maybe like don't die.", 1, 6);
-    }
-    else if(data->getAmountOfDeaths() == 3 || data->getAmountOfDeaths() == 16){
-        TextStream::instance().setText("Avoid being hit", 1, 6);
-    }
-    else if(data->getAmountOfDeaths() == 4|| data->getAmountOfDeaths() == 28){
-        TextStream::instance().setText("You can read, right?", 1, 6);
-    }
-    else if(data->getAmountOfDeaths() == 5 || data->getAmountOfDeaths() == 18){
-        TextStream::instance().setText("Stopping is an option", 1, 6);
-    }
-    else if(data->getAmountOfDeaths() == 6){
-        TextStream::instance().setText("Perfect, 1*2*3=6", 1, 6);
-    }
-    else if(data->getAmountOfDeaths() == 7 || data->getAmountOfDeaths() == 29){
-        TextStream::instance().setText("You're stubborn.", 1, 6);
-    }
-    else if(data->getAmountOfDeaths() == 8 || data->getAmountOfDeaths() == 20){
-        TextStream::instance().setText("I like trains", 1, 6);
-    }
-    else if(data->getAmountOfDeaths() == 9 || data->getAmountOfDeaths() == 21){
-        TextStream::instance().setText("Stop pressing my buttons", 1, 4);
-    }
-    else if(data->getAmountOfDeaths() == 10 || data->getAmountOfDeaths() == 22){
-        TextStream::instance().setText("Green is not a creative color", 1, 2);
-    }
-    else if(data->getAmountOfDeaths() == 11){
-        TextStream::instance().setText("Almost 12 deaths", 1, 6);
-    }
-    else if(data->getAmountOfDeaths() == 12){
-        TextStream::instance().setText("Nice this is certainty", 1, 6);
-    }
-    else if(data->getAmountOfDeaths() == 13){
-        TextStream::instance().setText("Hate the creators yet?", 1, 6);
-    }
-    else if(data->getAmountOfDeaths() == 15){
-        TextStream::instance().setText("You like dying?", 1, 6);
-    }
-    else if(data->getAmountOfDeaths() == 17){
-        TextStream::instance().setText("I enjoyed your failure!", 1, 2);
-    }
-    else if(data->getAmountOfDeaths() == 19){
-        TextStream::instance().setText("This is so much fun!", 1, 6);
-    }
-    else if(data->getAmountOfDeaths() == 23){
-        TextStream::instance().setText("Still trying?", 1, 6);
-    }
-    else if(data->getAmountOfDeaths() == 24){
-        TextStream::instance().setText("Just give up?", 1, 6);
-    }
-    else if(data->getAmountOfDeaths() == 25){
-        TextStream::instance().setText("Read the name of the game", 1, 4);
-    }
-    else if(data->getAmountOfDeaths() == 26){
-        TextStream::instance().setText("Unfair isn't it?", 1, 6);
-    }
-    else if(data->getAmountOfDeaths() == 30){
-        TextStream::instance().setText("Did we even test this far?", 1, 4);
-    }
-    else
-        TextStream::instance().setText("I have nothing more to say", 1, 4);
 }

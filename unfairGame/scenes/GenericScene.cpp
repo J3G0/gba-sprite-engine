@@ -28,7 +28,30 @@
 
 std::vector<Background *> GenericScene::backgrounds()
 {
-    return { background.get() };
+    return { background.get(), clouds.get() };
+}
+
+void GenericScene::basicLoad()
+{
+    foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(sharedPal, sizeof(sharedPal)));
+    backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(shared_background_palette, sizeof(shared_background_palette)));
+
+    gerard = std::unique_ptr<Gerard>(new Gerard(0,100, NOT_MOVING));
+    gerard->getSprite()->setStayWithinBounds(true);
+
+    healthbarGerard = std::unique_ptr<Healthbar>(new Healthbar(0,0));
+    healthbarGerard->getSprite()->animateToFrame(0);
+
+    for (int i = 0; i < 2; i++)
+    {
+        healthBarScientist.push_back(std::unique_ptr<Healthbar>(new Healthbar(-50, -50)));
+    }
+    engine->disableText();
+    background = std::unique_ptr<Background>(new Background(1, background_tiles, sizeof(background_tiles), background_map, sizeof(background_map)));
+    background->useMapScreenBlock(21);
+
+    clouds = std::unique_ptr<Background>(new Background(0, clouds_tiles, sizeof(clouds_tiles), clouds_map, sizeof(clouds_map)));
+    clouds->useMapScreenBlock(3);
 }
 
 void GenericScene::load()
@@ -121,7 +144,6 @@ void GenericScene::tick(u16 keys)
             load();
             data->increaseAmountOfDeaths();
             canTransitionToBoss = false;
-            scrollX = 0;
             engine->setScene(new StartScene(engine, data));
         }
     }
@@ -131,8 +153,8 @@ void GenericScene::tick(u16 keys)
         load();
         engine->setScene(new BossScene(engine, data));
     }
-
-
+    scrollX++;
+    clouds->scroll(scrollX,0);
 
 }
 
@@ -403,34 +425,6 @@ void GenericScene::updateSprites()
             killables.end());
 }
 
-void GenericScene::moveSprites()
-{
-    // V: Waarom crashed dit?
-    // A: Oplossing voor crashen : nieuwe lijst aanmaken aan daarin dingen verwijderen, die dan kopieren naar originele lijst.
-    for (auto &b : walkables)
-    {
-        u32 x = b->getX();
-        u32 y = b->getY();
-
-        b->getSprite()->moveTo(x - scrollX, y);
-        // Source https://en.cppreference.com/w/cpp/algorithm/remove
-        // Waarom crashed dit?
-        walkables.erase(std::remove_if(walkables.begin(),walkables.end(),[](std::unique_ptr<Renderable> &b){return b->isOffScreen();}),walkables.end());
-        continue;
-    }
-
-    for (auto &b : killables)
-    {
-        u32 x = b->getX();
-        u32 y = b->getY();
-
-        b->getSprite()->moveTo(x - scrollX, y);
-        // Source https://en.cppreference.com/w/cpp/algorithm/remove
-        killables.erase(std::remove_if(killables.begin(),killables.end(),[this](std::unique_ptr<Killable> &b){return b->getSprite()->collidesWith(*gerard->getSprite());}),killables.end());
-        continue;
-    }
-}
-
 void GenericScene::checkCollisionWithSprites()
 {
 
@@ -440,31 +434,10 @@ void GenericScene::checkCollisionWithSprites()
         {
             u32 killableDamage = b->getDmg();
             u32 currentHealth = gerard->getHealth();
-           // gerard->setHealth(currentHealth - killableDamage);
+            gerard->setHealth(currentHealth - killableDamage);
             b->setDamaged(true);
         }
     }
-}
-
-void GenericScene::basicLoad()
-{
-    foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(sharedPal, sizeof(sharedPal)));
-    backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(shared_background_palette, sizeof(shared_background_palette)));
-
-    gerard = std::unique_ptr<Gerard>(new Gerard(0,100, NOT_MOVING));
-    gerard->getSprite()->setStayWithinBounds(true);
-
-    healthbarGerard = std::unique_ptr<Healthbar>(new Healthbar(0,0));
-    healthbarGerard->getSprite()->animateToFrame(0);
-
-    for (int i = 0; i < 2; i++)
-    {
-        healthBarScientist.push_back(std::unique_ptr<Healthbar>(new Healthbar(-50, -50)));
-    }
-
-    background = std::unique_ptr<Background>(new Background(1, background_tiles, sizeof(background_tiles), background_map, sizeof(background_map)));
-    background->useMapScreenBlock(2);
-    TextStream::instance().clearData();
 }
 
 void GenericScene::updateHealthbar()
@@ -475,7 +448,6 @@ void GenericScene::updateHealthbar()
     // Frame 3: Zero health
     int healthGerard = gerard->getHealth();
     int healthTickGerard =  min(4 - healthGerard, 3);
-    //TextStream::instance().setText(std::to_string(healthTick), 5 , 1);
     healthbarGerard->getSprite()->animateToFrame(healthTickGerard);
 
 }

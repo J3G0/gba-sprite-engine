@@ -8,11 +8,10 @@
 
 void EndScene::tick(u16 keys)
 {
-    TextStream::instance().clear();
     TextStream::instance().setText("You won! Press Start replay", 0 , 2);
-
     if(keys == KEY_START)
     {
-        engine->setScene(new UnfairScene(engine, data));
+        //Create new data
+        engine->setScene(new UnfairScene(engine, std::shared_ptr<Data>(new Data())));
     }
 }
