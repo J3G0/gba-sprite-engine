@@ -81,4 +81,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Known bugs
 Sometimes a sprite isn't deleted correctly, which introduces a flicker.
 such as this: <br/>
-![Flicker](https://github.com/J3G0/gba-sprite-engine/blob/master/unfairGame/img/wtf.gif)
+![Flicker](https://github.com/J3G0/gba-sprite-engine/blob/master/unfairGame/img/flicker2.gif)
