@@ -71,7 +71,7 @@ void UnfairScene::handleProgression()
 
         case STATE2:
 
-            if(gerard->isAlive() && gerardX > 120)
+            if(gerard->isAlive() && gerardX > 90)
             {
                 killables.push_back(std::unique_ptr<FireBall>(new FireBall(0,60, 10, 0, 2)));
                 setProgressionState(static_cast<ProgressionState>(state + 1));

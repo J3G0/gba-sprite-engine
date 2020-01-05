@@ -3,6 +3,8 @@
 //
 
 #include <libgba-sprite-engine/background/text_stream.h>
+
+#include <memory>
 #include "EndScene.h"
 #include "UnfairScene.h"
 
@@ -13,6 +15,6 @@ void EndScene::tick(u16 keys)
     if(keys == KEY_START)
     {
         //Create new data
-        engine->setScene(new UnfairScene(engine, std::shared_ptr<Data>(new Data())));
+        engine->setScene(new UnfairScene(engine, std::make_shared<Data>()));
     }
 }
