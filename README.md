@@ -54,11 +54,14 @@ Furthermore, there are some encouraging messages after every death.<br/>
 
 When pressing start, the next scene is loaded.
 In this scene poor Gerard has to survive the evil things that spawn trying to kill Gerard.<br/>
-![Gif](https://github.com/J3G0/gba-sprite-engine/blob/master/unfairGame/img/unfairgame_unfairscene.gif)
+![Gif](https://github.com/J3G0/gba-sprite-engine/blob/master/unfairGame/img/unfairscene.gif)
 
 If you somehow make it into the final boss fight, be prepared for a fight!
 While trying to dodge the massive amount of testtubes and/or fireballs he throws at you, pressing B will spawn a bomb. This bomb has to explode while the scientist is near it in order to damage him!  <br/>
-![Bossfight](https://github.com/J3G0/gba-sprite-engine/blob/master/unfairGame/img/unfairgame_bossfight.gif)
+The bossfight is accompanied by a fitting high-paced song:
+[link](https://www.youtube.com/watch?v=wOFgh2IdnZI)
+<br/>
+![Bossfight](https://github.com/J3G0/gba-sprite-engine/blob/master/unfairGame/img/bossfight2.gif)
 </details>
 
 ## Authors
@@ -74,4 +77,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Acknowledgments
 
 * Piskel for providing a great tool to create our own sprites
-* ...
+
+## Known bugs
+Sometimes a sprite isn't deleted correctly, which introduces a flicker.
+such as this: <br/>
+![Flicker](https://github.com/J3G0/gba-sprite-engine/blob/master/unfairGame/img/wtf.gif)
