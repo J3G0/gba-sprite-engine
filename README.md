@@ -91,7 +91,9 @@ Sometimes a sprite isn't deleted correctly, which introduces a flicker.
 such as this: <br/>
 ![Flicker](https://github.com/J3G0/gba-sprite-engine/blob/master/unfairGame/img/flicker2.gif)
 <br/>
+<br/>
 Other bugs might occur;
+<br/>
 Hanging underneath a block (by jumping);
 <br/>
 ![Flicker](https://github.com/J3G0/gba-sprite-engine/blob/master/unfairGame/img/glitch.gif)
