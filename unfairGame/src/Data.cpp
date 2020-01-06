@@ -7,4 +7,5 @@
 Data::Data()
 {
     this->amountOfDeaths = 0;
+    this->atEnd = false;
 }

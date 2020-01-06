@@ -12,6 +12,7 @@ class Data
 {
 private:
     int amountOfDeaths;
+    bool atEnd;
 protected:
 public:
     Data();
@@ -19,6 +20,9 @@ public:
     int getAmountOfDeaths () { return amountOfDeaths; }
     std::string getAmountOfDeathsString() { return "Amount of deaths: " + std::to_string(amountOfDeaths); }
     void increaseAmountOfDeaths() { amountOfDeaths++; }
+
+    bool getAtEnd() {return atEnd; }
+    void setAtEnd(bool atEnd) { this->atEnd = atEnd; }
 
 };
 

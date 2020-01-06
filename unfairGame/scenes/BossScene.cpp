@@ -59,6 +59,7 @@ void BossScene::registerInput(u16 keys)
     {
         scientist->setCanBeDamaged(false);
         engine->updateSpritesInScene();
+        data->setAtEnd(true);
         engine->setScene(new EndScene(std::move(engine), std::move(data)));
     }
 }
@@ -149,6 +150,7 @@ void BossScene::handleScientistActions(u32 currentTime)
 
     if(scientist->hasReachedXDestination(moveSpeed))
     {
+        scientist->getSprite()->stopAnimating();
         if(currentTime - scientist->getScientistTime() > SCIENTIST_MOVE_TICK_TIME)
         {
             engine->enqueueSound(Laugh, Laugh_bytes);
@@ -177,6 +179,10 @@ void BossScene::handleScientistActions(u32 currentTime)
 
     if(!scientist->hasReachedXDestination(moveSpeed))
     {
+        if(!scientist->getSprite()->isAnimating())
+        {
+            scientist->getSprite()->animate();
+        }
         u32 scientistX = scientist->getX();
         u32 scientistY = scientist->getY();
         //Check where scientist has to move to

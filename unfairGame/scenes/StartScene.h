@@ -18,12 +18,6 @@
 
 class StartScene : public Scene
 {
-private:
-    std::shared_ptr<Data> data;
-    std::unique_ptr<Background> background;
-    int scrollTextX = 0;
-protected:
-
 public:
     StartScene(std::shared_ptr<GBAEngine> engine, std::shared_ptr<Data> data) : Scene(std::move(engine))
     {
@@ -35,6 +29,12 @@ public:
     void playSounds();
     std::vector<Sprite *> sprites() override;
     std::vector<Background *> backgrounds() override;
+protected:
+
+private:
+    std::shared_ptr<Data> data;
+    std::unique_ptr<Background> background;
+    int scrollTextX = 0;
 };
 
 

@@ -132,12 +132,15 @@ void StartScene::updateText()
 
 void StartScene::playSounds()
 {
-    if(data->getAmountOfDeaths() % 2 == 0 && data->getAmountOfDeaths() > 0)
+    if(!data->getAtEnd())
     {
-        engine->enqueueSound(boooo, boooo_bytes);
-    }
-    else if(data->getAmountOfDeaths() > 0)
-    {
-        engine->enqueueSound(HAHA, HAHA_bytes);
+        if(data->getAmountOfDeaths() % 2 == 0 && data->getAmountOfDeaths() > 0)
+        {
+            engine->enqueueSound(boooo, boooo_bytes);
+        }
+        else if(data->getAmountOfDeaths() > 0)
+        {
+            engine->enqueueSound(HAHA, HAHA_bytes);
+        }
     }
 }
