@@ -30,7 +30,7 @@ is to make a GBA game in C++. To do so we start from the [gba-sprite-engine](htt
 ## T.U.G.
 The Unfair Game is a game based on Unfair Mario. 
 The main character his name is Gerard and his evil counterpart is the Saaientist (Scientist). The player
-takes control of Gerard and has to find his way through the complex web the makes T.U.G. what it is, unfair.
+takes control of Gerard and has to find his way through the complex web that makes T.U.G. what it is, unfair.
 When you finally found your way you will be met by the Saaientist (Dutch word joke as name - means as much as boring dude).
 He is not what his name depicts of him. Will you defeat him?
 
@@ -53,7 +53,10 @@ Furthermore, there are some encouraging messages after every death.<br/>
 <img src="https://github.com/J3G0/gba-sprite-engine/blob/master/unfairGame/img/unfairgame_startscreen.png" width="300" height="200">
 
 When pressing start, the next scene is loaded.
-In this scene poor Gerard has to survive the evil things that spawn trying to kill Gerard.<br/>
+In this scene poor Gerard has to survive the evil things that spawn trying to kill Gerard. Besides trying to, obstacles have to be
+conquered. Only when the flag is reached you'll be able to continue the quest. In this first scene you are calmed down by a MineCraft inspired song:
+[link](https://www.youtube.com/watch?v=b4R6lHvcw68)
+<br/>
 ![Gif](https://github.com/J3G0/gba-sprite-engine/blob/master/unfairGame/img/unfairscene.gif)
 
 If you somehow make it into the final boss fight, be prepared for a fight!
@@ -87,3 +90,9 @@ respectable .h files in the [SOUND](https://github.com/J3G0/gba-sprite-engine/tr
 Sometimes a sprite isn't deleted correctly, which introduces a flicker.
 such as this: <br/>
 ![Flicker](https://github.com/J3G0/gba-sprite-engine/blob/master/unfairGame/img/flicker2.gif)
+
+Other bugs might occur;
+Hanging underneath a block (by jumping);
+![Flicker](https://github.com/J3G0/gba-sprite-engine/blob/master/unfairGame/img/glitch.gif)
+Falling health bar;
+![Flicker](https://github.com/J3G0/gba-sprite-engine/blob/master/unfairGame/img/glitch1.gif)
