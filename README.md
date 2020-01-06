@@ -92,7 +92,7 @@ such as this: <br/>
 ![Flicker](https://github.com/J3G0/gba-sprite-engine/blob/master/unfairGame/img/flicker2.gif)
 
 Other bugs might occur;
-Hanging underneath a block (by jumping);
+Hanging underneath a block (by jumping); <br/>
 ![Flicker](https://github.com/J3G0/gba-sprite-engine/blob/master/unfairGame/img/glitch.gif)
-Falling health bar;
+Falling health bar; <br/>
 ![Flicker](https://github.com/J3G0/gba-sprite-engine/blob/master/unfairGame/img/glitch1.gif)
