@@ -26,13 +26,14 @@ public:
     void tick(u16 keys) override;
     void load() override;
     void updateText();
-    void playSounds();
+
+    virtual void playSounds();
     std::vector<Sprite *> sprites() override;
     std::vector<Background *> backgrounds() override;
 protected:
 
-private:
     std::shared_ptr<Data> data;
+private:
     std::unique_ptr<Background> background;
     int scrollTextX = 0;
 };

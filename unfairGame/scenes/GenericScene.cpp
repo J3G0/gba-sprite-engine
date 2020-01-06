@@ -139,14 +139,16 @@ void GenericScene::tick(u16 keys)
             load();
             data->increaseAmountOfDeaths();
             canTransitionToBoss = false;
-            engine->setScene(new StartScene(engine, data));
+            engine->transitionIntoScene(new StartScene(engine, data), new FadeOutScene(4));
+            //engine->setScene(new StartScene(engine, data));
         }
     }
 
     else if(canTransitionToBoss && gerard->isAlive())
     {
         load();
-        engine->setScene(new BossScene(engine, data));
+        engine->transitionIntoScene(new BossScene(engine, data), new FadeOutScene(4));
+        //engine->setScene(new BossScene(engine, data));
     }
     scrollX++;
     clouds->scroll(scrollX,0);

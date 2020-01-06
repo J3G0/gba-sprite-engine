@@ -12,6 +12,7 @@ class EndScene : public StartScene
 {
 public:
     EndScene(std::shared_ptr<GBAEngine> engine, std::shared_ptr<Data> data) : StartScene(std::move(engine), std::move(data)){}
+    void playSounds();
 protected:
 private:
     void tick(u16 keys) override;

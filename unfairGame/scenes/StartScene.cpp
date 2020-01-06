@@ -16,7 +16,8 @@ void StartScene::tick(u16 keys)
     scrollTextX = 0;
     if(keys == KEY_START)
     {
-        engine->setScene(new UnfairScene(engine, data));
+        engine->transitionIntoScene(new UnfairScene(engine, data), new FadeOutScene(2));
+        //engine->setScene(new UnfairScene(engine, data));
     }
 }
 

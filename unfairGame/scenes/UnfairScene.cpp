@@ -80,7 +80,7 @@ void UnfairScene::handleProgression()
 
         case STATE3:
 
-            if(gerard->isAlive() && gerardX > 160 && gerard->getY() < 60)
+            if(gerard->isAlive() && gerardX > 160 && gerard->getY() < 50)
             {
                 canTransitionToBoss = true;
             }
@@ -100,6 +100,8 @@ void UnfairScene::handleProgression()
 void UnfairScene::placeSprites()
 {
     flag = std::unique_ptr<Flag>(new Flag(170,50));
+    // Looks more real, but adds to much lag
+    //nonWalkables.push_back(std::unique_ptr<ImaginaryBlock>(new ImaginaryBlock(110, 128)));
     plant = std::unique_ptr<Plant>(new Plant(110, 112, 0,0,3));
 
     //move to stop compiler from crying
