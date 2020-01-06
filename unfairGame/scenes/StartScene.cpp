@@ -89,6 +89,39 @@ void StartScene::updateText()
         case 10:
             displayText = "Hate the creators yet?";
             break;
+        case 11:
+            displayText = "You like dying?";
+            break;
+        case 12:
+            displayText = "This is so much fun!";
+            break;
+        case 13:
+            displayText = "Fun for me, pain for you.";
+            break;
+        case 14:
+            displayText = "Still trying?";
+            break;
+        case 15:
+            displayText = "Just give up?";
+            break;
+        case 16:
+            displayText = "Read the name of the game";
+            break;
+        case 17:
+            displayText = "Still trying?";
+            break;
+        case 18:
+            displayText = "Unfair isn't it??";
+            break;
+        case 19:
+            displayText = "Like these texts?";
+            break;
+        case 20:
+            displayText = "Try again?";
+            break;
+        case 21:
+            displayText = "You die so quickly";
+            break;
         default:
             displayText = "How did you get here?";
             break;

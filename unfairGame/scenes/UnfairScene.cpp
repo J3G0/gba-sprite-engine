@@ -79,10 +79,19 @@ void UnfairScene::handleProgression()
             break;
 
         case STATE3:
-            if(gerard->isAlive() && gerardX > flag->getX() && gerard->getY() < flag->getY() + flag.get()->getSprite()->getWidth())
+
+            if(gerard->isAlive() && gerardX > 160 && gerard->getY() < 60)
             {
                 canTransitionToBoss = true;
             }
+
+/*
+ * //WERKT NIET IN DEZE STATE ^^ FF HARDCODED
+            if(gerard->isAlive() && (gerardX > flag->getX()) && (gerard->getY() > (flag->getY() + flag.get()->getSprite()->getWidth())))
+            {
+                canTransitionToBoss = true;
+            }
+*/
             break;
     }
 
@@ -91,7 +100,7 @@ void UnfairScene::handleProgression()
 void UnfairScene::placeSprites()
 {
     flag = std::unique_ptr<Flag>(new Flag(170,50));
-    plant = std::unique_ptr<Plant>(new Plant(110, 112, 0,0,1));
+    plant = std::unique_ptr<Plant>(new Plant(110, 112, 0,0,3));
 
     //move to stop compiler from crying
     nonWalkables.push_back(std::move(flag));
