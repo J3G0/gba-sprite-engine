@@ -11,6 +11,7 @@
 #include "../background/Background/Background.h"
 #include "../background/Clouds/Cloudbackground.h"
 #include "../background/Shared/shared.h"
+#include "../src/sound/calm.h"
 
 #include <utility>
 
@@ -25,7 +26,7 @@ void UnfairScene::load()
     placeSprites();
     engine->getTimer()->start();
     backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(shared_background_palette, sizeof(shared_background_palette)));
-
+    engine->enqueueMusic(calm, calm_bytes);
 }
 
 void UnfairScene::registerInput(u16 keys)

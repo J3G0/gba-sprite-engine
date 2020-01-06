@@ -18,15 +18,15 @@ void EndScene::tick(u16 keys)
 
     if(data->getAmountOfDeaths() == 0)
     {
-        TextStream::instance().setText("You didn't die, did you cheat?", 1, 1);
+        TextStream::instance().setText("You didnt die, did you cheat?", 1, 0);
     }
     else if(data->getAmountOfDeaths() == 1)
     {
-        TextStream::instance().setText("You died only once!" , 1, 5);
+        TextStream::instance().setText("You died only once!" , 1, 6);
     }
     else if(data->getAmountOfDeaths() > 1)
     {
-       TextStream::instance().setText("You died " + std::to_string(data->getAmountOfDeaths()) + " times.", 1,3);
+       TextStream::instance().setText("You died " + std::to_string(data->getAmountOfDeaths()) + " times.", 1,6);
     }
 
     if(keys == KEY_START)

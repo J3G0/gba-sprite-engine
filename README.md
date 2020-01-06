@@ -64,6 +64,9 @@ The bossfight is accompanied by a fitting high-paced song:
 ![Bossfight](https://github.com/J3G0/gba-sprite-engine/blob/master/unfairGame/img/bossfight2.gif)
 </details>
 
+## Technical details
+
+
 ## Authors
 
 * *Wouter Groeneveld*       - Lecturer  - [GitHub](https://github.com/wgroeneveld)
@@ -77,6 +80,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Acknowledgments
 
 * Piskel for providing a great tool to create our own sprites
+* Thanks to the people who made the music and sound effects that are used in our game. Links are in the
+respectable .h files in the [SOUND](https://github.com/J3G0/gba-sprite-engine/tree/master/unfairGame/src/sound) folder.
 
 ## Known bugs
 Sometimes a sprite isn't deleted correctly, which introduces a flicker.
