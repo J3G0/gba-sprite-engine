@@ -90,9 +90,12 @@ respectable .h files in the [SOUND](https://github.com/J3G0/gba-sprite-engine/tr
 Sometimes a sprite isn't deleted correctly, which introduces a flicker.
 such as this: <br/>
 ![Flicker](https://github.com/J3G0/gba-sprite-engine/blob/master/unfairGame/img/flicker2.gif)
-
+<br/>
 Other bugs might occur;
-Hanging underneath a block (by jumping); <br/>
+Hanging underneath a block (by jumping);
+<br/>
 ![Flicker](https://github.com/J3G0/gba-sprite-engine/blob/master/unfairGame/img/glitch.gif)
-Falling health bar; <br/>
+<br/>
+Falling health bar;
+<br/>
 ![Flicker](https://github.com/J3G0/gba-sprite-engine/blob/master/unfairGame/img/glitch1.gif)
