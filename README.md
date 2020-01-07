@@ -86,7 +86,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 * Thanks to the people who made the music and sound effects that are used in our game. Links are in the
 respectable .h files in the [SOUND](https://github.com/J3G0/gba-sprite-engine/tree/master/unfairGame/src/sound) folder.
 
-## Known bugs
+## Known bugs (Features)
 Sometimes a sprite isn't deleted correctly, which introduces a flicker.
 such as this: <br/>
 ![Flicker](https://github.com/J3G0/gba-sprite-engine/blob/master/unfairGame/img/flicker2.gif)
