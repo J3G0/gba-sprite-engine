@@ -223,7 +223,7 @@ VECTOR GenericScene::updateVelocity(Direction d, bool onWalkableTile, int curren
             case (KEY_RIGHT):
                 dx = 1;
                 break;
-            case (KEY_RIGHT | KEY_UP):
+            case (KEY_UP | KEY_RIGHT):
                 dx = 1;
                 if(!gerard->isJumping())
                 {
@@ -231,7 +231,7 @@ VECTOR GenericScene::updateVelocity(Direction d, bool onWalkableTile, int curren
                     setAtTime(currentTime);
                 }
                 break;
-            case (KEY_UP):
+            case (KEY_A):
                 if(!gerard->isJumping())
                 {
                     dy = -2;
@@ -239,7 +239,7 @@ VECTOR GenericScene::updateVelocity(Direction d, bool onWalkableTile, int curren
                     setAtTime(currentTime);
                 }
                 break;
-            case (KEY_A):
+            case (KEY_UP):
                 if(!gerard->isJumping())
                 {
                     dy = -2;
@@ -284,7 +284,7 @@ VECTOR GenericScene::updateVelocity(Direction d, bool onWalkableTile, int curren
                 case UP:
                     dy = 0;
                     gerard->setIsJumping(false);
-                    if(!gerard->isJumping() && ( (keys == KEY_UP) || (keys == (KEY_RIGHT | KEY_UP)) || (keys == (KEY_LEFT | KEY_UP))))
+                    if(!gerard->isJumping() && ( (keys == KEY_A) || (keys == KEY_UP) || (keys == (KEY_RIGHT | KEY_UP)) || (keys == (KEY_LEFT | KEY_UP))))
                     {
                         dy = -2;
                         gerard->setIsJumping(!gerard->isJumping());
