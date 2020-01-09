@@ -71,7 +71,7 @@ The bossfight is accompanied by a fitting high-paced song:
 The domain model shows how T.U.G. was envisioned to work. For example in a given scene we have Gerard. In those scenes
 Gerard can change his direction. On the other hand the Scientist (Saaientist) is contained within the BossScene.
 <br/>
-<img src="https://github.com/J3G0/gba-sprite-engine/blob/master/unfairGame/misc/DomainModel_TUG.png">
+<img src="https://github.com/J3G0/gba-sprite-engine/blob/master/misc/DomainModel_TUG.png">
 <br/>
 
 ## Authors
