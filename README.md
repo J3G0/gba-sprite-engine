@@ -68,8 +68,10 @@ The bossfight is accompanied by a fitting high-paced song:
 </details>
 
 ## Domain model
-The domain model shows how T.U.G. was envisioned to work. For example in a given scene we have Gerard. In those scenes
-Gerard can change his direction. On the other hand the Scientist (Saaientist) is contained within the BossScene.
+The domain model shows how The Unfair Game (T.U.G.) was envisioned to work. There are a few different scenes that are used in T.U.G, such as StartScene, UnfairScene, BossScene and EndScene. StartScene inherits from Scene and displays the background and text. The EndScene inherits from StartScene because they both share the game background and data.
+The UnfairScene and BossScene inherit from GenericScene. In the GenericScene all the calculations for velocity and collision detection, sprite animations, ... for Gerard are calculated. The calculations for the Saaientist are done in the BossScene because the UnfairScene has no Saaientist.
+
+A rendered object is what we call a Renderable, which is an Object with a sprite with sprite data. A Killable inherits from Renderable but has an extra damage parameter, so when a killable hits Gerard or the Saaientist it can be damaged.
 <details>
 <summary>Click to see the Domain Model</summary>
 <img src="https://github.com/J3G0/gba-sprite-engine/blob/master/misc/DomainModel_TUG.png" width="600">
