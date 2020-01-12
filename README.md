@@ -44,7 +44,11 @@ He is not what his name depicts of him. Will you defeat him?
 <img src="https://github.com/J3G0/gba-sprite-engine/blob/master/unfairGame/sprite/Saaientist/Mad%20Saaientist%20large.png">
 </details>
 
-
+<details>
+<summary>Click to see the GameFlow</summary>
+<img src="https://github.com/J3G0/gba-sprite-engine/blob/master/unfairGame/GameFlow.png">
+ </details> 
+  
 <details>
 <summary>Click to see more about T.U.G.</summary>
 When first loading the game, a start scene shows the current amount of deaths
